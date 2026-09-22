@@ -83,6 +83,20 @@ body {
   color: transparent;
 }
 .tagline { color: var(--muted); margin: 0 0 8px; }
+.welcome { margin: 0 0 4px; font-size: 1.05rem; }
+.welcome strong { color: var(--accent); }
+
+/* resumo de quem volta, entre o botão de jogar e o ranking */
+.best {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 8px; margin: 0; padding: 14px 10px;
+  background: var(--surface); border-radius: var(--radius);
+}
+.best div { display: grid; gap: 2px; }
+.best dt { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
+.best dd { margin: 0; }
+.best dd strong { font-size: 1.25rem; color: var(--accent); }
+.best dd span { font-size: 0.78rem; color: var(--muted); }
 .question { font-size: 1.15rem; margin: 4px 0; text-align: center; font-weight: 600; }
 .question--map { margin: 0; }
 .question__country { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }

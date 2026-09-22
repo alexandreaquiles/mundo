@@ -5,7 +5,15 @@ import { randomSeed } from './domain/rng';
 import { ROUNDS_PER_GAME } from './domain/scoring';
 import { useSettings } from './hooks/useSettings';
 import { haptics, sfx, unlockAudio } from './audio/sfx';
-import { NameTakenError, queueScore, submitScore, takeQueuedScore } from './api/client';
+import {
+  NameTakenError,
+  cachedSummary,
+  fetchMe,
+  queueScore,
+  submitScore,
+  takeQueuedScore,
+  type PlayerSummary,
+} from './api/client';
 import { Pips, Screen, ScoreBar } from './components/Chrome';
 import { HomeScreen } from './screens/HomeScreen';
 import { CapitalQuestion, FlagQuestion } from './screens/QuestionScreen';
@@ -31,6 +39,8 @@ export default function App() {
   // sorteado uma vez por montagem: não pode trocar enquanto a pessoa digita
   const [suggestedName] = useState(() => suggestName(mulberry32(Date.now() & 0xffffffff)));
   const [shareState, setShareState] = useState<'idle' | 'copiado' | 'erro'>('idle');
+  // começa com o que está em cache, para a home não piscar esperando a rede
+  const [summary, setSummary] = useState<PlayerSummary | null>(cachedSummary);
   const [state, rawDispatch] = useReducer(
     (s: GameState, e: Event) => reducer(s, e, COUNTRIES),
     undefined,
@@ -102,6 +112,15 @@ export default function App() {
     [dispatch, playerId, settings],
   );
 
+  // O resumo da home envelhece a cada partida enviada; recarrega ao voltar
+  // para ela. Falha de rede mantém o que estava em cache.
+  useEffect(() => {
+    if (route !== 'jogo' || state.screen !== 'home') return;
+    fetchMe(playerId)
+      .then(setSummary)
+      .catch(() => {});
+  }, [route, state.screen, playerId]);
+
   // Fim de partida: quem já tem nome sobe direto; quem não tem, escolhe um.
   useEffect(() => {
     if (state.screen !== 'gameover' || state.submit !== 'idle') return;
@@ -172,7 +191,7 @@ export default function App() {
   if (state.screen === 'home') {
     return (
       <HomeScreen
-        playerName={settings.rememberedName}
+        summary={summary}
         onStart={start}
         onLeaderboard={() => navigate('ranking')}
       />

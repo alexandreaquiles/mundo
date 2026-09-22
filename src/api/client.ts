@@ -2,11 +2,14 @@ import type {
   LeaderboardEntry,
   LeaderboardPage,
   PlayerAttempt,
+  PlayerSummary,
   ScoreSubmission,
   SubmitResponse,
 } from './types';
 
-export type { LeaderboardEntry, LeaderboardPage, PlayerAttempt, SubmitResponse };
+export type { LeaderboardEntry, LeaderboardPage, PlayerAttempt, PlayerSummary, SubmitResponse };
+
+const SUMMARY_KEY = 'mundo:summary';
 
 const PENDING_KEY = 'mundo:pending-score';
 
@@ -51,6 +54,42 @@ export async function fetchPlayerAttempts(name: string): Promise<PlayerAttempt[]
     `/api/scores/player?name=${encodeURIComponent(name)}`,
   );
   return data.entries;
+}
+
+/**
+ * Resumo de quem joga neste aparelho. `null` quando ainda não há partida.
+ *
+ * Guarda em cache no localStorage: a home precisa mostrar as boas-vindas na
+ * hora, inclusive offline, sem esperar a rede.
+ */
+export async function fetchMe(playerId: string): Promise<PlayerSummary | null> {
+  const res = await fetch(`/api/me?playerId=${playerId}`);
+  if (res.status === 204) {
+    cacheSummary(null);
+    return null;
+  }
+  if (!res.ok) throw new Error(`Erro ${res.status}`);
+  const summary = (await res.json()) as PlayerSummary;
+  cacheSummary(summary);
+  return summary;
+}
+
+export function cacheSummary(summary: PlayerSummary | null) {
+  try {
+    if (summary) localStorage.setItem(SUMMARY_KEY, JSON.stringify(summary));
+    else localStorage.removeItem(SUMMARY_KEY);
+  } catch {
+    /* sem cache; a home só espera a rede */
+  }
+}
+
+export function cachedSummary(): PlayerSummary | null {
+  try {
+    const raw = localStorage.getItem(SUMMARY_KEY);
+    return raw ? (JSON.parse(raw) as PlayerSummary) : null;
+  } catch {
+    return null;
+  }
 }
 
 /** Guarda uma pontuação que não conseguiu subir, para tentar de novo depois. */

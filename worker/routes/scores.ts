@@ -1,4 +1,10 @@
-import type { LeaderboardEntry, LeaderboardPage, PlayerAttempt, SubmitResponse } from '../../src/api/types';
+import type {
+  LeaderboardEntry,
+  LeaderboardPage,
+  PlayerAttempt,
+  PlayerSummary,
+  SubmitResponse,
+} from '../../src/api/types';
 import type { Env } from '../env';
 import { hashIp, isPlayerId, normaliseName, validateSubmission } from '../lib/validate';
 import { adoptLegacyRows, isAvailableFor, ownerOf } from '../lib/identity';
@@ -229,4 +235,36 @@ export async function getNameAvailability(request: Request, env: Env): Promise<R
 
   const ownership = await ownerOf(env, name);
   return json({ name, available: isAvailableFor(ownership, playerId) });
+}
+
+/**
+ * Resumo de quem já jogou neste aparelho, para a home dar as boas-vindas.
+ * Devolve 204 quando o aparelho ainda não tem partida nenhuma.
+ */
+export async function getMe(request: Request, env: Env): Promise<Response> {
+  const playerId = new URL(request.url).searchParams.get('playerId');
+  if (!isPlayerId(playerId)) return json({ error: 'Identificador inválido.' }, 400);
+
+  const best = await env.DB.prepare(
+    `${BEST_PER_PLAYER}
+     SELECT name, score, duration_ms, created_at, attempts FROM best WHERE player_id = ?`,
+  )
+    .bind(playerId)
+    .first<{ name: string; score: number; duration_ms: number; created_at: number; attempts: number }>();
+
+  if (!best) return new Response(null, { status: 204 });
+
+  const better = await env.DB.prepare(`${BEST_PER_PLAYER} ${COUNT_BETTER}`)
+    .bind(best.score, best.duration_ms, best.created_at)
+    .first<{ n: number }>();
+  const total = await env.DB.prepare(`${BEST_PER_PLAYER} SELECT COUNT(*) AS n FROM best`).first<{ n: number }>();
+
+  const summary: PlayerSummary = {
+    name: best.name,
+    bestScore: best.score,
+    rank: (better?.n ?? 0) + 1,
+    total: total?.n ?? 1,
+    games: best.attempts,
+  };
+  return json(summary);
 }

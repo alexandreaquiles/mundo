@@ -49,3 +49,14 @@ export interface PlayerAttempt {
   durationMs: number;
   createdAt: number;
 }
+
+/** O que a home mostra para quem já jogou neste aparelho. */
+export interface PlayerSummary {
+  name: string;
+  bestScore: number;
+  /** Posição da melhor partida no ranking. */
+  rank: number;
+  /** Quantos jogadores há no ranking. */
+  total: number;
+  games: number;
+}
