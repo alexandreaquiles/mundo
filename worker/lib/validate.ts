@@ -5,15 +5,21 @@ export const NAME_MAX = 20;
 const MIN_DURATION_MS = 15_000;
 const MAX_DURATION_MS = 3_600_000;
 
-/** Remove controles e invisíveis, colapsa espaços e corta no limite. */
+/**
+ * Remove controles e invisíveis, colapsa espaços e corta no limite.
+ * Quebra de linha vira espaço (senão "linha\nquebrada" viraria uma palavra só);
+ * zero-width e marcas de direção somem de vez.
+ */
 export function normaliseName(raw: unknown): string | null {
   if (typeof raw !== 'string') return null;
   const cleaned = raw
     .normalize('NFC')
-    .replace(/[\p{Cc}\p{Cf}\p{Zl}\p{Zp}]/gu, '')
+    .replace(/[\p{Cf}]/gu, '')
+    .replace(/[\p{Cc}\p{Zl}\p{Zp}]/gu, ' ')
     .replace(/\s+/g, ' ')
     .trim()
-    .slice(0, NAME_MAX);
+    .slice(0, NAME_MAX)
+    .trim();
   return cleaned.length > 0 ? cleaned : null;
 }
 
