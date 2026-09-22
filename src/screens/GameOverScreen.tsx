@@ -44,7 +44,17 @@ export function GameOverScreen({
 
       {state.submit === 'ok' && state.rank !== null && (
         <p className="rank-note" aria-live="polite">
-          Você entrou em <strong>{state.rank}º</strong> no ranking global.
+          {state.personalBest ? (
+            <>
+              Você está em <strong>{state.rank}º</strong>
+              {state.playersInRanking !== null && <> de {state.playersInRanking}</>} no ranking global.
+            </>
+          ) : (
+            <>
+              Sua melhor partida segue em <strong>{state.rank}º</strong>
+              {state.playersInRanking !== null && <> de {state.playersInRanking}</>} — desta vez você fez menos pontos.
+            </>
+          )}
         </p>
       )}
       {SUBMIT_MESSAGE[state.submit] && <p className="muted" aria-live="polite">{SUBMIT_MESSAGE[state.submit]}</p>}

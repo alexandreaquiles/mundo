@@ -13,6 +13,7 @@ import { FailedCard, RevealCard } from './screens/RoundResultScreen';
 import { GameOverScreen } from './screens/GameOverScreen';
 import { LeaderboardScreen } from './screens/LeaderboardScreen';
 import { WorldMap } from './map/WorldMap';
+import { useRoute } from './hooks/useRoute';
 import type { LngLat } from './domain/types';
 
 /** Quanto tempo o cartão de erro fica na tela antes de seguir sozinho. */
@@ -20,6 +21,7 @@ const FAILED_AUTO_MS = 3200;
 
 export default function App() {
   const settings = useSettings();
+  const { route, navigate, back } = useRoute();
   const [state, rawDispatch] = useReducer(
     (s: GameState, e: Event) => reducer(s, e, COUNTRIES),
     undefined,
@@ -54,13 +56,27 @@ export default function App() {
     dispatch({ type: 'SUBMIT_START' });
     sfx.finish();
     submitScore(submission)
-      .then((r) => dispatch({ type: 'SUBMIT_DONE', state: 'ok', rank: r.rank }))
+      .then((r) =>
+        dispatch({
+          type: 'SUBMIT_DONE',
+          state: 'ok',
+          rank: r.rank,
+          playersInRanking: r.total,
+          highlightId: r.bestId,
+          // bestId diferente de id significa que uma partida anterior deste
+          // nome continua sendo a melhor
+          personalBest: r.bestId === r.id,
+        }),
+      )
       .catch(() => {
         queueScore(submission);
         dispatch({
           type: 'SUBMIT_DONE',
           state: navigator.onLine ? 'error' : 'offline',
           rank: null,
+          playersInRanking: null,
+          highlightId: null,
+          personalBest: false,
         });
       });
   }, [state, dispatch]);
@@ -88,12 +104,12 @@ export default function App() {
     dispatch({ type: 'START', seed: randomSeed(), now: Date.now(), pool: COUNTRIES });
   };
 
-  if (state.screen === 'leaderboard') {
-    const previous = state.previous;
+  if (route === 'ranking') {
     return (
       <LeaderboardScreen
-        onBack={() => dispatch({ type: 'BACK' })}
-        highlight={previous.screen === 'gameover' ? previous.name : undefined}
+        onBack={back}
+        highlightId={state.screen === 'gameover' ? state.highlightId ?? undefined : undefined}
+        highlightRank={state.screen === 'gameover' ? state.rank ?? undefined : undefined}
       />
     );
   }
@@ -104,7 +120,7 @@ export default function App() {
         name={state.name}
         onNameChange={(name) => dispatch({ type: 'SET_NAME', name })}
         onStart={start}
-        onLeaderboard={() => dispatch({ type: 'OPEN_LEADERBOARD' })}
+        onLeaderboard={() => navigate('ranking')}
       />
     );
   }
@@ -114,7 +130,7 @@ export default function App() {
       <GameOverScreen
         state={state}
         onPlayAgain={() => dispatch({ type: 'PLAY_AGAIN' })}
-        onLeaderboard={() => dispatch({ type: 'OPEN_LEADERBOARD' })}
+        onLeaderboard={() => navigate('ranking')}
       />
     );
   }

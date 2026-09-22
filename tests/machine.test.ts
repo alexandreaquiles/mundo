@@ -156,14 +156,61 @@ describe('partida completa', () => {
   });
 });
 
-describe('navegação', () => {
-  it('abre e fecha o ranking preservando a tela anterior', () => {
-    const s0 = start();
-    const s1 = run(s0, { type: 'OPEN_LEADERBOARD' });
-    expect(s1.screen).toBe('leaderboard');
-    expect(run(s1, { type: 'BACK' })).toBe(s0);
+describe('envio da pontuação', () => {
+  /** Chega ao fim da partida errando tudo, que é o caminho mais curto. */
+  function reachGameOver(seed = 'envio'): GameState {
+    let s: GameState = start(seed);
+    for (let i = 0; i < ROUNDS_PER_GAME; i++) {
+      const p = playing(s);
+      s = run(p, { type: 'ANSWER_FLAG', value: p.flagOptions.find((o) => !o.correct)!.value }, { type: 'NEXT', now: i });
+    }
+    return s;
+  }
+
+  it('guarda posição, total e a linha a destacar', () => {
+    const over = run(reachGameOver(), {
+      type: 'SUBMIT_DONE',
+      state: 'ok',
+      rank: 137,
+      playersInRanking: 312,
+      highlightId: 'linha-abc',
+      personalBest: true,
+    });
+    expect(over).toMatchObject({
+      submit: 'ok',
+      rank: 137,
+      playersInRanking: 312,
+      highlightId: 'linha-abc',
+      personalBest: true,
+    });
   });
 
+  it('marca quando a jogada de agora não foi a melhor do nome', () => {
+    const over = run(reachGameOver(), {
+      type: 'SUBMIT_DONE',
+      state: 'ok',
+      rank: 12,
+      playersInRanking: 90,
+      highlightId: 'partida-antiga',
+      personalBest: false,
+    });
+    expect(over.screen === 'gameover' && over.personalBest).toBe(false);
+  });
+
+  it('não destaca nada quando o envio falha', () => {
+    const over = run(reachGameOver(), {
+      type: 'SUBMIT_DONE',
+      state: 'offline',
+      rank: null,
+      playersInRanking: null,
+      highlightId: null,
+      personalBest: false,
+    });
+    expect(over).toMatchObject({ submit: 'offline', rank: null, highlightId: null });
+  });
+});
+
+describe('navegação', () => {
   it('volta para a home mantendo o nome', () => {
     const over = run(initialState('Ana'), { type: 'START', seed: 'x', now: 0, pool: COUNTRIES });
     const s = run(over, { type: 'PLAY_AGAIN' });

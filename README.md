@@ -38,7 +38,7 @@ O `@cloudflare/vite-plugin` roda o Worker dentro do servidor do Vite, com um D1
 local de verdade em `.wrangler/state`. Não é preciso subir dois processos.
 
 ```bash
-npm test          # 863 testes: dados, pontuação, sorteio, projeção, máquina de estados, API
+npm test          # 865 testes: dados, pontuação, sorteio, projeção, máquina de estados, API
 npm run build     # build de produção
 npm run preview   # serve o build, com service worker ativo
 ```
@@ -151,6 +151,24 @@ Duas armadilhas que valem registro, porque não são óbvias:
 Os detalhes e a procedência estão em [`data/README.md`](data/README.md).
 
 ## Sobre o ranking
+
+Tem URL própria (`/ranking`), então dá para compartilhar o link — o Worker serve
+o `index.html` para qualquer caminho fora de `/api`, e o roteamento no cliente é
+History API pura, sem dependência.
+
+**Uma linha por jogador.** A lista mostra a melhor partida de cada nome, com a
+contagem de quantas ele jogou; tocar em "N partidas" expande as outras. Isso
+assume que nome é pessoa, o que sem contas de usuário não é verdade — dois
+homônimos viram um. É uma troca consciente: o topo dominado pela mesma pessoa
+repetida era pior de ler do que o risco de fundir dois "Ana".
+
+A ordem total (`score DESC, duration_ms ASC, created_at ASC`) vive numa constante
+única no Worker porque a listagem e o cálculo de posição **precisam** concordar:
+se divergirem, o "você está em 12º" aponta para a linha errada e a janela de
+vizinhos desloca junto.
+
+Quem não aparece na página carregada vê a própria vizinhança num bloco à parte,
+em vez de não se achar no ranking.
 
 O jogo roda inteiro no navegador, então **não há como provar que uma pontuação
 enviada é real** — quem abrir o DevTools consegue mandar o número que quiser.

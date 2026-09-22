@@ -2,7 +2,13 @@ import { MAX_GAME_SCORE, ROUNDS_PER_GAME } from '../../src/domain/scoring';
 import type { ScoreSubmission } from '../types';
 
 export const NAME_MAX = 20;
-const MIN_DURATION_MS = 15_000;
+/**
+ * Piso baixo de propósito: quem erra as 15 bandeiras clicando rápido termina
+ * em uns 15 segundos, e recusar essa partida seria punir jogo legítimo. O
+ * valor serve só para barrar envio automatizado em rajada — o limite por IP
+ * é quem faz o trabalho de verdade.
+ */
+const MIN_DURATION_MS = 5_000;
 const MAX_DURATION_MS = 3_600_000;
 
 /**

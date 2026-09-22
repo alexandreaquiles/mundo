@@ -1,30 +1,43 @@
-import type { LeaderboardEntry, ScoreSubmission, SubmitResponse } from './types';
+import type {
+  LeaderboardEntry,
+  LeaderboardPage,
+  PlayerAttempt,
+  ScoreSubmission,
+  SubmitResponse,
+} from './types';
 
-export type { LeaderboardEntry, SubmitResponse };
+export type { LeaderboardEntry, LeaderboardPage, PlayerAttempt, SubmitResponse };
 
 const PENDING_KEY = 'mundo:pending-score';
 
-async function postJson<T>(url: string, body: unknown): Promise<T> {
-  const res = await fetch(url, {
+async function getJson<T>(url: string): Promise<T> {
+  const res = await fetch(url);
+  if (!res.ok) throw new Error(`Erro ${res.status}`);
+  return res.json() as Promise<T>;
+}
+
+export async function submitScore(submission: ScoreSubmission): Promise<SubmitResponse> {
+  const res = await fetch('/api/scores', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(body),
+    body: JSON.stringify(submission),
   });
   if (!res.ok) {
     const detail = await res.json().catch(() => ({}));
     throw new Error((detail as { error?: string }).error ?? `Erro ${res.status}`);
   }
-  return res.json() as Promise<T>;
+  return res.json() as Promise<SubmitResponse>;
 }
 
-export function submitScore(submission: ScoreSubmission): Promise<SubmitResponse> {
-  return postJson<SubmitResponse>('/api/scores', submission);
+export function fetchLeaderboard(limit = 15, offset = 0): Promise<LeaderboardPage> {
+  return getJson<LeaderboardPage>(`/api/scores/top?limit=${limit}&offset=${offset}`);
 }
 
-export async function fetchLeaderboard(limit = 20): Promise<LeaderboardEntry[]> {
-  const res = await fetch(`/api/scores/top?limit=${limit}`);
-  if (!res.ok) throw new Error(`Não consegui carregar o ranking (${res.status})`);
-  const data = (await res.json()) as { entries: LeaderboardEntry[] };
+/** As outras partidas de um mesmo nome, para expandir a linha. */
+export async function fetchPlayerAttempts(name: string): Promise<PlayerAttempt[]> {
+  const data = await getJson<{ entries: PlayerAttempt[] }>(
+    `/api/scores/player?name=${encodeURIComponent(name)}`,
+  );
   return data.entries;
 }
 

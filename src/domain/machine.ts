@@ -7,7 +7,7 @@ import { CAPITAL_POINTS, FLAG_POINTS, ROUNDS_PER_GAME, pinPoints } from './scori
 /** O pino não pode ser "errado": ele sempre vale de 0 a 100. */
 export type FailableStage = Exclude<RoundStage, 'pin'>;
 
-export type Screen = 'home' | 'playing' | 'gameover' | 'leaderboard';
+export type Screen = 'home' | 'playing' | 'gameover';
 export type Phase = RoundStage | 'reveal' | 'failed';
 export type SubmitState = 'idle' | 'pending' | 'ok' | 'error' | 'offline';
 
@@ -40,14 +40,20 @@ export interface GameOverState {
   durationMs: number;
   results: RoundResult[];
   submit: SubmitState;
+  /** Posição da melhor partida deste nome; `null` enquanto não subiu. */
   rank: number | null;
+  /** Quantos jogadores há no ranking. Não confundir com `total`, que é a pontuação. */
+  playersInRanking: number | null;
+  /** A linha a destacar no ranking — pode ser de uma partida anterior. */
+  highlightId: string | null;
+  /** A jogada de agora virou a melhor deste nome? */
+  personalBest: boolean;
 }
 
 export type GameState =
   | { screen: 'home'; name: string }
   | PlayingState
-  | GameOverState
-  | { screen: 'leaderboard'; from: Exclude<Screen, 'leaderboard'>; previous: GameState };
+  | GameOverState;
 
 export type Event =
   | { type: 'SET_NAME'; name: string }
@@ -58,9 +64,14 @@ export type Event =
   | { type: 'CONFIRM_PIN' }
   | { type: 'NEXT'; now: number }
   | { type: 'SUBMIT_START' }
-  | { type: 'SUBMIT_DONE'; state: SubmitState; rank: number | null }
-  | { type: 'OPEN_LEADERBOARD' }
-  | { type: 'BACK' }
+  | {
+      type: 'SUBMIT_DONE';
+      state: SubmitState;
+      rank: number | null;
+      playersInRanking: number | null;
+      highlightId: string | null;
+      personalBest: boolean;
+    }
   | { type: 'PLAY_AGAIN' };
 
 export const initialState = (name = ''): GameState => ({ screen: 'home', name });
@@ -93,6 +104,9 @@ function advance(s: PlayingState, result: RoundResult, now: number, pool: readon
       results,
       submit: 'idle',
       rank: null,
+      playersInRanking: null,
+      highlightId: null,
+      personalBest: false,
     };
   }
 
@@ -197,14 +211,16 @@ export function reducer(state: GameState, event: Event, pool: readonly Country[]
       return state.screen === 'gameover' ? { ...state, submit: 'pending' } : state;
 
     case 'SUBMIT_DONE':
-      return state.screen === 'gameover' ? { ...state, submit: event.state, rank: event.rank } : state;
-
-    case 'OPEN_LEADERBOARD':
-      if (state.screen === 'leaderboard') return state;
-      return { screen: 'leaderboard', from: state.screen, previous: state };
-
-    case 'BACK':
-      return state.screen === 'leaderboard' ? state.previous : state;
+      return state.screen === 'gameover'
+        ? {
+            ...state,
+            submit: event.state,
+            rank: event.rank,
+            playersInRanking: event.playersInRanking,
+            highlightId: event.highlightId,
+            personalBest: event.personalBest,
+          }
+        : state;
 
     case 'PLAY_AGAIN':
       return state.screen === 'gameover' ? { screen: 'home', name: state.name } : state;

@@ -1,5 +1,5 @@
 import type { Env } from './env';
-import { getTop, postScore } from './routes/scores';
+import { getPlayerAttempts, getTop, postScore } from './routes/scores';
 
 const json = (data: unknown, status = 200) =>
   new Response(JSON.stringify(data), {
@@ -41,6 +41,10 @@ export default {
 
     if (url.pathname === '/api/scores/top' && request.method === 'GET') {
       return getTop(request, env);
+    }
+
+    if (url.pathname === '/api/scores/player' && request.method === 'GET') {
+      return getPlayerAttempts(request, env);
     }
 
     return json({ error: 'Rota não encontrada.' }, 404);
