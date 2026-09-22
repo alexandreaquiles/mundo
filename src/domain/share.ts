@@ -30,19 +30,35 @@ export interface ShareInput {
   url: string;
 }
 
+/** Quantas rodadas cabem numa linha da grade. */
+const POR_LINHA = 5;
+
 /**
- * O texto que a pessoa cola no WhatsApp. Uma linha por rodada: bandeira, cor
- * e — nas rodadas perfeitas — a que distância o pino caiu, que é a parte de
- * que se tem orgulho.
+ * O texto que a pessoa cola no WhatsApp: as 15 rodadas numa grade de 3 por 5,
+ * cada uma com a bandeira do país e a cor do desfecho.
+ *
+ * A distância de cada pino não cabe aqui — cinco "🇸🇦🟢 8 km" numa linha
+ * quebram em qualquer tela de celular. Ela vira uma linha de resumo com a
+ * melhor cravada, que é a parte de que se tem orgulho.
  */
 export function buildShareText({ score, results, countryOf, url }: ShareInput): string {
-  const linhas = results.map((r) => {
+  const celulas = results.map((r) => {
     const country = countryOf(r.cca3);
-    const bandeira = country ? flagEmoji(country.cca2) : '🏳️';
-    const cor = roundEmoji(r);
-    const perfeita = r.points === MAX_ROUND_SCORE && r.distanceKm !== null;
-    return perfeita ? `${bandeira}${cor} ${formatKm(r.distanceKm!)}` : `${bandeira}${cor}`;
+    return `${country ? flagEmoji(country.cca2) : '🏳️'}${roundEmoji(r)}`;
   });
 
-  return [`Mundo — ${score}/${MAX_GAME_SCORE}`, '', ...linhas, '', url].join('\n');
+  const grade: string[] = [];
+  for (let i = 0; i < celulas.length; i += POR_LINHA) {
+    grade.push(celulas.slice(i, i + POR_LINHA).join(' '));
+  }
+
+  const linhas = [`Mundo — ${score}/${MAX_GAME_SCORE}`, '', ...grade];
+
+  const melhorPino = results
+    .filter((r) => r.points === MAX_ROUND_SCORE && r.distanceKm !== null)
+    .map((r) => r.distanceKm!)
+    .sort((a, b) => a - b)[0];
+  if (melhorPino !== undefined) linhas.push('', `🟢 melhor pino: ${formatKm(melhorPino)}`);
+
+  return [...linhas, '', url].join('\n');
 }

@@ -53,19 +53,36 @@ describe('roundEmoji', () => {
 describe('buildShareText', () => {
   const url = 'https://mundo.exemplo/';
 
-  it('mostra a distância só nas rodadas perfeitas', () => {
+  it('resume a melhor cravada, e só entre as rodadas perfeitas', () => {
     const texto = buildShareText({
       score: 240,
       results: [
         round({ cca3: 'BRA', points: MAX_ROUND_SCORE, distanceKm: 12 }),
+        round({ cca3: 'ITA', points: MAX_ROUND_SCORE, distanceKm: 4 }),
         round({ cca3: 'JPN', points: 60, distanceKm: 800 }),
       ],
       countryOf,
       url,
     });
-    expect(texto).toContain('🇧🇷🟢 12 km');
+    expect(texto).toContain('🇧🇷🟢');
     expect(texto).toContain('🇯🇵🟡');
+    expect(texto).toContain('🟢 melhor pino: 4 km');
     expect(texto).not.toContain('800 km');
+    expect(texto).not.toContain('12 km');
+  });
+
+  it('não põe linha de resumo quando não houve rodada perfeita', () => {
+    const texto = buildShareText({ score: 10, results: [round({ points: 60 })], countryOf, url });
+    expect(texto).not.toContain('melhor pino');
+  });
+
+  it('agrupa as 15 rodadas em 3 linhas de 5', () => {
+    const results = Array.from({ length: 15 }, () => round({ points: 60 }));
+    const grade = buildShareText({ score: 0, results, countryOf, url })
+      .split('\n')
+      .filter((l) => l.includes('🟡'));
+    expect(grade).toHaveLength(3);
+    for (const linha of grade) expect(linha.split(' ')).toHaveLength(5);
   });
 
   it('põe pontuação no topo e link no fim', () => {
@@ -74,12 +91,20 @@ describe('buildShareText', () => {
     expect(linhas.at(-1)).toBe(url);
   });
 
-  it('gera uma linha por rodada', () => {
+  it('cabe em poucas linhas mesmo com as 15 rodadas', () => {
     const results = Array.from({ length: 15 }, () => round({ flagCorrect: false, points: 0 }));
     const linhas = buildShareText({ score: 0, results, countryOf, url }).split('\n');
-    // título + vazia + 15 rodadas + vazia + link
-    expect(linhas).toHaveLength(19);
-    expect(linhas.filter((l) => l.includes('🔴'))).toHaveLength(15);
+    // título + vazia + 3 da grade + vazia + link
+    expect(linhas).toHaveLength(7);
+  });
+
+  it('fecha a última linha mesmo com rodadas de menos', () => {
+    const results = Array.from({ length: 7 }, () => round({ points: 60 }));
+    const grade = buildShareText({ score: 0, results, countryOf, url })
+      .split('\n')
+      .filter((l) => l.includes('🟡'));
+    expect(grade).toHaveLength(2);
+    expect(grade[1]!.split(' ')).toHaveLength(2);
   });
 
   it('não quebra se o país não for encontrado', () => {
