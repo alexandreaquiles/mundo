@@ -1,0 +1,1562 @@
+{
+  "AFG": {
+    "en": "Kabul",
+    "pt": "Cabul",
+    "lat": 34.5186,
+    "lng": 69.1813,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "AGO": {
+    "en": "Luanda",
+    "pt": "Luanda",
+    "lat": -8.8363,
+    "lng": 13.2325,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "ALB": {
+    "en": "Tirana",
+    "pt": "Tirana",
+    "lat": 41.3275,
+    "lng": 19.8189,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "AND": {
+    "en": "Andorra la Vella",
+    "pt": "Andorra-a-Velha",
+    "lat": 42.5,
+    "lng": 1.5165,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "ARE": {
+    "en": "Abu Dhabi",
+    "pt": "Abu Dhabi",
+    "lat": 24.4667,
+    "lng": 54.3666,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "ARG": {
+    "en": "Buenos Aires",
+    "pt": "Buenos Aires",
+    "lat": -34.6006,
+    "lng": -58.3995,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "ARM": {
+    "en": "Yerevan",
+    "pt": "Erevã",
+    "lat": 40.1831,
+    "lng": 44.5116,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "ATG": {
+    "en": "Saint John's",
+    "pt": "Saint John's",
+    "lat": 17.118,
+    "lng": -61.85,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "AUS": {
+    "en": "Canberra",
+    "pt": "Camberra",
+    "lat": -35.283,
+    "lng": 149.129,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "AUT": {
+    "en": "Vienna",
+    "pt": "Viena",
+    "lat": 48.202,
+    "lng": 16.3647,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "AZE": {
+    "en": "Baku",
+    "pt": "Baku",
+    "lat": 40.3972,
+    "lng": 49.8603,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "BDI": {
+    "en": "Gitega",
+    "pt": "Gitega",
+    "lat": -3.4271,
+    "lng": 29.9246,
+    "source": "manual",
+    "reviewed": true
+  },
+  "BEL": {
+    "en": "Brussels",
+    "pt": "Bruxelas",
+    "lat": 50.8353,
+    "lng": 4.3314,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "BEN": {
+    "en": "Porto-Novo",
+    "pt": "Porto-Novo",
+    "lat": 6.4969,
+    "lng": 2.6289,
+    "source": "manual",
+    "reviewed": true
+  },
+  "BFA": {
+    "en": "Ouagadougou",
+    "pt": "Uagadugu",
+    "lat": 12.3723,
+    "lng": -1.5267,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "BGD": {
+    "en": "Dhaka",
+    "pt": "Daca",
+    "lat": 23.725,
+    "lng": 90.4066,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "BGR": {
+    "en": "Sofia",
+    "pt": "Sófia",
+    "lat": 42.6853,
+    "lng": 23.3147,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "BHR": {
+    "en": "Manama",
+    "pt": "Manama",
+    "lat": 26.2361,
+    "lng": 50.5831,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "BHS": {
+    "en": "Nassau",
+    "pt": "Nassau",
+    "lat": 25.0834,
+    "lng": -77.35,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "BIH": {
+    "en": "Sarajevo",
+    "pt": "Sarajevo",
+    "lat": 43.85,
+    "lng": 18.383,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "BLR": {
+    "en": "Minsk",
+    "pt": "Minsk",
+    "lat": 53.9019,
+    "lng": 27.5647,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "BLZ": {
+    "en": "Belmopan",
+    "pt": "Belmopan",
+    "lat": 17.252,
+    "lng": -88.7671,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "BOL": {
+    "en": "Sucre",
+    "pt": "Sucre",
+    "lat": -19.041,
+    "lng": -65.2595,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "BRA": {
+    "en": "Brasília",
+    "pt": "Brasília",
+    "lat": -15.7814,
+    "lng": -47.918,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "BRB": {
+    "en": "Bridgetown",
+    "pt": "Bridgetown",
+    "lat": 13.102,
+    "lng": -59.6165,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "BRN": {
+    "en": "Bandar Seri Begawan",
+    "pt": "Bandar Seri Begawan",
+    "lat": 4.8833,
+    "lng": 114.9333,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "BTN": {
+    "en": "Thimphu",
+    "pt": "Thimphu",
+    "lat": 27.473,
+    "lng": 89.639,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "BWA": {
+    "en": "Gaborone",
+    "pt": "Gaborone",
+    "lat": -24.6463,
+    "lng": 25.9119,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "CAF": {
+    "en": "Bangui",
+    "pt": "Bangui",
+    "lat": 4.3666,
+    "lng": 18.5583,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "CAN": {
+    "en": "Ottawa",
+    "pt": "Ottawa",
+    "lat": 45.4186,
+    "lng": -75.702,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "CHE": {
+    "en": "Bern",
+    "pt": "Berna",
+    "lat": 46.9167,
+    "lng": 7.467,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "CHL": {
+    "en": "Santiago",
+    "pt": "Santiago",
+    "lat": -33.4481,
+    "lng": -70.669,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "CHN": {
+    "en": "Beijing",
+    "pt": "Pequim",
+    "lat": 39.9308,
+    "lng": 116.3863,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "CIV": {
+    "en": "Yamoussoukro",
+    "pt": "Yamoussoukro",
+    "lat": 6.8184,
+    "lng": -5.2755,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "CMR": {
+    "en": "Yaoundé",
+    "pt": "Iaundé",
+    "lat": 3.8686,
+    "lng": 11.5147,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "COD": {
+    "en": "Kinshasa",
+    "pt": "Kinshasa",
+    "lat": -4.3278,
+    "lng": 15.313,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "COG": {
+    "en": "Brazzaville",
+    "pt": "Brazzaville",
+    "lat": -4.2572,
+    "lng": 15.2827,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "COL": {
+    "en": "Bogotá",
+    "pt": "Bogotá",
+    "lat": 4.5984,
+    "lng": -74.0853,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "COM": {
+    "en": "Moroni",
+    "pt": "Moroni",
+    "lat": -11.7042,
+    "lng": 43.2402,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "CPV": {
+    "en": "Praia",
+    "pt": "Praia",
+    "lat": 14.9167,
+    "lng": -23.5167,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "CRI": {
+    "en": "San José",
+    "pt": "San José",
+    "lat": 9.937,
+    "lng": -84.086,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "CUB": {
+    "en": "Havana",
+    "pt": "Havana",
+    "lat": 23.1339,
+    "lng": -82.3661,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "CYP": {
+    "en": "Nicosia",
+    "pt": "Nicósia",
+    "lat": 35.1667,
+    "lng": 33.3666,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "CZE": {
+    "en": "Prague",
+    "pt": "Praga",
+    "lat": 50.0853,
+    "lng": 14.464,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "DEU": {
+    "en": "Berlin",
+    "pt": "Berlim",
+    "lat": 52.5238,
+    "lng": 13.3996,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "DJI": {
+    "en": "Djibouti",
+    "pt": "Djibouti",
+    "lat": 11.595,
+    "lng": 43.148,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "DMA": {
+    "en": "Roseau",
+    "pt": "Roseau",
+    "lat": 15.301,
+    "lng": -61.387,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "DNK": {
+    "en": "Copenhagen",
+    "pt": "Copenhague",
+    "lat": 55.6805,
+    "lng": 12.5615,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "DOM": {
+    "en": "Santo Domingo",
+    "pt": "Santo Domingo",
+    "lat": 18.472,
+    "lng": -69.902,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "DZA": {
+    "en": "Algiers",
+    "pt": "Argel",
+    "lat": 36.765,
+    "lng": 3.0486,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "ECU": {
+    "en": "Quito",
+    "pt": "Quito",
+    "lat": -0.213,
+    "lng": -78.502,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "EGY": {
+    "en": "Cairo",
+    "pt": "Cairo",
+    "lat": 30.0519,
+    "lng": 31.248,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "ERI": {
+    "en": "Asmara",
+    "pt": "Asmara",
+    "lat": 15.3333,
+    "lng": 38.9333,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "ESP": {
+    "en": "Madrid",
+    "pt": "Madri",
+    "lat": 40.402,
+    "lng": -3.6853,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "EST": {
+    "en": "Tallinn",
+    "pt": "Tallinn",
+    "lat": 59.4339,
+    "lng": 24.728,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "ETH": {
+    "en": "Addis Ababa",
+    "pt": "Adis Abeba",
+    "lat": 9.0353,
+    "lng": 38.6981,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "FIN": {
+    "en": "Helsinki",
+    "pt": "Helsinque",
+    "lat": 60.1775,
+    "lng": 24.9322,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "FJI": {
+    "en": "Suva",
+    "pt": "Suva",
+    "lat": -18.133,
+    "lng": 178.4417,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "FRA": {
+    "en": "Paris",
+    "pt": "Paris",
+    "lat": 48.8686,
+    "lng": 2.3314,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "FSM": {
+    "en": "Palikir",
+    "pt": "Palikir",
+    "lat": 6.9166,
+    "lng": 158.15,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "GAB": {
+    "en": "Libreville",
+    "pt": "Libreville",
+    "lat": 0.3854,
+    "lng": 9.458,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "GBR": {
+    "en": "London",
+    "pt": "Londres",
+    "lat": 51.5019,
+    "lng": -0.1187,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "GEO": {
+    "en": "Tbilisi",
+    "pt": "Tbilisi",
+    "lat": 41.727,
+    "lng": 44.7888,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "GHA": {
+    "en": "Accra",
+    "pt": "Acra",
+    "lat": 5.552,
+    "lng": -0.2187,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "GIN": {
+    "en": "Conakry",
+    "pt": "Conacri",
+    "lat": 9.5335,
+    "lng": -13.6822,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "GMB": {
+    "en": "Banjul",
+    "pt": "Banjul",
+    "lat": 13.4539,
+    "lng": -16.5917,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "GNB": {
+    "en": "Bissau",
+    "pt": "Bissau",
+    "lat": 11.865,
+    "lng": -15.5984,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "GNQ": {
+    "en": "Malabo",
+    "pt": "Malabo",
+    "lat": 3.75,
+    "lng": 8.7833,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "GRC": {
+    "en": "Athens",
+    "pt": "Atenas",
+    "lat": 37.9853,
+    "lng": 23.7314,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "GRD": {
+    "en": "St. George's",
+    "pt": "Saint George's",
+    "lat": 12.0526,
+    "lng": -61.7416,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "GTM": {
+    "en": "Guatemala City",
+    "pt": "Cidade da Guatemala",
+    "lat": 14.6231,
+    "lng": -90.5289,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "GUY": {
+    "en": "Georgetown",
+    "pt": "Georgetown",
+    "lat": 6.802,
+    "lng": -58.167,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "HND": {
+    "en": "Tegucigalpa",
+    "pt": "Tegucigalpa",
+    "lat": 14.104,
+    "lng": -87.2195,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "HRV": {
+    "en": "Zagreb",
+    "pt": "Zagreb",
+    "lat": 45.8,
+    "lng": 16,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "HTI": {
+    "en": "Port-au-Prince",
+    "pt": "Porto Príncipe",
+    "lat": 18.543,
+    "lng": -72.338,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "HUN": {
+    "en": "Budapest",
+    "pt": "Budapeste",
+    "lat": 47.502,
+    "lng": 19.0814,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "IDN": {
+    "en": "Jakarta",
+    "pt": "Jacarta",
+    "lat": -6.1725,
+    "lng": 106.8275,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "IND": {
+    "en": "New Delhi",
+    "pt": "Nova Délhi",
+    "lat": 28.6,
+    "lng": 77.2,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "IRL": {
+    "en": "Dublin",
+    "pt": "Dublin",
+    "lat": 53.335,
+    "lng": -6.2509,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "IRN": {
+    "en": "Tehran",
+    "pt": "Teerã",
+    "lat": 35.6739,
+    "lng": 51.4224,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "IRQ": {
+    "en": "Baghdad",
+    "pt": "Bagdá",
+    "lat": 33.3406,
+    "lng": 44.3919,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "ISL": {
+    "en": "Reykjavik",
+    "pt": "Reykjavik",
+    "lat": 64.15,
+    "lng": -21.95,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "ISR": {
+    "en": "Jerusalem",
+    "pt": "Jerusalém",
+    "lat": 31.7784,
+    "lng": 35.2066,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "ITA": {
+    "en": "Rome",
+    "pt": "Roma",
+    "lat": 41.8979,
+    "lng": 12.4813,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "JAM": {
+    "en": "Kingston",
+    "pt": "Kingston",
+    "lat": 17.9771,
+    "lng": -76.7674,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "JOR": {
+    "en": "Amman",
+    "pt": "Amã",
+    "lat": 31.952,
+    "lng": 35.9314,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "JPN": {
+    "en": "Tokyo",
+    "pt": "Tóquio",
+    "lat": 35.687,
+    "lng": 139.7495,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "KAZ": {
+    "en": "Astana",
+    "pt": "Astana",
+    "lat": 51.1811,
+    "lng": 71.4278,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "KEN": {
+    "en": "Nairobi",
+    "pt": "Nairóbi",
+    "lat": -1.2814,
+    "lng": 36.8147,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "KGZ": {
+    "en": "Bishkek",
+    "pt": "Bishkek",
+    "lat": 42.875,
+    "lng": 74.5833,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "KHM": {
+    "en": "Phnom Penh",
+    "pt": "Phnom Penh",
+    "lat": 11.552,
+    "lng": 104.9147,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "KIR": {
+    "en": "South Tarawa",
+    "pt": "Tarawa do Sul",
+    "lat": 1.3382,
+    "lng": 173.0176,
+    "source": "manual",
+    "reviewed": true
+  },
+  "KNA": {
+    "en": "Basseterre",
+    "pt": "Basseterre",
+    "lat": 17.302,
+    "lng": -62.717,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "KOR": {
+    "en": "Seoul",
+    "pt": "Seul",
+    "lat": 37.5683,
+    "lng": 126.9978,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "KWT": {
+    "en": "Kuwait City",
+    "pt": "Cidade do Kuwait",
+    "lat": 29.3717,
+    "lng": 47.9764,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "LAO": {
+    "en": "Vientiane",
+    "pt": "Vientiane",
+    "lat": 17.9667,
+    "lng": 102.6,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "LBN": {
+    "en": "Beirut",
+    "pt": "Beirute",
+    "lat": 33.8739,
+    "lng": 35.5078,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "LBR": {
+    "en": "Monrovia",
+    "pt": "Monróvia",
+    "lat": 6.3146,
+    "lng": -10.7997,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "LBY": {
+    "en": "Tripoli",
+    "pt": "Trípoli",
+    "lat": 32.8925,
+    "lng": 13.18,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "LCA": {
+    "en": "Castries",
+    "pt": "Castries",
+    "lat": 14.002,
+    "lng": -61,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "LIE": {
+    "en": "Vaduz",
+    "pt": "Vaduz",
+    "lat": 47.1337,
+    "lng": 9.5167,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "LKA": {
+    "en": "Colombo",
+    "pt": "Colombo",
+    "lat": 6.932,
+    "lng": 79.8578,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "LSO": {
+    "en": "Maseru",
+    "pt": "Maseru",
+    "lat": -29.3167,
+    "lng": 27.4833,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "LTU": {
+    "en": "Vilnius",
+    "pt": "Vilnius",
+    "lat": 54.6834,
+    "lng": 25.3166,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "LUX": {
+    "en": "Luxembourg",
+    "pt": "Luxembourg",
+    "lat": 49.6117,
+    "lng": 6.13,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "LVA": {
+    "en": "Riga",
+    "pt": "Riga",
+    "lat": 56.95,
+    "lng": 24.1,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "MAR": {
+    "en": "Rabat",
+    "pt": "Rabat",
+    "lat": 34.0253,
+    "lng": -6.8364,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "MCO": {
+    "en": "Monaco",
+    "pt": "Monaco",
+    "lat": 43.7396,
+    "lng": 7.4069,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "MDA": {
+    "en": "Chișinău",
+    "pt": "Chișinău",
+    "lat": 47.005,
+    "lng": 28.8577,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "MDG": {
+    "en": "Antananarivo",
+    "pt": "Antananarivo",
+    "lat": -18.9147,
+    "lng": 47.5147,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "MDV": {
+    "en": "Malé",
+    "pt": "Malé",
+    "lat": 4.1667,
+    "lng": 73.4999,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "MEX": {
+    "en": "Mexico City",
+    "pt": "Cidade do México",
+    "lat": 19.4444,
+    "lng": -99.1329,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "MHL": {
+    "en": "Majuro",
+    "pt": "Majuro",
+    "lat": 7.103,
+    "lng": 171.38,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "MKD": {
+    "en": "Skopje",
+    "pt": "Skopje",
+    "lat": 42,
+    "lng": 21.4335,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "MLI": {
+    "en": "Bamako",
+    "pt": "Bamaco",
+    "lat": 12.652,
+    "lng": -8.002,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "MLT": {
+    "en": "Valletta",
+    "pt": "Valeta",
+    "lat": 35.8997,
+    "lng": 14.5147,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "MMR": {
+    "en": "Naypyidaw",
+    "pt": "Naypyidaw",
+    "lat": 19.7685,
+    "lng": 96.1167,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "MNE": {
+    "en": "Podgorica",
+    "pt": "Podgorica",
+    "lat": 42.466,
+    "lng": 19.2663,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "MNG": {
+    "en": "Ulan Bator",
+    "pt": "Ulã Bator",
+    "lat": 47.9186,
+    "lng": 106.9147,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "MOZ": {
+    "en": "Maputo",
+    "pt": "Maputo",
+    "lat": -25.9533,
+    "lng": 32.5872,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "MRT": {
+    "en": "Nouakchott",
+    "pt": "Nuakchote",
+    "lat": 18.0864,
+    "lng": -15.9753,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "MUS": {
+    "en": "Port Louis",
+    "pt": "Port Louis",
+    "lat": -20.1666,
+    "lng": 57.5,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "MWI": {
+    "en": "Lilongwe",
+    "pt": "Lilongwe",
+    "lat": -13.9833,
+    "lng": 33.7833,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "MYS": {
+    "en": "Kuala Lumpur",
+    "pt": "Kuala Lumpur",
+    "lat": 3.1686,
+    "lng": 101.698,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "NAM": {
+    "en": "Windhoek",
+    "pt": "Windhoek",
+    "lat": -22.57,
+    "lng": 17.0835,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "NER": {
+    "en": "Niamey",
+    "pt": "Niamei",
+    "lat": 13.5187,
+    "lng": 2.1147,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "NGA": {
+    "en": "Abuja",
+    "pt": "Abuja",
+    "lat": 9.0853,
+    "lng": 7.5314,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "NIC": {
+    "en": "Managua",
+    "pt": "Manágua",
+    "lat": 12.155,
+    "lng": -86.2704,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "NLD": {
+    "en": "Amsterdam",
+    "pt": "Amsterdã",
+    "lat": 52.3519,
+    "lng": 4.9147,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "NOR": {
+    "en": "Oslo",
+    "pt": "Oslo",
+    "lat": 59.9186,
+    "lng": 10.748,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "NPL": {
+    "en": "Kathmandu",
+    "pt": "Katmandu",
+    "lat": 27.7186,
+    "lng": 85.3147,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "NRU": {
+    "en": "Yaren",
+    "pt": "Yaren",
+    "lat": -0.5477,
+    "lng": 166.9209,
+    "source": "manual",
+    "reviewed": true
+  },
+  "NZL": {
+    "en": "Wellington",
+    "pt": "Wellington",
+    "lat": -41.3,
+    "lng": 174.7833,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "OMN": {
+    "en": "Muscat",
+    "pt": "Mascate",
+    "lat": 23.6133,
+    "lng": 58.5933,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "PAK": {
+    "en": "Islamabad",
+    "pt": "Islamabade",
+    "lat": 33.7019,
+    "lng": 73.1647,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "PAN": {
+    "en": "Panama City",
+    "pt": "Cidade do Panamá",
+    "lat": 8.97,
+    "lng": -79.535,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "PER": {
+    "en": "Lima",
+    "pt": "Lima",
+    "lat": -12.0461,
+    "lng": -77.052,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "PHL": {
+    "en": "Manila",
+    "pt": "Manila",
+    "lat": 14.6061,
+    "lng": 120.9803,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "PLW": {
+    "en": "Ngerulmud",
+    "pt": "Ngerulmud",
+    "lat": 7.5006,
+    "lng": 134.6242,
+    "source": "manual",
+    "reviewed": true
+  },
+  "PNG": {
+    "en": "Port Moresby",
+    "pt": "Porto Moresby",
+    "lat": -9.4647,
+    "lng": 147.1925,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "POL": {
+    "en": "Warsaw",
+    "pt": "Varsóvia",
+    "lat": 52.2519,
+    "lng": 20.9981,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "PRK": {
+    "en": "Pyongyang",
+    "pt": "Pyongyang",
+    "lat": 39.0214,
+    "lng": 125.7527,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "PRT": {
+    "en": "Lisbon",
+    "pt": "Lisboa",
+    "lat": 38.7247,
+    "lng": -9.1468,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "PRY": {
+    "en": "Asunción",
+    "pt": "Assunção",
+    "lat": -25.2945,
+    "lng": -57.6435,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "PSE": {
+    "en": "Ramallah",
+    "pt": "Ramala",
+    "lat": 31.9038,
+    "lng": 35.2034,
+    "source": "manual",
+    "reviewed": true
+  },
+  "QAT": {
+    "en": "Doha",
+    "pt": "Doha",
+    "lat": 25.2866,
+    "lng": 51.533,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "ROU": {
+    "en": "Bucharest",
+    "pt": "Bucareste",
+    "lat": 44.4353,
+    "lng": 26.098,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "RUS": {
+    "en": "Moscow",
+    "pt": "Moscou",
+    "lat": 55.7541,
+    "lng": 37.6136,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "RWA": {
+    "en": "Kigali",
+    "pt": "Kigali",
+    "lat": -1.9516,
+    "lng": 30.0586,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "SAU": {
+    "en": "Riyadh",
+    "pt": "Riade",
+    "lat": 24.6428,
+    "lng": 46.7708,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "SDN": {
+    "en": "Khartoum",
+    "pt": "Cartum",
+    "lat": 15.59,
+    "lng": 32.5322,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "SEN": {
+    "en": "Dakar",
+    "pt": "Dacar",
+    "lat": 14.7178,
+    "lng": -17.4751,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "SGP": {
+    "en": "Singapore",
+    "pt": "Singapura",
+    "lat": 1.295,
+    "lng": 103.8539,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "SLB": {
+    "en": "Honiara",
+    "pt": "Honiara",
+    "lat": -9.438,
+    "lng": 159.9498,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "SLE": {
+    "en": "Freetown",
+    "pt": "Freetown",
+    "lat": 8.472,
+    "lng": -13.2362,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "SLV": {
+    "en": "San Salvador",
+    "pt": "San Salvador",
+    "lat": 13.7119,
+    "lng": -89.205,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "SMR": {
+    "en": "City of San Marino",
+    "pt": "San Marino",
+    "lat": 43.9361,
+    "lng": 12.4418,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "SOM": {
+    "en": "Mogadishu",
+    "pt": "Mogadíscio",
+    "lat": 2.0686,
+    "lng": 45.3647,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "SRB": {
+    "en": "Belgrade",
+    "pt": "Belgrado",
+    "lat": 44.8206,
+    "lng": 20.466,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "SSD": {
+    "en": "Juba",
+    "pt": "Juba",
+    "lat": 4.8517,
+    "lng": 31.5825,
+    "source": "manual",
+    "reviewed": true
+  },
+  "STP": {
+    "en": "São Tomé",
+    "pt": "São Tomé",
+    "lat": 0.3334,
+    "lng": 6.7333,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "SUR": {
+    "en": "Paramaribo",
+    "pt": "Paramaribo",
+    "lat": 5.835,
+    "lng": -55.167,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "SVK": {
+    "en": "Bratislava",
+    "pt": "Bratislava",
+    "lat": 48.15,
+    "lng": 17.117,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "SVN": {
+    "en": "Ljubljana",
+    "pt": "Liubliana",
+    "lat": 46.0553,
+    "lng": 14.515,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "SWE": {
+    "en": "Stockholm",
+    "pt": "Estocolmo",
+    "lat": 59.3527,
+    "lng": 18.0954,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "SWZ": {
+    "en": "Mbabane",
+    "pt": "Mbabane",
+    "lat": -26.3167,
+    "lng": 31.1333,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "SYC": {
+    "en": "Victoria",
+    "pt": "Victoria",
+    "lat": -4.6166,
+    "lng": 55.45,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "SYR": {
+    "en": "Damascus",
+    "pt": "Damasco",
+    "lat": 33.502,
+    "lng": 36.2981,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "TCD": {
+    "en": "N'Djamena",
+    "pt": "N'Djamena",
+    "lat": 12.115,
+    "lng": 15.0472,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "TGO": {
+    "en": "Lomé",
+    "pt": "Lomé",
+    "lat": 6.1339,
+    "lng": 1.2208,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "THA": {
+    "en": "Bangkok",
+    "pt": "Bangcoc",
+    "lat": 13.7519,
+    "lng": 100.5147,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "TJK": {
+    "en": "Dushanbe",
+    "pt": "Duchambe",
+    "lat": 38.56,
+    "lng": 68.7739,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "TKM": {
+    "en": "Ashgabat",
+    "pt": "Asgabate",
+    "lat": 37.95,
+    "lng": 58.3833,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "TLS": {
+    "en": "Dili",
+    "pt": "Díli",
+    "lat": -8.5594,
+    "lng": 125.5795,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "TON": {
+    "en": "Nuku'alofa",
+    "pt": "Nuku'alofa",
+    "lat": -21.1385,
+    "lng": -175.2206,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "TTO": {
+    "en": "Port of Spain",
+    "pt": "Porto Espanha",
+    "lat": 10.652,
+    "lng": -61.517,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "TUN": {
+    "en": "Tunis",
+    "pt": "Túnis",
+    "lat": 36.8028,
+    "lng": 10.1797,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "TUR": {
+    "en": "Ankara",
+    "pt": "Ancara",
+    "lat": 39.9292,
+    "lng": 32.8624,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "TUV": {
+    "en": "Funafuti",
+    "pt": "Funafuti",
+    "lat": -8.5167,
+    "lng": 179.2166,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "TZA": {
+    "en": "Dodoma",
+    "pt": "Dodoma",
+    "lat": -6.163,
+    "lng": 35.7516,
+    "source": "manual",
+    "reviewed": true
+  },
+  "UGA": {
+    "en": "Kampala",
+    "pt": "Kampala",
+    "lat": 0.3186,
+    "lng": 32.5814,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "UKR": {
+    "en": "Kyiv",
+    "pt": "Kiev",
+    "lat": 50.4353,
+    "lng": 30.5147,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "URY": {
+    "en": "Montevideo",
+    "pt": "Montevidéu",
+    "lat": -34.8561,
+    "lng": -56.173,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "USA": {
+    "en": "Washington D.C.",
+    "pt": "Washington, D.C.",
+    "lat": 38.9015,
+    "lng": -77.0114,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "UZB": {
+    "en": "Tashkent",
+    "pt": "Tashkent",
+    "lat": 41.3136,
+    "lng": 69.293,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "VAT": {
+    "en": "Vatican City",
+    "pt": "Cidade do Vaticano",
+    "lat": 41.9033,
+    "lng": 12.4534,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "VCT": {
+    "en": "Kingstown",
+    "pt": "Kingstown",
+    "lat": 13.1483,
+    "lng": -61.2121,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "VEN": {
+    "en": "Caracas",
+    "pt": "Caracas",
+    "lat": 10.5029,
+    "lng": -66.919,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "VNM": {
+    "en": "Hanoi",
+    "pt": "Hanói",
+    "lat": 21.0353,
+    "lng": 105.8481,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "VUT": {
+    "en": "Port Vila",
+    "pt": "Port Vila",
+    "lat": -17.7334,
+    "lng": 168.3166,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "WSM": {
+    "en": "Apia",
+    "pt": "Apia",
+    "lat": -13.8415,
+    "lng": -171.7386,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "YEM": {
+    "en": "Sana'a",
+    "pt": "Sanaa",
+    "lat": 15.3567,
+    "lng": 44.2046,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "ZAF": {
+    "en": "Pretoria",
+    "pt": "Pretória",
+    "lat": -25.705,
+    "lng": 28.2275,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "ZMB": {
+    "en": "Lusaka",
+    "pt": "Lusaka",
+    "lat": -15.4147,
+    "lng": 28.2814,
+    "source": "ne10",
+    "reviewed": true
+  },
+  "ZWE": {
+    "en": "Harare",
+    "pt": "Harare",
+    "lat": -17.8158,
+    "lng": 31.0428,
+    "source": "ne10",
+    "reviewed": true
+  }
+}
