@@ -11,13 +11,29 @@ import { chromium } from 'playwright';
 import { mkdirSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
-const BASE = process.argv[2] ?? 'http://127.0.0.1:5173/';
+/**
+ * `localhost`, e não um IP literal. O Vite escuta num endereço só, e qual
+ * depende do sistema: no macOS `localhost` resolve para ::1 e 127.0.0.1 é
+ * recusado; no Linux costuma ser o contrário. O nome funciona nos dois.
+ */
+const BASE = process.argv[2] ?? 'http://localhost:5173/';
 const OUT = resolve(import.meta.dirname, 'screenshots');
 mkdirSync(OUT, { recursive: true });
 
 const countries = JSON.parse(
   readFileSync(resolve(import.meta.dirname, '../src/data/countries.json'), 'utf8'),
 );
+
+// Sem o servidor de pé, o Playwright estoura um stack trace que não explica
+// nada. Checar antes custa uma requisição e dá uma mensagem que resolve.
+try {
+  await fetch(BASE, { signal: AbortSignal.timeout(5000) });
+} catch {
+  console.error(`Não consegui falar com ${BASE}`);
+  console.error('Suba o servidor noutro terminal com `npm run dev` e rode de novo.');
+  console.error('Se ele estiver noutra porta ou endereço, passe a URL: npm run e2e -- http://localhost:4173/');
+  process.exit(1);
+}
 
 const browser = await chromium.launch({
   // o ambiente pode trazer o Chromium num caminho próprio

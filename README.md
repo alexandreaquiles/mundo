@@ -41,8 +41,19 @@ local de verdade em `.wrangler/state`. Não é preciso subir dois processos.
 npm test          # 842 testes: dados, pontuação, sorteio, projeção, máquina de estados, API
 npm run build     # build de produção
 npm run preview   # serve o build, com service worker ativo
-npm run e2e       # joga uma partida inteira num Chromium e guarda as telas em e2e/screenshots/
 ```
+
+O `npm run e2e` joga uma partida inteira num Chromium e guarda as telas em
+`e2e/screenshots/`. Ele **não sobe o servidor** — precisa do `npm run dev` rodando
+noutro terminal. Para apontar para outro endereço (o `npm run preview`, por
+exemplo), passe a URL:
+
+```bash
+npm run e2e                                # usa http://localhost:5173/
+npm run e2e -- http://localhost:4173/      # o preview
+```
+
+Na primeira vez pode ser preciso baixar o navegador com `npx playwright install chromium`.
 
 ## Implantação no Cloudflare
 
