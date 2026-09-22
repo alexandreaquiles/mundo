@@ -38,7 +38,7 @@ O `@cloudflare/vite-plugin` roda o Worker dentro do servidor do Vite, com um D1
 local de verdade em `.wrangler/state`. Não é preciso subir dois processos.
 
 ```bash
-npm test          # 842 testes: dados, pontuação, sorteio, projeção, máquina de estados, API
+npm test          # 863 testes: dados, pontuação, sorteio, projeção, máquina de estados, API
 npm run build     # build de produção
 npm run preview   # serve o build, com service worker ativo
 ```
@@ -77,12 +77,17 @@ git commit -am "Registra o database_id do D1"
 O script é idempotente: se o banco já existir, ele reaproveita; se o id já estiver
 gravado, ele pula. Dá para rodar de novo sem medo.
 
+**O commit não é opcional.** O deploy pelo CI usa o `wrangler.jsonc` versionado, não o
+da sua máquina — se o id ficar só local, o build roda inteiro e a Cloudflare recusa no
+fim com o erro `10021`. O `npm run check:deploy` confere isso em segundos, e o workflow
+o executa logo depois do `npm ci`.
+
 ### Deploys seguintes
 
 Da sua máquina:
 
 ```bash
-npm run deploy              # build + wrangler deploy
+npm run deploy              # confere a config, builda e publica
 ```
 
 Ou automático, pelo GitHub Actions: `.github/workflows/deploy.yml` roda typecheck,

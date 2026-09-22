@@ -85,6 +85,9 @@ if (databaseId) {
 }
 
 // ── 3. wrangler.jsonc ──────────────────────────────────────────────────────
+/** Se o arquivo mudou, o lembrete de commitar tem de ser a última coisa na tela. */
+let configChanged = false;
+
 step('Atualizando o wrangler.jsonc');
 const config = readFileSync(CONFIG, 'utf8');
 
@@ -103,7 +106,7 @@ if (current === undefined) {
   }
   writeFileSync(CONFIG, config.replace(pattern, `$1${databaseId}$3`));
   ok(`gravado: ${databaseId}`);
-  console.log('    commite essa mudança — o deploy pelo GitHub Actions depende dela');
+  configChanged = true;
 }
 
 // ── 4. migrations ──────────────────────────────────────────────────────────
@@ -118,4 +121,18 @@ step('Publicando');
 wrangler(['deploy']);
 
 console.log('\n\x1b[32mPronto.\x1b[0m A URL do Worker está logo acima.');
-console.log('Não esqueça de commitar o wrangler.jsonc com o database_id.');
+
+if (configChanged) {
+  // Este foi um erro real: o id ficou só na máquina e o deploy pelo CI, que
+  // usa o arquivo versionado, falhou depois com um erro da Cloudflare.
+  console.log(`
+\x1b[43;30m FALTA UM PASSO \x1b[0m
+
+  O database_id foi gravado no wrangler.jsonc, mas só na sua máquina.
+  O deploy pelo GitHub Actions usa o arquivo \x1b[1mversionado\x1b[0m:
+
+      git add wrangler.jsonc
+      git commit -m "Registra o database_id do D1"
+      git push
+`);
+}

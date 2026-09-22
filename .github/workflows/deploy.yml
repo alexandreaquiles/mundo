@@ -17,14 +17,20 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version-file: .node-version
           cache: npm
 
       - run: npm ci
+
+      # Antes de gastar o build inteiro para a Cloudflare recusar no fim:
+      # o database_id precisa estar no arquivo VERSIONADO, não só na máquina
+      # de quem criou o banco.
+      - name: Configuração de deploy
+        run: npm run check:deploy
 
       # Nada sobe sem passar por aqui: um deploy vermelho custa mais caro
       # que um minuto de CI.
@@ -46,7 +52,7 @@ jobs:
         run: git diff --exit-code -- src/data public/data public/flags
 
       - name: Deploy
-        uses: cloudflare/wrangler-action@v3
+        uses: cloudflare/wrangler-action@v4
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
