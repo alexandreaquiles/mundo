@@ -1,4 +1,4 @@
-import type { Env } from './types';
+import type { Env } from './env';
 import { getTop, postScore } from './routes/scores';
 
 const json = (data: unknown, status = 200) =>

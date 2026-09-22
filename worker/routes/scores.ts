@@ -1,4 +1,5 @@
-import type { Env, LeaderboardEntry, SubmitResponse } from '../types';
+import type { LeaderboardEntry, SubmitResponse } from '../../src/api/types';
+import type { Env } from '../env';
 import { hashIp, validateSubmission } from '../lib/validate';
 
 const MAX_BODY_BYTES = 4096;

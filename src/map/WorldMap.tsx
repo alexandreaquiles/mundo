@@ -53,9 +53,13 @@ export function WorldMap({ guess, truth, truthLabel, onPick, revealing, reducedM
     [size.width, size.height],
   );
 
-  /** Países que não têm polígono na resolução atual — desenhados como ponto. */
+  /**
+   * Países marcados com um ponto: os que somem na malha mais grosseira.
+   * Usamos a de 110m de propósito — é superconjunto do que falta na de 50m,
+   * e assim os pontos não piscam ao trocar de resolução durante o gesto.
+   */
   const micro: MicroMarker[] = useMemo(() => {
-    const world = worlds[qualityRef.current] ?? worlds.high ?? worlds.low;
+    const world = worlds.low ?? worlds.high;
     if (!world) return [];
     return COUNTRIES.filter((c) => !world.ids.has(c.ccn3)).map((c) => ({
       at: [c.centroidLng, c.centroidLat] as LngLat,
@@ -248,8 +252,17 @@ export function WorldMap({ guess, truth, truthLabel, onPick, revealing, reducedM
 
     const quick = performance.now() - gesture.current.startedAt < TAP_MS;
     if (wasSingle && onPick && mp && gesture.current.moved < TAP_SLOP_PX && quick) {
-      const at = mp.apply(viewRef.current).invert?.(localPoint(e));
-      if (at) onPick([at[0], at[1]]);
+      const point = localPoint(e);
+      const projection = mp.apply(viewRef.current);
+      const at = projection.invert?.(point);
+      // Fora da lente do Equal Earth a inversão ainda devolve um número, só
+      // que sem sentido. A ida e volta separa o toque válido do toque no vazio.
+      if (at && Number.isFinite(at[0]) && Number.isFinite(at[1])) {
+        const back = projection([at[0], at[1]]);
+        if (back && Math.hypot(back[0] - point[0], back[1] - point[1]) < 1) {
+          onPick([at[0], at[1]]);
+        }
+      }
     }
   };
 

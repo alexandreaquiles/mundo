@@ -37,6 +37,8 @@ const COLORS = {
 };
 
 const ARC_SAMPLES = 96;
+/** Acima deste zoom os microestados já se veem sozinhos. */
+const MICRO_MAX_K = 6;
 
 function drawPin(
   ctx: CanvasRenderingContext2D,
@@ -120,17 +122,22 @@ export function draw(ctx: CanvasRenderingContext2D, mp: MapProjection, scene: Sc
   ctx.strokeStyle = COLORS.border;
   ctx.stroke();
 
-  // microestados que somem nesta resolução viram um ponto visível
-  if (micro.length > 0) {
-    const r = Math.max(1.8, 2.6 / Math.sqrt(view.k)) * Math.min(2, view.k);
+  // Microestados são sub-pixel numa vista do mundo inteiro — alguns nem têm
+  // polígono nesta resolução. Um ponto garante que todo país seja marcável.
+  // Acima de MICRO_MAX_K o polígono real já aparece e o ponto sai de cena.
+  if (micro.length > 0 && view.k < MICRO_MAX_K) {
+    const fade = Math.min(1, (MICRO_MAX_K - view.k) / 2);
+    ctx.save();
+    ctx.globalAlpha = fade;
     ctx.fillStyle = COLORS.micro;
     for (const m of micro) {
       const p = projection(m.at);
       if (!p) continue;
       ctx.beginPath();
-      ctx.arc(p[0], p[1], r, 0, Math.PI * 2);
+      ctx.arc(p[0], p[1], 3, 0, Math.PI * 2);
       ctx.fill();
     }
+    ctx.restore();
   }
 
   if (guess && truth && arcProgress > 0) {
