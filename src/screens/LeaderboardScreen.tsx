@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Screen } from '../components/Chrome';
 import { fetchLeaderboard, type LeaderboardEntry } from '../api/client';
+import { formatDuration, formatExactDate, formatPlayedAt } from '../domain/format';
 
 export function LeaderboardScreen({ onBack, highlight }: { onBack: () => void; highlight?: string }) {
   const [entries, setEntries] = useState<LeaderboardEntry[] | null>(null);
@@ -32,7 +33,17 @@ export function LeaderboardScreen({ onBack, highlight }: { onBack: () => void; h
               className={highlight && e.name === highlight ? 'ranking__row ranking__row--me' : 'ranking__row'}
             >
               <span className="ranking__pos">{e.rank}</span>
-              <span className="ranking__name">{e.name}</span>
+              <span className="ranking__player">
+                <span className="ranking__name">{e.name}</span>
+                <span className="ranking__meta">
+                  {/* o texto visível é relativo; o dateTime e o title guardam o instante exato */}
+                  <time dateTime={new Date(e.createdAt).toISOString()} title={formatExactDate(e.createdAt)}>
+                    {formatPlayedAt(e.createdAt)}
+                  </time>
+                  {' · em '}
+                  {formatDuration(e.durationMs)}
+                </span>
+              </span>
               <span className="ranking__score">{e.score}</span>
             </li>
           ))}
