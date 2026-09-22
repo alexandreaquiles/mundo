@@ -14,7 +14,8 @@
     "typecheck": "tsc -b",
     "deploy": "npm run build && wrangler deploy",
     "build:icons": "tsx scripts/build-icons.ts",
-    "e2e": "node e2e/play-through.mjs"
+    "e2e": "node e2e/play-through.mjs",
+    "setup:cloudflare": "tsx scripts/setup-cloudflare.ts"
   },
   "dependencies": {
     "d3-geo": "^3.1.1",

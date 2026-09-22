@@ -48,21 +48,44 @@ npm run e2e       # joga uma partida inteira num Chromium e guarda as telas em e
 
 É um Worker só, servindo o SPA e a API na mesma origem. Sem CORS, um deploy só.
 
-O que você precisa fazer à mão, uma vez:
+### Passo obrigatório: o banco D1
+
+O ranking precisa de um banco D1, e criar um exige a sua conta. Enquanto ele não
+existir, `wrangler.jsonc` fica com `database_id: "PREENCHER"` e o deploy **recusa
+sair** — de propósito, para não publicar um jogo com o ranking quebrado.
+
+Um comando resolve tudo (criar o banco, gravar o id no `wrangler.jsonc`, aplicar as
+migrations, buildar e publicar):
 
 ```bash
-npx wrangler login
-npx wrangler d1 create mundo-scores        # copie o database_id que ele imprime
+npx wrangler login          # uma vez, abre o navegador
+npm run setup:cloudflare
+git commit -am "Registra o database_id do D1"
 ```
 
-Cole o `database_id` em `wrangler.jsonc` (está marcado como `PREENCHER`). Depois:
+O script é idempotente: se o banco já existir, ele reaproveita; se o id já estiver
+gravado, ele pula. Dá para rodar de novo sem medo.
+
+### Deploys seguintes
+
+Da sua máquina:
 
 ```bash
-npx wrangler d1 migrations apply mundo-scores --remote
-npm run deploy
+npm run deploy              # build + wrangler deploy
 ```
 
-Sem o `database_id` o jogo implanta e funciona; só o ranking fica indisponível.
+Ou automático, pelo GitHub Actions: `.github/workflows/deploy.yml` roda typecheck,
+testes e build a cada push na `main`, e só então publica. Para ligar, guarde dois
+segredos no repositório (Settings → Secrets and variables → Actions):
+
+| Segredo | Onde achar |
+|---|---|
+| `CLOUDFLARE_API_TOKEN` | [Criar token](https://dash.cloudflare.com/profile/api-tokens) com o modelo **Edit Cloudflare Workers**, mais permissão de leitura/escrita em **D1** |
+| `CLOUDFLARE_ACCOUNT_ID` | Canto direito da página inicial do painel, ou `npx wrangler whoami` |
+
+O workflow também confere que os arquivos gerados batem com os versionados — se
+alguém editar `src/data/countries.json` à mão, o deploy falha em vez de publicar
+um dado que ninguém consegue reproduzir.
 
 ## Como está montado
 

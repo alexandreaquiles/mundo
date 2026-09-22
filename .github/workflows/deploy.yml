@@ -1,0 +1,53 @@
+name: Deploy
+
+# Publica na Cloudflare a cada push na main, depois que os testes passam.
+# Também dá para disparar à mão pela aba Actions.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  # um deploy por vez; se vierem dois pushes seguidos, o primeiro é cancelado
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+          cache: npm
+
+      - run: npm ci
+
+      # Nada sobe sem passar por aqui: um deploy vermelho custa mais caro
+      # que um minuto de CI.
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Testes
+        run: npm test
+
+      # Gera os dados, compila e empacota em dist/client, que é o que o
+      # wrangler publica como assets estáticos.
+      - name: Build
+        run: npm run build
+
+      # O build acabou de regerar os dados a partir dos arquivos curados.
+      # Se o resultado não bate com o que está versionado, alguém editou um
+      # arquivo gerado à mão — melhor descobrir aqui do que em produção.
+      - name: Dados gerados conferem com o repositório
+        run: git diff --exit-code -- src/data public/data public/flags
+
+      - name: Deploy
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: deploy
