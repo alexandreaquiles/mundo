@@ -13,7 +13,8 @@
     "test:watch": "vitest",
     "typecheck": "tsc -b --noEmit false --emitDeclarationOnly false",
     "deploy": "npm run build && wrangler deploy",
-    "build:icons": "tsx scripts/build-icons.ts"
+    "build:icons": "tsx scripts/build-icons.ts",
+    "e2e": "node e2e/play-through.mjs"
   },
   "dependencies": {
     "d3-geo": "^3.1.1",

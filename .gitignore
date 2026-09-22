@@ -7,3 +7,5 @@ dist/
 coverage/
 dev.vars
 .dev.vars
+.tmp-e2e/
+e2e/screenshots/
