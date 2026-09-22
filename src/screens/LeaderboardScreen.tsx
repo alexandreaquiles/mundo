@@ -40,10 +40,6 @@ export function LeaderboardScreen({ onBack, highlight }: { onBack: () => void; h
       )}
 
       <button type="button" className="btn btn--ghost" onClick={onBack}>Voltar</button>
-      <p className="fineprint">
-        O jogo roda todo no seu aparelho, então a pontuação enviada não tem como ser verificada.
-        Jogue limpo 🙂
-      </p>
     </Screen>
   );
 }

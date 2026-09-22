@@ -87,7 +87,6 @@ body {
 .question--map { margin: 0; }
 .question__country { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
 .muted { color: var(--muted); font-size: 0.9rem; margin: 0; }
-.fineprint { color: var(--muted); font-size: 0.78rem; margin-top: 4px; }
 
 /* ── bandeiras ─────────────────────────────────────────────────────────── */
 .flag {
