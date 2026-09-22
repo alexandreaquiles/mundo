@@ -1,27 +1,19 @@
-import { useState, type FormEvent } from 'react';
 import { Screen } from '../components/Chrome';
 
+/**
+ * Sem formulário: o jogo começa num toque. O nome é pedido no fim, quando já
+ * existe uma pontuação para guardar — pedir antes é cobrar cadastro por nada.
+ */
 export function HomeScreen({
-  name,
-  onNameChange,
+  playerName,
   onStart,
   onLeaderboard,
 }: {
-  name: string;
-  onNameChange: (name: string) => void;
+  /** Nome usado da última vez, se houver. */
+  playerName: string;
   onStart: () => void;
   onLeaderboard: () => void;
 }) {
-  const [touched, setTouched] = useState(false);
-  const trimmed = name.trim();
-  const invalid = touched && trimmed.length === 0;
-
-  function submit(e: FormEvent) {
-    e.preventDefault();
-    setTouched(true);
-    if (trimmed.length > 0) onStart();
-  }
-
   return (
     <Screen className="screen--home">
       <h1 className="logo">Mundo</h1>
@@ -30,31 +22,10 @@ export function HomeScreen({
         <br />e mostre no mapa onde ela fica.
       </p>
 
-      <form className="home__form" onSubmit={submit}>
-        <label htmlFor="player-name">Seu nome</label>
-        <input
-          id="player-name"
-          name="name"
-          value={name}
-          onChange={(e) => onNameChange(e.target.value.slice(0, 20))}
-          onBlur={() => setTouched(true)}
-          placeholder="Como quer aparecer no ranking?"
-          maxLength={20}
-          autoComplete="nickname"
-          aria-invalid={invalid}
-          aria-describedby={invalid ? 'name-error' : undefined}
-        />
-        {invalid && (
-          <p className="home__error" id="name-error">
-            Digite um nome para começar.
-          </p>
-        )}
-        <button type="submit" className="btn btn--primary">Jogar</button>
-      </form>
+      <button type="button" className="btn btn--primary" onClick={onStart}>Jogar</button>
+      <button type="button" className="btn btn--ghost" onClick={onLeaderboard}>Ver o ranking</button>
 
-      <button type="button" className="btn btn--ghost" onClick={onLeaderboard}>
-        Ver o ranking
-      </button>
+      {playerName && <p className="muted">jogando como <strong>{playerName}</strong></p>}
 
       <details className="howto">
         <summary>Como funciona a pontuação</summary>

@@ -1,7 +1,8 @@
 import { MAX_GAME_SCORE, ROUNDS_PER_GAME } from '../../src/domain/scoring';
+import { NAME_MAX } from '../../src/domain/limits';
 import type { ScoreSubmission } from '../types';
 
-export const NAME_MAX = 20;
+export { NAME_MAX };
 /**
  * Piso baixo de propósito: quem erra as 15 bandeiras clicando rápido termina
  * em uns 15 segundos, e recusar essa partida seria punir jogo legítimo. O
@@ -27,6 +28,13 @@ export function normaliseName(raw: unknown): string | null {
     .slice(0, NAME_MAX)
     .trim();
   return cleaned.length > 0 ? cleaned : null;
+}
+
+/** Formato do id gerado pelo navegador — 32 hex, como um UUID sem hífens. */
+const PLAYER_ID = /^[0-9a-f]{32}$/;
+
+export function isPlayerId(value: unknown): value is string {
+  return typeof value === 'string' && PLAYER_ID.test(value);
 }
 
 export type Validation =
@@ -58,10 +66,13 @@ export function validateSubmission(body: unknown): Validation {
 
   if (typeof b.seed !== 'string' || !/^[0-9a-f]{8,32}$/.test(b.seed)) fields.push('seed');
 
+  if (!isPlayerId(b.playerId)) fields.push('playerId');
+
   if (fields.length > 0) return { ok: false, fields };
   return {
     ok: true,
     value: {
+      playerId: b.playerId as string,
       name: name!,
       score: score as number,
       rounds: ROUNDS_PER_GAME,

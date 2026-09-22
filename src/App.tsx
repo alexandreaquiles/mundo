@@ -5,7 +5,7 @@ import { randomSeed } from './domain/rng';
 import { ROUNDS_PER_GAME } from './domain/scoring';
 import { useSettings } from './hooks/useSettings';
 import { haptics, sfx, unlockAudio } from './audio/sfx';
-import { queueScore, submitScore, takeQueuedScore } from './api/client';
+import { NameTakenError, queueScore, submitScore, takeQueuedScore } from './api/client';
 import { Pips, Screen, ScoreBar } from './components/Chrome';
 import { HomeScreen } from './screens/HomeScreen';
 import { CapitalQuestion, FlagQuestion } from './screens/QuestionScreen';
@@ -14,6 +14,11 @@ import { GameOverScreen } from './screens/GameOverScreen';
 import { LeaderboardScreen } from './screens/LeaderboardScreen';
 import { WorldMap } from './map/WorldMap';
 import { useRoute } from './hooks/useRoute';
+import { getPlayerId } from './hooks/usePlayerId';
+import { suggestName } from './domain/suggest-name';
+import { buildShareText } from './domain/share';
+import { BY_CCA3 } from './data/countries';
+import { mulberry32 } from './domain/rng';
 import type { LngLat } from './domain/types';
 
 /** Quanto tempo o cartão de erro fica na tela antes de seguir sozinho. */
@@ -22,6 +27,10 @@ const FAILED_AUTO_MS = 3200;
 export default function App() {
   const settings = useSettings();
   const { route, navigate, back } = useRoute();
+  const [playerId] = useState(getPlayerId);
+  // sorteado uma vez por montagem: não pode trocar enquanto a pessoa digita
+  const [suggestedName] = useState(() => suggestName(mulberry32(Date.now() & 0xffffffff)));
+  const [shareState, setShareState] = useState<'idle' | 'copiado' | 'erro'>('idle');
   const [state, rawDispatch] = useReducer(
     (s: GameState, e: Event) => reducer(s, e, COUNTRIES),
     undefined,
@@ -40,46 +49,70 @@ export default function App() {
   useEffect(() => {
     const queued = takeQueuedScore();
     if (!queued) return;
-    submitScore(queued).catch(() => queueScore(queued));
+    submitScore(queued).catch((err: Error) => {
+      // Nome tomado por outra pessoa nesse meio-tempo é definitivo: guardar
+      // de novo faria a fila tentar para sempre. Só erro de rede volta.
+      if (!(err instanceof NameTakenError)) queueScore(queued);
+    });
   }, [pendingFlush]);
 
-  // Envia a pontuação assim que a partida acaba.
+  const enviar = useCallback(
+    (name: string, partida: { total: number; durationMs: number; seed: string }) => {
+      const submission = {
+        playerId,
+        name,
+        score: partida.total,
+        rounds: ROUNDS_PER_GAME,
+        durationMs: partida.durationMs,
+        seed: partida.seed,
+      };
+      dispatch({ type: 'SUBMIT_START', name });
+      settings.rememberName(name);
+      submitScore(submission)
+        .then((r) =>
+          dispatch({
+            type: 'SUBMIT_DONE',
+            state: 'ok',
+            rank: r.rank,
+            playersInRanking: r.total,
+            highlightId: r.bestId,
+            // bestId diferente de id significa que uma partida anterior deste
+            // jogador continua sendo a melhor
+            personalBest: r.bestId === r.id,
+          }),
+        )
+        .catch((err: Error) => {
+          // Nome tomado é o único erro que a pessoa resolve sozinha; os
+          // outros viram fila offline.
+          if (err instanceof NameTakenError) {
+            dispatch({ type: 'SUBMIT_STATE', state: 'nameTaken' });
+            return;
+          }
+          queueScore(submission);
+          dispatch({
+            type: 'SUBMIT_DONE',
+            state: navigator.onLine ? 'error' : 'offline',
+            rank: null,
+            playersInRanking: null,
+            highlightId: null,
+            personalBest: false,
+          });
+        });
+    },
+    [dispatch, playerId, settings],
+  );
+
+  // Fim de partida: quem já tem nome sobe direto; quem não tem, escolhe um.
   useEffect(() => {
     if (state.screen !== 'gameover' || state.submit !== 'idle') return;
-    const submission = {
-      name: state.name,
-      score: state.total,
-      rounds: ROUNDS_PER_GAME,
-      durationMs: state.durationMs,
-      seed: state.seed,
-    };
-    dispatch({ type: 'SUBMIT_START' });
     sfx.finish();
-    submitScore(submission)
-      .then((r) =>
-        dispatch({
-          type: 'SUBMIT_DONE',
-          state: 'ok',
-          rank: r.rank,
-          playersInRanking: r.total,
-          highlightId: r.bestId,
-          // bestId diferente de id significa que uma partida anterior deste
-          // nome continua sendo a melhor
-          personalBest: r.bestId === r.id,
-        }),
-      )
-      .catch(() => {
-        queueScore(submission);
-        dispatch({
-          type: 'SUBMIT_DONE',
-          state: navigator.onLine ? 'error' : 'offline',
-          rank: null,
-          playersInRanking: null,
-          highlightId: null,
-          personalBest: false,
-        });
-      });
-  }, [state, dispatch]);
+    const lembrado = settings.rememberedName.trim();
+    if (lembrado) {
+      enviar(lembrado, state);
+    } else {
+      dispatch({ type: 'SUBMIT_STATE', state: 'needsName' });
+    }
+  }, [state, dispatch, enviar, settings.rememberedName]);
 
   // Som do resultado do pino, com a frequência subindo junto com os pontos.
   useEffect(() => {
@@ -100,9 +133,31 @@ export default function App() {
 
   const start = () => {
     unlockAudio();
-    if (state.screen === 'home') settings.rememberName(state.name.trim());
     dispatch({ type: 'START', seed: randomSeed(), now: Date.now(), pool: COUNTRIES });
   };
+
+  /** Web Share no celular, área de transferência no desktop. */
+  const compartilhar = useCallback(async () => {
+    if (state.screen !== 'gameover') return;
+    const text = buildShareText({
+      score: state.total,
+      results: state.results,
+      countryOf: (cca3) => BY_CCA3.get(cca3),
+      url: location.origin,
+    });
+    try {
+      if (navigator.share) {
+        await navigator.share({ text });
+      } else {
+        await navigator.clipboard.writeText(text);
+        setShareState('copiado');
+        setTimeout(() => setShareState('idle'), 2500);
+      }
+    } catch (err) {
+      // cancelar o menu de compartilhar não é erro
+      if ((err as Error)?.name !== 'AbortError') setShareState('erro');
+    }
+  }, [state]);
 
   if (route === 'ranking') {
     return (
@@ -117,8 +172,7 @@ export default function App() {
   if (state.screen === 'home') {
     return (
       <HomeScreen
-        name={state.name}
-        onNameChange={(name) => dispatch({ type: 'SET_NAME', name })}
+        playerName={settings.rememberedName}
         onStart={start}
         onLeaderboard={() => navigate('ranking')}
       />
@@ -129,6 +183,11 @@ export default function App() {
     return (
       <GameOverScreen
         state={state}
+        suggestedName={suggestedName}
+        onSubmitName={(name) => enviar(name, state)}
+        onSkip={() => dispatch({ type: 'SUBMIT_STATE', state: 'skipped' })}
+        onShare={compartilhar}
+        shareState={shareState}
         onPlayAgain={() => dispatch({ type: 'PLAY_AGAIN' })}
         onLeaderboard={() => navigate('ranking')}
       />

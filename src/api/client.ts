@@ -16,6 +16,9 @@ async function getJson<T>(url: string): Promise<T> {
   return res.json() as Promise<T>;
 }
 
+/** Erro que a pessoa consegue resolver trocando o nome. */
+export class NameTakenError extends Error {}
+
 export async function submitScore(submission: ScoreSubmission): Promise<SubmitResponse> {
   const res = await fetch('/api/scores', {
     method: 'POST',
@@ -23,10 +26,19 @@ export async function submitScore(submission: ScoreSubmission): Promise<SubmitRe
     body: JSON.stringify(submission),
   });
   if (!res.ok) {
-    const detail = await res.json().catch(() => ({}));
-    throw new Error((detail as { error?: string }).error ?? `Erro ${res.status}`);
+    const detail = (await res.json().catch(() => ({}))) as { error?: string };
+    const message = detail.error ?? `Erro ${res.status}`;
+    throw res.status === 409 ? new NameTakenError(message) : new Error(message);
   }
   return res.json() as Promise<SubmitResponse>;
+}
+
+/** O nome está livre para este aparelho? */
+export async function checkName(name: string, playerId: string): Promise<boolean> {
+  const data = await getJson<{ available: boolean }>(
+    `/api/names?name=${encodeURIComponent(name)}&playerId=${playerId}`,
+  );
+  return data.available;
 }
 
 export function fetchLeaderboard(limit = 15, offset = 0): Promise<LeaderboardPage> {

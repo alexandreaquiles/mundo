@@ -1,0 +1,89 @@
+import { describe, expect, it } from 'vitest';
+import { BY_CCA3, COUNTRIES } from '../src/data/countries';
+import { buildShareText, flagEmoji, roundEmoji } from '../src/domain/share';
+import { MAX_ROUND_SCORE } from '../src/domain/scoring';
+import type { RoundResult } from '../src/domain/types';
+
+const countryOf = (cca3: string) => BY_CCA3.get(cca3);
+
+const round = (over: Partial<RoundResult>): RoundResult => ({
+  cca3: 'BRA',
+  reached: 'done',
+  flagCorrect: true,
+  capitalCorrect: true,
+  guess: [0, 0],
+  distanceKm: 500,
+  points: 60,
+  ...over,
+});
+
+describe('flagEmoji', () => {
+  it('traduz o código de duas letras', () => {
+    expect(flagEmoji('BR')).toBe('🇧🇷');
+    expect(flagEmoji('JP')).toBe('🇯🇵');
+    expect(flagEmoji('br')).toBe('🇧🇷');
+  });
+
+  it('gera uma sequência válida para os 195 países', () => {
+    for (const c of COUNTRIES) {
+      const emoji = flagEmoji(c.cca2);
+      const pontos = [...emoji].map((ch) => ch.codePointAt(0)!);
+      expect(pontos).toHaveLength(2);
+      for (const p of pontos) {
+        expect(p).toBeGreaterThanOrEqual(0x1f1e6);
+        expect(p).toBeLessThanOrEqual(0x1f1ff);
+      }
+    }
+  });
+
+  it('não repete bandeira entre países diferentes', () => {
+    expect(new Set(COUNTRIES.map((c) => flagEmoji(c.cca2))).size).toBe(COUNTRIES.length);
+  });
+});
+
+describe('roundEmoji', () => {
+  it('usa uma cor por desfecho', () => {
+    expect(roundEmoji(round({ points: MAX_ROUND_SCORE }))).toBe('🟢');
+    expect(roundEmoji(round({ points: 60 }))).toBe('🟡');
+    expect(roundEmoji(round({ capitalCorrect: false, points: 10 }))).toBe('🟠');
+    expect(roundEmoji(round({ flagCorrect: false, capitalCorrect: false, points: 0 }))).toBe('🔴');
+  });
+});
+
+describe('buildShareText', () => {
+  const url = 'https://mundo.exemplo/';
+
+  it('mostra a distância só nas rodadas perfeitas', () => {
+    const texto = buildShareText({
+      score: 240,
+      results: [
+        round({ cca3: 'BRA', points: MAX_ROUND_SCORE, distanceKm: 12 }),
+        round({ cca3: 'JPN', points: 60, distanceKm: 800 }),
+      ],
+      countryOf,
+      url,
+    });
+    expect(texto).toContain('🇧🇷🟢 12 km');
+    expect(texto).toContain('🇯🇵🟡');
+    expect(texto).not.toContain('800 km');
+  });
+
+  it('põe pontuação no topo e link no fim', () => {
+    const linhas = buildShareText({ score: 430, results: [round({})], countryOf, url }).split('\n');
+    expect(linhas[0]).toBe('Mundo — 430/1800');
+    expect(linhas.at(-1)).toBe(url);
+  });
+
+  it('gera uma linha por rodada', () => {
+    const results = Array.from({ length: 15 }, () => round({ flagCorrect: false, points: 0 }));
+    const linhas = buildShareText({ score: 0, results, countryOf, url }).split('\n');
+    // título + vazia + 15 rodadas + vazia + link
+    expect(linhas).toHaveLength(19);
+    expect(linhas.filter((l) => l.includes('🔴'))).toHaveLength(15);
+  });
+
+  it('não quebra se o país não for encontrado', () => {
+    const texto = buildShareText({ score: 0, results: [round({ cca3: 'XXX' })], countryOf, url });
+    expect(texto).toContain('🏳️');
+  });
+});

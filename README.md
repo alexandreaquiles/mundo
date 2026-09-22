@@ -38,7 +38,7 @@ O `@cloudflare/vite-plugin` roda o Worker dentro do servidor do Vite, com um D1
 local de verdade em `.wrangler/state`. Não é preciso subir dois processos.
 
 ```bash
-npm test          # 865 testes: dados, pontuação, sorteio, projeção, máquina de estados, API
+npm test          # 877 testes: dados, pontuação, sorteio, projeção, máquina de estados, API
 npm run build     # build de produção
 npm run preview   # serve o build, com service worker ativo
 ```
@@ -81,6 +81,9 @@ gravado, ele pula. Dá para rodar de novo sem medo.
 da sua máquina — se o id ficar só local, o build roda inteiro e a Cloudflare recusa no
 fim com o erro `10021`. O `npm run check:deploy` confere isso em segundos, e o workflow
 o executa logo depois do `npm ci`.
+
+O workflow aplica as migrations do D1 **antes** de publicar. Na ordem inversa a
+produção ficaria com código novo e banco velho no intervalo entre os dois passos.
 
 ### Deploys seguintes
 
@@ -156,11 +159,18 @@ Tem URL própria (`/ranking`), então dá para compartilhar o link — o Worker 
 o `index.html` para qualquer caminho fora de `/api`, e o roteamento no cliente é
 History API pura, sem dependência.
 
-**Uma linha por jogador.** A lista mostra a melhor partida de cada nome, com a
-contagem de quantas ele jogou; tocar em "N partidas" expande as outras. Isso
-assume que nome é pessoa, o que sem contas de usuário não é verdade — dois
-homônimos viram um. É uma troca consciente: o topo dominado pela mesma pessoa
-repetida era pior de ler do que o risco de fundir dois "Ana".
+**Uma linha por jogador.** A lista mostra a melhor partida de cada um, com a
+contagem de quantas jogou; tocar em "N partidas" expande as outras.
+
+Quem identifica a pessoa é um `player_id` anônimo gerado no navegador dela, não
+o nome — o nome é só o rótulo, e pertence ao primeiro aparelho que o usar. Assim
+ninguém toma a sua linha digitando o seu nome, e não há nada para criar ou
+lembrar. O preço é que aparelho novo é jogador novo; foi a troca escolhida para
+não ter cadastro.
+
+Partidas anteriores a essa mudança ficaram com `player_id` nulo e continuam
+agrupadas por nome. Quem reivindicar aquele nome herda essas partidas — é o que
+a migration `0002` prepara.
 
 A ordem total (`score DESC, duration_ms ASC, created_at ASC`) vive numa constante
 única no Worker porque a listagem e o cálculo de posição **precisam** concordar:

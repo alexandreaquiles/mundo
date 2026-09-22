@@ -1,8 +1,16 @@
 import { describe, expect, it } from 'vitest';
-import { NAME_MAX, normaliseName, validateSubmission } from '../../worker/lib/validate';
+import { NAME_MAX, isPlayerId, normaliseName, validateSubmission } from '../../worker/lib/validate';
 import { MAX_GAME_SCORE } from '../../src/domain/scoring';
 
-const valid = { name: 'Ana', score: 1240, rounds: 15, durationMs: 300_000, seed: 'a1b2c3d4' };
+const PLAYER = 'a'.repeat(32);
+const valid = {
+  playerId: PLAYER,
+  name: 'Ana',
+  score: 1240,
+  rounds: 15,
+  durationMs: 300_000,
+  seed: 'a1b2c3d4',
+};
 
 describe('normaliseName', () => {
   it('limpa espaços e controles', () => {
@@ -27,11 +35,23 @@ describe('normaliseName', () => {
   });
 });
 
+describe('isPlayerId', () => {
+  it('aceita 32 hexadecimais e recusa o resto', () => {
+    expect(isPlayerId(PLAYER)).toBe(true);
+    expect(isPlayerId('A'.repeat(32))).toBe(false); // maiúscula não é o formato gerado
+    expect(isPlayerId('a'.repeat(31))).toBe(false);
+    expect(isPlayerId(undefined)).toBe(false);
+  });
+});
+
 describe('validateSubmission', () => {
   it('aceita um envio bem formado', () => {
     const r = validateSubmission(valid);
     expect(r.ok).toBe(true);
-    if (r.ok) expect(r.value.name).toBe('Ana');
+    if (r.ok) {
+      expect(r.value.name).toBe('Ana');
+      expect(r.value.playerId).toBe(PLAYER);
+    }
   });
 
   it.each([
@@ -43,6 +63,9 @@ describe('validateSubmission', () => {
     ['partida rápida demais', { durationMs: 3_000 }, 'durationMs'],
     ['partida longa demais', { durationMs: 99_000_000 }, 'durationMs'],
     ['semente inválida', { seed: 'não-hex' }, 'seed'],
+    ['sem identidade do aparelho', { playerId: undefined }, 'playerId'],
+    ['identidade curta demais', { playerId: 'abc' }, 'playerId'],
+    ['identidade fora do hexadecimal', { playerId: 'z'.repeat(32) }, 'playerId'],
   ])('recusa %s', (_label, patch, field) => {
     const r = validateSubmission({ ...valid, ...patch });
     expect(r.ok).toBe(false);

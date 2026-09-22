@@ -1,6 +1,8 @@
 /** Contrato entre o cliente e o Worker. Compartilhado pelos dois lados. */
 
 export interface ScoreSubmission {
+  /** Identidade anônima do aparelho; é ela que agrupa as partidas. */
+  playerId: string;
   name: string;
   score: number;
   rounds: number;

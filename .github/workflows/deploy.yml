@@ -51,6 +51,16 @@ jobs:
       - name: Dados gerados conferem com o repositório
         run: git diff --exit-code -- src/data public/data public/flags
 
+      # Antes de publicar, não depois: o código novo pode depender de uma
+      # coluna que ainda não existe, e aí a produção quebra no intervalo.
+      # `migrations apply` é idempotente — só roda o que falta.
+      - name: Migrations no D1
+        uses: cloudflare/wrangler-action@v4
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: d1 migrations apply mundo-scores --remote
+
       - name: Deploy
         uses: cloudflare/wrangler-action@v4
         with:

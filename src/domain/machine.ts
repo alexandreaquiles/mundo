@@ -9,7 +9,18 @@ export type FailableStage = Exclude<RoundStage, 'pin'>;
 
 export type Screen = 'home' | 'playing' | 'gameover';
 export type Phase = RoundStage | 'reveal' | 'failed';
-export type SubmitState = 'idle' | 'pending' | 'ok' | 'error' | 'offline';
+export type SubmitState =
+  | 'idle'
+  /** Esperando a pessoa confirmar ou escolher um nome. */
+  | 'needsName'
+  /** O nome digitado já é de outra pessoa. */
+  | 'nameTaken'
+  | 'pending'
+  | 'ok'
+  | 'error'
+  | 'offline'
+  /** Escolheu não entrar no ranking. */
+  | 'skipped';
 
 export interface PlayingState {
   screen: 'playing';
@@ -63,7 +74,8 @@ export type Event =
   | { type: 'DROP_PIN'; at: LngLat }
   | { type: 'CONFIRM_PIN' }
   | { type: 'NEXT'; now: number }
-  | { type: 'SUBMIT_START' }
+  | { type: 'SUBMIT_START'; name: string }
+  | { type: 'SUBMIT_STATE'; state: SubmitState }
   | {
       type: 'SUBMIT_DONE';
       state: SubmitState;
@@ -208,7 +220,10 @@ export function reducer(state: GameState, event: Event, pool: readonly Country[]
     }
 
     case 'SUBMIT_START':
-      return state.screen === 'gameover' ? { ...state, submit: 'pending' } : state;
+      return state.screen === 'gameover' ? { ...state, submit: 'pending', name: event.name } : state;
+
+    case 'SUBMIT_STATE':
+      return state.screen === 'gameover' ? { ...state, submit: event.state } : state;
 
     case 'SUBMIT_DONE':
       return state.screen === 'gameover'
