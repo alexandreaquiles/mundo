@@ -69,6 +69,8 @@ export function HomeScreen({
           <li>Errar encerra a rodada — a próxima bandeira aparece na hora.</li>
           <li>Partida perfeita: <strong>1800 pontos</strong>.</li>
         </ul>
+        {/* serve para saber se o aparelho pegou a versão nova */}
+        <p className="howto__build">versão {__BUILD_ID__}</p>
       </details>
     </Screen>
   );

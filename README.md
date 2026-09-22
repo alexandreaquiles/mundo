@@ -153,6 +153,25 @@ Duas armadilhas que valem registro, porque não são óbvias:
 
 Os detalhes e a procedência estão em [`data/README.md`](data/README.md).
 
+## Atualização do app
+
+O service worker roda em modo `prompt`: a versão nova **espera** e só assume
+quando `src/pwa/ReloadPrompt.tsx` manda, para a troca não acontecer no meio de
+uma partida.
+
+Isso torna esse componente obrigatório. Sem ele — que foi o caso por alguns
+deploys — o app fica preso na versão antiga para sempre: o service worker novo
+instala, entra em `waiting` e ninguém nunca o ativa. Recarregar não resolve,
+porque o próprio `index.html` vem do cache do service worker.
+
+O app procura versão nova ao voltar para a aba e de hora em hora. A home mostra
+o carimbo do build em "Como funciona a pontuação", que é o jeito rápido de saber
+se um aparelho pegou a atualização.
+
+Se algum aparelho ficar preso mesmo assim, feche **todas** as abas ou janelas do
+site (no celular, encerre o app na lista de recentes) e abra de novo: sem nenhum
+cliente aberto, a versão que estava esperando assume sozinha.
+
 ## Sobre o ranking
 
 Tem URL própria (`/ranking`), então dá para compartilhar o link — o Worker serve

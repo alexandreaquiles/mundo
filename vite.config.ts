@@ -3,14 +3,21 @@ import react from '@vitejs/plugin-react';
 import { cloudflare } from '@cloudflare/vite-plugin';
 import { VitePWA } from 'vite-plugin-pwa';
 
+/** Carimbo do build, para dar para ver em que versão o aparelho está. */
+const BUILD_ID = new Date().toISOString().slice(0, 16).replace('T', ' ');
+
 export default defineConfig({
+  define: { __BUILD_ID__: JSON.stringify(BUILD_ID) },
   plugins: [
     react(),
     cloudflare(),
     VitePWA({
-      // nunca trocar a versão no meio de uma partida
+      // Nunca trocar a versão no meio de uma partida: o service worker novo
+      // espera, e quem manda ativar é o <ReloadPrompt />. Sem esse componente
+      // o app fica preso na versão antiga para sempre — foi o que aconteceu.
       registerType: 'prompt',
-      injectRegister: 'auto',
+      // o registro vem de `virtual:pwa-register/react`; 'auto' registraria de novo
+      injectRegister: null,
       includeAssets: ['favicon.svg', 'icons/apple-touch-icon.png'],
       manifest: {
         id: '/',

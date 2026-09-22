@@ -176,6 +176,7 @@ body {
 .howto { text-align: left; color: var(--muted); font-size: 0.88rem; }
 .howto summary { cursor: pointer; }
 .howto ul { padding-left: 20px; }
+.howto__build { font-size: 0.72rem; opacity: 0.6; margin: 4px 0 0; }
 
 /* ── cartões ───────────────────────────────────────────────────────────── */
 .card {
@@ -288,4 +289,27 @@ body {
 
 @media (prefers-reduced-motion: reduce) {
   * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+
+/* ── aviso de versão nova ───────────────────────────────────────────────── */
+.update {
+  position: fixed; left: 50%; transform: translateX(-50%);
+  bottom: max(12px, env(safe-area-inset-bottom));
+  z-index: 10;
+  width: calc(100% - 2 * var(--gutter)); max-width: var(--maxw);
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 14px; border-radius: var(--radius);
+  background: var(--surface-2); border: 1px solid var(--accent);
+  box-shadow: 0 8px 28px rgb(0 0 0 / 0.45);
+  font-size: 0.9rem;
+}
+.update__text { flex: 1; }
+.update__go {
+  padding: 8px 14px; border: 0; border-radius: 9px;
+  background: var(--accent); color: #241a02; font: inherit; font-weight: 700;
+  cursor: pointer;
+}
+.update__later {
+  background: none; border: 0; color: var(--muted);
+  font-size: 1rem; cursor: pointer; padding: 4px;
 }
