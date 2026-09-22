@@ -2,6 +2,7 @@
   {
     "cca2": "AF",
     "cca3": "AFG",
+    "ccn3": "004",
     "name": "Afeganistão",
     "capital": "Cabul",
     "capitalLat": 34.5186,
@@ -15,6 +16,7 @@
   {
     "cca2": "AO",
     "cca3": "AGO",
+    "ccn3": "024",
     "name": "Angola",
     "capital": "Luanda",
     "capitalLat": -8.8363,
@@ -28,6 +30,7 @@
   {
     "cca2": "AL",
     "cca3": "ALB",
+    "ccn3": "008",
     "name": "Albânia",
     "capital": "Tirana",
     "capitalLat": 41.3275,
@@ -41,6 +44,7 @@
   {
     "cca2": "AD",
     "cca3": "AND",
+    "ccn3": "020",
     "name": "Andorra",
     "capital": "Andorra-a-Velha",
     "capitalLat": 42.5,
@@ -59,6 +63,7 @@
   {
     "cca2": "AE",
     "cca3": "ARE",
+    "ccn3": "784",
     "name": "Emirados Árabes Unidos",
     "capital": "Abu Dhabi",
     "capitalLat": 24.4667,
@@ -78,6 +83,7 @@
   {
     "cca2": "AR",
     "cca3": "ARG",
+    "ccn3": "032",
     "name": "Argentina",
     "capital": "Buenos Aires",
     "capitalLat": -34.6006,
@@ -94,6 +100,7 @@
   {
     "cca2": "AM",
     "cca3": "ARM",
+    "ccn3": "051",
     "name": "Armênia",
     "capital": "Erevã",
     "capitalLat": 40.1831,
@@ -111,6 +118,7 @@
   {
     "cca2": "AG",
     "cca3": "ATG",
+    "ccn3": "028",
     "name": "Antígua e Barbuda",
     "capital": "Saint John's",
     "capitalLat": 17.118,
@@ -124,6 +132,7 @@
   {
     "cca2": "AU",
     "cca3": "AUS",
+    "ccn3": "036",
     "name": "Austrália",
     "capital": "Camberra",
     "capitalLat": -35.283,
@@ -142,6 +151,7 @@
   {
     "cca2": "AT",
     "cca3": "AUT",
+    "ccn3": "040",
     "name": "Áustria",
     "capital": "Viena",
     "capitalLat": 48.202,
@@ -159,6 +169,7 @@
   {
     "cca2": "AZ",
     "cca3": "AZE",
+    "ccn3": "031",
     "name": "Azerbaijão",
     "capital": "Baku",
     "capitalLat": 40.3972,
@@ -172,6 +183,7 @@
   {
     "cca2": "BI",
     "cca3": "BDI",
+    "ccn3": "108",
     "name": "Burundi",
     "capital": "Gitega",
     "capitalLat": -3.4271,
@@ -185,6 +197,7 @@
   {
     "cca2": "BE",
     "cca3": "BEL",
+    "ccn3": "056",
     "name": "Bélgica",
     "capital": "Bruxelas",
     "capitalLat": 50.8353,
@@ -201,6 +214,7 @@
   {
     "cca2": "BJ",
     "cca3": "BEN",
+    "ccn3": "204",
     "name": "Benin",
     "capital": "Porto-Novo",
     "capitalLat": 6.4969,
@@ -214,6 +228,7 @@
   {
     "cca2": "BF",
     "cca3": "BFA",
+    "ccn3": "854",
     "name": "Burkina Faso",
     "capital": "Uagadugu",
     "capitalLat": 12.3723,
@@ -227,6 +242,7 @@
   {
     "cca2": "BD",
     "cca3": "BGD",
+    "ccn3": "050",
     "name": "Bangladesh",
     "capital": "Daca",
     "capitalLat": 23.725,
@@ -244,6 +260,7 @@
   {
     "cca2": "BG",
     "cca3": "BGR",
+    "ccn3": "100",
     "name": "Bulgária",
     "capital": "Sófia",
     "capitalLat": 42.6853,
@@ -261,6 +278,7 @@
   {
     "cca2": "BH",
     "cca3": "BHR",
+    "ccn3": "048",
     "name": "Bahrein",
     "capital": "Manama",
     "capitalLat": 26.2361,
@@ -277,6 +295,7 @@
   {
     "cca2": "BS",
     "cca3": "BHS",
+    "ccn3": "044",
     "name": "Bahamas",
     "capital": "Nassau",
     "capitalLat": 25.0834,
@@ -290,6 +309,7 @@
   {
     "cca2": "BA",
     "cca3": "BIH",
+    "ccn3": "070",
     "name": "Bósnia e Herzegovina",
     "capital": "Sarajevo",
     "capitalLat": 43.85,
@@ -303,6 +323,7 @@
   {
     "cca2": "BY",
     "cca3": "BLR",
+    "ccn3": "112",
     "name": "Bielorússia",
     "capital": "Minsk",
     "capitalLat": 53.9019,
@@ -319,6 +340,7 @@
   {
     "cca2": "BZ",
     "cca3": "BLZ",
+    "ccn3": "084",
     "name": "Belize",
     "capital": "Belmopan",
     "capitalLat": 17.252,
@@ -332,6 +354,7 @@
   {
     "cca2": "BO",
     "cca3": "BOL",
+    "ccn3": "068",
     "name": "Bolívia",
     "capital": "Sucre",
     "capitalLat": -19.041,
@@ -351,6 +374,7 @@
   {
     "cca2": "BR",
     "cca3": "BRA",
+    "ccn3": "076",
     "name": "Brasil",
     "capital": "Brasília",
     "capitalLat": -15.7814,
@@ -364,6 +388,7 @@
   {
     "cca2": "BB",
     "cca3": "BRB",
+    "ccn3": "052",
     "name": "Barbados",
     "capital": "Bridgetown",
     "capitalLat": 13.102,
@@ -377,6 +402,7 @@
   {
     "cca2": "BN",
     "cca3": "BRN",
+    "ccn3": "096",
     "name": "Brunei",
     "capital": "Bandar Seri Begawan",
     "capitalLat": 4.8833,
@@ -390,6 +416,7 @@
   {
     "cca2": "BT",
     "cca3": "BTN",
+    "ccn3": "064",
     "name": "Butão",
     "capital": "Thimphu",
     "capitalLat": 27.473,
@@ -403,6 +430,7 @@
   {
     "cca2": "BW",
     "cca3": "BWA",
+    "ccn3": "072",
     "name": "Botsuana",
     "capital": "Gaborone",
     "capitalLat": -24.6463,
@@ -416,6 +444,7 @@
   {
     "cca2": "CF",
     "cca3": "CAF",
+    "ccn3": "140",
     "name": "República Centro-Africana",
     "capital": "Bangui",
     "capitalLat": 4.3666,
@@ -429,6 +458,7 @@
   {
     "cca2": "CA",
     "cca3": "CAN",
+    "ccn3": "124",
     "name": "Canadá",
     "capital": "Ottawa",
     "capitalLat": 45.4186,
@@ -442,6 +472,7 @@
   {
     "cca2": "CH",
     "cca3": "CHE",
+    "ccn3": "756",
     "name": "Suíça",
     "capital": "Berna",
     "capitalLat": 46.9167,
@@ -458,6 +489,7 @@
   {
     "cca2": "CL",
     "cca3": "CHL",
+    "ccn3": "152",
     "name": "Chile",
     "capital": "Santiago",
     "capitalLat": -33.4481,
@@ -471,6 +503,7 @@
   {
     "cca2": "CN",
     "cca3": "CHN",
+    "ccn3": "156",
     "name": "China",
     "capital": "Pequim",
     "capitalLat": 39.9308,
@@ -488,6 +521,7 @@
   {
     "cca2": "CI",
     "cca3": "CIV",
+    "ccn3": "384",
     "name": "Costa do Marfim",
     "capital": "Yamoussoukro",
     "capitalLat": 6.8184,
@@ -507,6 +541,7 @@
   {
     "cca2": "CM",
     "cca3": "CMR",
+    "ccn3": "120",
     "name": "Camarões",
     "capital": "Iaundé",
     "capitalLat": 3.8686,
@@ -526,6 +561,7 @@
   {
     "cca2": "CD",
     "cca3": "COD",
+    "ccn3": "180",
     "name": "República Democrática do Congo",
     "capital": "Kinshasa",
     "capitalLat": -4.3278,
@@ -539,6 +575,7 @@
   {
     "cca2": "CG",
     "cca3": "COG",
+    "ccn3": "178",
     "name": "República do Congo",
     "capital": "Brazzaville",
     "capitalLat": -4.2572,
@@ -552,6 +589,7 @@
   {
     "cca2": "CO",
     "cca3": "COL",
+    "ccn3": "170",
     "name": "Colômbia",
     "capital": "Bogotá",
     "capitalLat": 4.5984,
@@ -571,6 +609,7 @@
   {
     "cca2": "KM",
     "cca3": "COM",
+    "ccn3": "174",
     "name": "Comores",
     "capital": "Moroni",
     "capitalLat": -11.7042,
@@ -584,6 +623,7 @@
   {
     "cca2": "CV",
     "cca3": "CPV",
+    "ccn3": "132",
     "name": "Cabo Verde",
     "capital": "Praia",
     "capitalLat": 14.9167,
@@ -597,6 +637,7 @@
   {
     "cca2": "CR",
     "cca3": "CRI",
+    "ccn3": "188",
     "name": "Costa Rica",
     "capital": "San José",
     "capitalLat": 9.937,
@@ -613,6 +654,7 @@
   {
     "cca2": "CU",
     "cca3": "CUB",
+    "ccn3": "192",
     "name": "Cuba",
     "capital": "Havana",
     "capitalLat": 23.1339,
@@ -631,6 +673,7 @@
   {
     "cca2": "CY",
     "cca3": "CYP",
+    "ccn3": "196",
     "name": "Chipre",
     "capital": "Nicósia",
     "capitalLat": 35.1667,
@@ -644,6 +687,7 @@
   {
     "cca2": "CZ",
     "cca3": "CZE",
+    "ccn3": "203",
     "name": "Tchéquia",
     "capital": "Praga",
     "capitalLat": 50.0853,
@@ -662,6 +706,7 @@
   {
     "cca2": "DE",
     "cca3": "DEU",
+    "ccn3": "276",
     "name": "Alemanha",
     "capital": "Berlim",
     "capitalLat": 52.5238,
@@ -678,8 +723,9 @@
   {
     "cca2": "DJ",
     "cca3": "DJI",
+    "ccn3": "262",
     "name": "Djibuti",
-    "capital": "Djibouti",
+    "capital": "Djibuti",
     "capitalLat": 11.595,
     "capitalLng": 43.148,
     "centroidLat": 11.5,
@@ -691,6 +737,7 @@
   {
     "cca2": "DM",
     "cca3": "DMA",
+    "ccn3": "212",
     "name": "Dominica",
     "capital": "Roseau",
     "capitalLat": 15.301,
@@ -704,6 +751,7 @@
   {
     "cca2": "DK",
     "cca3": "DNK",
+    "ccn3": "208",
     "name": "Dinamarca",
     "capital": "Copenhague",
     "capitalLat": 55.6805,
@@ -724,6 +772,7 @@
   {
     "cca2": "DO",
     "cca3": "DOM",
+    "ccn3": "214",
     "name": "República Dominicana",
     "capital": "Santo Domingo",
     "capitalLat": 18.472,
@@ -742,6 +791,7 @@
   {
     "cca2": "DZ",
     "cca3": "DZA",
+    "ccn3": "012",
     "name": "Argélia",
     "capital": "Argel",
     "capitalLat": 36.765,
@@ -760,6 +810,7 @@
   {
     "cca2": "EC",
     "cca3": "ECU",
+    "ccn3": "218",
     "name": "Equador",
     "capital": "Quito",
     "capitalLat": -0.213,
@@ -777,6 +828,7 @@
   {
     "cca2": "EG",
     "cca3": "EGY",
+    "ccn3": "818",
     "name": "Egito",
     "capital": "Cairo",
     "capitalLat": 30.0519,
@@ -795,6 +847,7 @@
   {
     "cca2": "ER",
     "cca3": "ERI",
+    "ccn3": "232",
     "name": "Eritreia",
     "capital": "Asmara",
     "capitalLat": 15.3333,
@@ -808,6 +861,7 @@
   {
     "cca2": "ES",
     "cca3": "ESP",
+    "ccn3": "724",
     "name": "Espanha",
     "capital": "Madri",
     "capitalLat": 40.402,
@@ -821,6 +875,7 @@
   {
     "cca2": "EE",
     "cca3": "EST",
+    "ccn3": "233",
     "name": "Estônia",
     "capital": "Tallinn",
     "capitalLat": 59.4339,
@@ -837,6 +892,7 @@
   {
     "cca2": "ET",
     "cca3": "ETH",
+    "ccn3": "231",
     "name": "Etiópia",
     "capital": "Adis Abeba",
     "capitalLat": 9.0353,
@@ -856,6 +912,7 @@
   {
     "cca2": "FI",
     "cca3": "FIN",
+    "ccn3": "246",
     "name": "Finlândia",
     "capital": "Helsinque",
     "capitalLat": 60.1775,
@@ -875,6 +932,7 @@
   {
     "cca2": "FJ",
     "cca3": "FJI",
+    "ccn3": "242",
     "name": "Fiji",
     "capital": "Suva",
     "capitalLat": -18.133,
@@ -893,6 +951,7 @@
   {
     "cca2": "FR",
     "cca3": "FRA",
+    "ccn3": "250",
     "name": "França",
     "capital": "Paris",
     "capitalLat": 48.8686,
@@ -914,6 +973,7 @@
   {
     "cca2": "FM",
     "cca3": "FSM",
+    "ccn3": "583",
     "name": "Micronésia",
     "capital": "Palikir",
     "capitalLat": 6.9166,
@@ -927,6 +987,7 @@
   {
     "cca2": "GA",
     "cca3": "GAB",
+    "ccn3": "266",
     "name": "Gabão",
     "capital": "Libreville",
     "capitalLat": 0.3854,
@@ -944,6 +1005,7 @@
   {
     "cca2": "GB",
     "cca3": "GBR",
+    "ccn3": "826",
     "name": "Reino Unido",
     "capital": "Londres",
     "capitalLat": 51.5019,
@@ -957,6 +1019,7 @@
   {
     "cca2": "GE",
     "cca3": "GEO",
+    "ccn3": "268",
     "name": "Geórgia",
     "capital": "Tbilisi",
     "capitalLat": 41.727,
@@ -970,6 +1033,7 @@
   {
     "cca2": "GH",
     "cca3": "GHA",
+    "ccn3": "288",
     "name": "Gana",
     "capital": "Acra",
     "capitalLat": 5.552,
@@ -989,6 +1053,7 @@
   {
     "cca2": "GN",
     "cca3": "GIN",
+    "ccn3": "324",
     "name": "Guiné",
     "capital": "Conacri",
     "capitalLat": 9.5335,
@@ -1008,6 +1073,7 @@
   {
     "cca2": "GM",
     "cca3": "GMB",
+    "ccn3": "270",
     "name": "Gâmbia",
     "capital": "Banjul",
     "capitalLat": 13.4539,
@@ -1021,6 +1087,7 @@
   {
     "cca2": "GW",
     "cca3": "GNB",
+    "ccn3": "624",
     "name": "Guiné-Bissau",
     "capital": "Bissau",
     "capitalLat": 11.865,
@@ -1040,6 +1107,7 @@
   {
     "cca2": "GQ",
     "cca3": "GNQ",
+    "ccn3": "226",
     "name": "Guiné Equatorial",
     "capital": "Malabo",
     "capitalLat": 3.75,
@@ -1053,6 +1121,7 @@
   {
     "cca2": "GR",
     "cca3": "GRC",
+    "ccn3": "300",
     "name": "Grécia",
     "capital": "Atenas",
     "capitalLat": 37.9853,
@@ -1066,6 +1135,7 @@
   {
     "cca2": "GD",
     "cca3": "GRD",
+    "ccn3": "308",
     "name": "Granada",
     "capital": "Saint George's",
     "capitalLat": 12.0526,
@@ -1079,6 +1149,7 @@
   {
     "cca2": "GT",
     "cca3": "GTM",
+    "ccn3": "320",
     "name": "Guatemala",
     "capital": "Cidade da Guatemala",
     "capitalLat": 14.6231,
@@ -1097,6 +1168,7 @@
   {
     "cca2": "GY",
     "cca3": "GUY",
+    "ccn3": "328",
     "name": "Guiana",
     "capital": "Georgetown",
     "capitalLat": 6.802,
@@ -1110,6 +1182,7 @@
   {
     "cca2": "HN",
     "cca3": "HND",
+    "ccn3": "340",
     "name": "Honduras",
     "capital": "Tegucigalpa",
     "capitalLat": 14.104,
@@ -1128,6 +1201,7 @@
   {
     "cca2": "HR",
     "cca3": "HRV",
+    "ccn3": "191",
     "name": "Croácia",
     "capital": "Zagreb",
     "capitalLat": 45.8,
@@ -1150,6 +1224,7 @@
   {
     "cca2": "HT",
     "cca3": "HTI",
+    "ccn3": "332",
     "name": "Haiti",
     "capital": "Porto Príncipe",
     "capitalLat": 18.543,
@@ -1163,6 +1238,7 @@
   {
     "cca2": "HU",
     "cca3": "HUN",
+    "ccn3": "348",
     "name": "Hungria",
     "capital": "Budapeste",
     "capitalLat": 47.502,
@@ -1182,6 +1258,7 @@
   {
     "cca2": "ID",
     "cca3": "IDN",
+    "ccn3": "360",
     "name": "Indonésia",
     "capital": "Jacarta",
     "capitalLat": -6.1725,
@@ -1200,6 +1277,7 @@
   {
     "cca2": "IN",
     "cca3": "IND",
+    "ccn3": "356",
     "name": "Índia",
     "capital": "Nova Délhi",
     "capitalLat": 28.6,
@@ -1213,6 +1291,7 @@
   {
     "cca2": "IE",
     "cca3": "IRL",
+    "ccn3": "372",
     "name": "Irlanda",
     "capital": "Dublin",
     "capitalLat": 53.335,
@@ -1232,6 +1311,7 @@
   {
     "cca2": "IR",
     "cca3": "IRN",
+    "ccn3": "364",
     "name": "Irã",
     "capital": "Teerã",
     "capitalLat": 35.6739,
@@ -1245,6 +1325,7 @@
   {
     "cca2": "IQ",
     "cca3": "IRQ",
+    "ccn3": "368",
     "name": "Iraque",
     "capital": "Bagdá",
     "capitalLat": 33.3406,
@@ -1263,6 +1344,7 @@
   {
     "cca2": "IS",
     "cca3": "ISL",
+    "ccn3": "352",
     "name": "Islândia",
     "capital": "Reykjavik",
     "capitalLat": 64.15,
@@ -1282,6 +1364,7 @@
   {
     "cca2": "IL",
     "cca3": "ISR",
+    "ccn3": "376",
     "name": "Israel",
     "capital": "Jerusalém",
     "capitalLat": 31.7784,
@@ -1295,6 +1378,7 @@
   {
     "cca2": "IT",
     "cca3": "ITA",
+    "ccn3": "380",
     "name": "Itália",
     "capital": "Roma",
     "capitalLat": 41.8979,
@@ -1315,6 +1399,7 @@
   {
     "cca2": "JM",
     "cca3": "JAM",
+    "ccn3": "388",
     "name": "Jamaica",
     "capital": "Kingston",
     "capitalLat": 17.9771,
@@ -1328,6 +1413,7 @@
   {
     "cca2": "JO",
     "cca3": "JOR",
+    "ccn3": "400",
     "name": "Jordânia",
     "capital": "Amã",
     "capitalLat": 31.952,
@@ -1347,6 +1433,7 @@
   {
     "cca2": "JP",
     "cca3": "JPN",
+    "ccn3": "392",
     "name": "Japão",
     "capital": "Tóquio",
     "capitalLat": 35.687,
@@ -1364,6 +1451,7 @@
   {
     "cca2": "KZ",
     "cca3": "KAZ",
+    "ccn3": "398",
     "name": "Cazaquistão",
     "capital": "Astana",
     "capitalLat": 51.1811,
@@ -1377,6 +1465,7 @@
   {
     "cca2": "KE",
     "cca3": "KEN",
+    "ccn3": "404",
     "name": "Quênia",
     "capital": "Nairóbi",
     "capitalLat": -1.2814,
@@ -1390,6 +1479,7 @@
   {
     "cca2": "KG",
     "cca3": "KGZ",
+    "ccn3": "417",
     "name": "Quirguistão",
     "capital": "Bishkek",
     "capitalLat": 42.875,
@@ -1403,6 +1493,7 @@
   {
     "cca2": "KH",
     "cca3": "KHM",
+    "ccn3": "116",
     "name": "Camboja",
     "capital": "Phnom Penh",
     "capitalLat": 11.552,
@@ -1416,6 +1507,7 @@
   {
     "cca2": "KI",
     "cca3": "KIR",
+    "ccn3": "296",
     "name": "Kiribati",
     "capital": "Tarawa do Sul",
     "capitalLat": 1.3382,
@@ -1429,6 +1521,7 @@
   {
     "cca2": "KN",
     "cca3": "KNA",
+    "ccn3": "659",
     "name": "São Cristóvão e Nevis",
     "capital": "Basseterre",
     "capitalLat": 17.302,
@@ -1442,6 +1535,7 @@
   {
     "cca2": "KR",
     "cca3": "KOR",
+    "ccn3": "410",
     "name": "Coreia do Sul",
     "capital": "Seul",
     "capitalLat": 37.5683,
@@ -1455,6 +1549,7 @@
   {
     "cca2": "KW",
     "cca3": "KWT",
+    "ccn3": "414",
     "name": "Kuwait",
     "capital": "Cidade do Kuwait",
     "capitalLat": 29.3717,
@@ -1474,6 +1569,7 @@
   {
     "cca2": "LA",
     "cca3": "LAO",
+    "ccn3": "418",
     "name": "Laos",
     "capital": "Vientiane",
     "capitalLat": 17.9667,
@@ -1490,6 +1586,7 @@
   {
     "cca2": "LB",
     "cca3": "LBN",
+    "ccn3": "422",
     "name": "Líbano",
     "capital": "Beirute",
     "capitalLat": 33.8739,
@@ -1503,6 +1600,7 @@
   {
     "cca2": "LR",
     "cca3": "LBR",
+    "ccn3": "430",
     "name": "Libéria",
     "capital": "Monróvia",
     "capitalLat": 6.3146,
@@ -1516,6 +1614,7 @@
   {
     "cca2": "LY",
     "cca3": "LBY",
+    "ccn3": "434",
     "name": "Líbia",
     "capital": "Trípoli",
     "capitalLat": 32.8925,
@@ -1529,6 +1628,7 @@
   {
     "cca2": "LC",
     "cca3": "LCA",
+    "ccn3": "662",
     "name": "Santa Lúcia",
     "capital": "Castries",
     "capitalLat": 14.002,
@@ -1542,6 +1642,7 @@
   {
     "cca2": "LI",
     "cca3": "LIE",
+    "ccn3": "438",
     "name": "Liechtenstein",
     "capital": "Vaduz",
     "capitalLat": 47.1337,
@@ -1555,6 +1656,7 @@
   {
     "cca2": "LK",
     "cca3": "LKA",
+    "ccn3": "144",
     "name": "Sri Lanka",
     "capital": "Colombo",
     "capitalLat": 6.932,
@@ -1568,6 +1670,7 @@
   {
     "cca2": "LS",
     "cca3": "LSO",
+    "ccn3": "426",
     "name": "Lesoto",
     "capital": "Maseru",
     "capitalLat": -29.3167,
@@ -1581,6 +1684,7 @@
   {
     "cca2": "LT",
     "cca3": "LTU",
+    "ccn3": "440",
     "name": "Lituânia",
     "capital": "Vilnius",
     "capitalLat": 54.6834,
@@ -1600,8 +1704,9 @@
   {
     "cca2": "LU",
     "cca3": "LUX",
+    "ccn3": "442",
     "name": "Luxemburgo",
-    "capital": "Luxembourg",
+    "capital": "Luxemburgo",
     "capitalLat": 49.6117,
     "capitalLng": 6.13,
     "centroidLat": 49.75,
@@ -1622,6 +1727,7 @@
   {
     "cca2": "LV",
     "cca3": "LVA",
+    "ccn3": "428",
     "name": "Letônia",
     "capital": "Riga",
     "capitalLat": 56.95,
@@ -1639,6 +1745,7 @@
   {
     "cca2": "MA",
     "cca3": "MAR",
+    "ccn3": "504",
     "name": "Marrocos",
     "capital": "Rabat",
     "capitalLat": 34.0253,
@@ -1656,8 +1763,9 @@
   {
     "cca2": "MC",
     "cca3": "MCO",
+    "ccn3": "492",
     "name": "Mônaco",
-    "capital": "Monaco",
+    "capital": "Mônaco",
     "capitalLat": 43.7396,
     "capitalLng": 7.4069,
     "centroidLat": 43.73333333,
@@ -1674,8 +1782,9 @@
   {
     "cca2": "MD",
     "cca3": "MDA",
+    "ccn3": "498",
     "name": "Moldávia",
-    "capital": "Chișinău",
+    "capital": "Chisinau",
     "capitalLat": 47.005,
     "capitalLng": 28.8577,
     "centroidLat": 47,
@@ -1692,6 +1801,7 @@
   {
     "cca2": "MG",
     "cca3": "MDG",
+    "ccn3": "450",
     "name": "Madagascar",
     "capital": "Antananarivo",
     "capitalLat": -18.9147,
@@ -1705,6 +1815,7 @@
   {
     "cca2": "MV",
     "cca3": "MDV",
+    "ccn3": "462",
     "name": "Maldivas",
     "capital": "Malé",
     "capitalLat": 4.1667,
@@ -1718,6 +1829,7 @@
   {
     "cca2": "MX",
     "cca3": "MEX",
+    "ccn3": "484",
     "name": "México",
     "capital": "Cidade do México",
     "capitalLat": 19.4444,
@@ -1738,6 +1850,7 @@
   {
     "cca2": "MH",
     "cca3": "MHL",
+    "ccn3": "584",
     "name": "Ilhas Marshall",
     "capital": "Majuro",
     "capitalLat": 7.103,
@@ -1751,6 +1864,7 @@
   {
     "cca2": "MK",
     "cca3": "MKD",
+    "ccn3": "807",
     "name": "Macedônia do Norte",
     "capital": "Skopje",
     "capitalLat": 42,
@@ -1764,6 +1878,7 @@
   {
     "cca2": "ML",
     "cca3": "MLI",
+    "ccn3": "466",
     "name": "Mali",
     "capital": "Bamaco",
     "capitalLat": 12.652,
@@ -1783,6 +1898,7 @@
   {
     "cca2": "MT",
     "cca3": "MLT",
+    "ccn3": "470",
     "name": "Malta",
     "capital": "Valeta",
     "capitalLat": 35.8997,
@@ -1796,6 +1912,7 @@
   {
     "cca2": "MM",
     "cca3": "MMR",
+    "ccn3": "104",
     "name": "Mianmar",
     "capital": "Naypyidaw",
     "capitalLat": 19.7685,
@@ -1815,6 +1932,7 @@
   {
     "cca2": "ME",
     "cca3": "MNE",
+    "ccn3": "499",
     "name": "Montenegro",
     "capital": "Podgorica",
     "capitalLat": 42.466,
@@ -1828,6 +1946,7 @@
   {
     "cca2": "MN",
     "cca3": "MNG",
+    "ccn3": "496",
     "name": "Mongólia",
     "capital": "Ulã Bator",
     "capitalLat": 47.9186,
@@ -1841,6 +1960,7 @@
   {
     "cca2": "MZ",
     "cca3": "MOZ",
+    "ccn3": "508",
     "name": "Moçambique",
     "capital": "Maputo",
     "capitalLat": -25.9533,
@@ -1854,6 +1974,7 @@
   {
     "cca2": "MR",
     "cca3": "MRT",
+    "ccn3": "478",
     "name": "Mauritânia",
     "capital": "Nuakchote",
     "capitalLat": 18.0864,
@@ -1870,6 +1991,7 @@
   {
     "cca2": "MU",
     "cca3": "MUS",
+    "ccn3": "480",
     "name": "Maurício",
     "capital": "Port Louis",
     "capitalLat": -20.1666,
@@ -1883,6 +2005,7 @@
   {
     "cca2": "MW",
     "cca3": "MWI",
+    "ccn3": "454",
     "name": "Malaui",
     "capital": "Lilongwe",
     "capitalLat": -13.9833,
@@ -1896,6 +2019,7 @@
   {
     "cca2": "MY",
     "cca3": "MYS",
+    "ccn3": "458",
     "name": "Malásia",
     "capital": "Kuala Lumpur",
     "capitalLat": 3.1686,
@@ -1909,6 +2033,7 @@
   {
     "cca2": "NA",
     "cca3": "NAM",
+    "ccn3": "516",
     "name": "Namíbia",
     "capital": "Windhoek",
     "capitalLat": -22.57,
@@ -1922,6 +2047,7 @@
   {
     "cca2": "NE",
     "cca3": "NER",
+    "ccn3": "562",
     "name": "Níger",
     "capital": "Niamei",
     "capitalLat": 13.5187,
@@ -1935,6 +2061,7 @@
   {
     "cca2": "NG",
     "cca3": "NGA",
+    "ccn3": "566",
     "name": "Nigéria",
     "capital": "Abuja",
     "capitalLat": 9.0853,
@@ -1948,6 +2075,7 @@
   {
     "cca2": "NI",
     "cca3": "NIC",
+    "ccn3": "558",
     "name": "Nicarágua",
     "capital": "Manágua",
     "capitalLat": 12.155,
@@ -1966,6 +2094,7 @@
   {
     "cca2": "NL",
     "cca3": "NLD",
+    "ccn3": "528",
     "name": "Países Baixos",
     "capital": "Amsterdã",
     "capitalLat": 52.3519,
@@ -1987,6 +2116,7 @@
   {
     "cca2": "NO",
     "cca3": "NOR",
+    "ccn3": "578",
     "name": "Noruega",
     "capital": "Oslo",
     "capitalLat": 59.9186,
@@ -2006,6 +2136,7 @@
   {
     "cca2": "NP",
     "cca3": "NPL",
+    "ccn3": "524",
     "name": "Nepal",
     "capital": "Katmandu",
     "capitalLat": 27.7186,
@@ -2019,6 +2150,7 @@
   {
     "cca2": "NR",
     "cca3": "NRU",
+    "ccn3": "520",
     "name": "Nauru",
     "capital": "Yaren",
     "capitalLat": -0.5477,
@@ -2032,6 +2164,7 @@
   {
     "cca2": "NZ",
     "cca3": "NZL",
+    "ccn3": "554",
     "name": "Nova Zelândia",
     "capital": "Wellington",
     "capitalLat": -41.3,
@@ -2050,6 +2183,7 @@
   {
     "cca2": "OM",
     "cca3": "OMN",
+    "ccn3": "512",
     "name": "Omã",
     "capital": "Mascate",
     "capitalLat": 23.6133,
@@ -2063,6 +2197,7 @@
   {
     "cca2": "PK",
     "cca3": "PAK",
+    "ccn3": "586",
     "name": "Paquistão",
     "capital": "Islamabade",
     "capitalLat": 33.7019,
@@ -2082,6 +2217,7 @@
   {
     "cca2": "PA",
     "cca3": "PAN",
+    "ccn3": "591",
     "name": "Panamá",
     "capital": "Cidade do Panamá",
     "capitalLat": 8.97,
@@ -2095,6 +2231,7 @@
   {
     "cca2": "PE",
     "cca3": "PER",
+    "ccn3": "604",
     "name": "Peru",
     "capital": "Lima",
     "capitalLat": -12.0461,
@@ -2112,6 +2249,7 @@
   {
     "cca2": "PH",
     "cca3": "PHL",
+    "ccn3": "608",
     "name": "Filipinas",
     "capital": "Manila",
     "capitalLat": 14.6061,
@@ -2130,6 +2268,7 @@
   {
     "cca2": "PW",
     "cca3": "PLW",
+    "ccn3": "585",
     "name": "Palau",
     "capital": "Ngerulmud",
     "capitalLat": 7.5006,
@@ -2147,6 +2286,7 @@
   {
     "cca2": "PG",
     "cca3": "PNG",
+    "ccn3": "598",
     "name": "Papua Nova Guiné",
     "capital": "Porto Moresby",
     "capitalLat": -9.4647,
@@ -2160,6 +2300,7 @@
   {
     "cca2": "PL",
     "cca3": "POL",
+    "ccn3": "616",
     "name": "Polônia",
     "capital": "Varsóvia",
     "capitalLat": 52.2519,
@@ -2178,6 +2319,7 @@
   {
     "cca2": "KP",
     "cca3": "PRK",
+    "ccn3": "408",
     "name": "Coreia do Norte",
     "capital": "Pyongyang",
     "capitalLat": 39.0214,
@@ -2191,6 +2333,7 @@
   {
     "cca2": "PT",
     "cca3": "PRT",
+    "ccn3": "620",
     "name": "Portugal",
     "capital": "Lisboa",
     "capitalLat": 38.7247,
@@ -2204,6 +2347,7 @@
   {
     "cca2": "PY",
     "cca3": "PRY",
+    "ccn3": "600",
     "name": "Paraguai",
     "capital": "Assunção",
     "capitalLat": -25.2945,
@@ -2217,6 +2361,7 @@
   {
     "cca2": "PS",
     "cca3": "PSE",
+    "ccn3": "275",
     "name": "Palestina",
     "capital": "Ramala",
     "capitalLat": 31.9038,
@@ -2236,6 +2381,7 @@
   {
     "cca2": "QA",
     "cca3": "QAT",
+    "ccn3": "634",
     "name": "Catar",
     "capital": "Doha",
     "capitalLat": 25.2866,
@@ -2252,6 +2398,7 @@
   {
     "cca2": "RO",
     "cca3": "ROU",
+    "ccn3": "642",
     "name": "Romênia",
     "capital": "Bucareste",
     "capitalLat": 44.4353,
@@ -2270,6 +2417,7 @@
   {
     "cca2": "RU",
     "cca3": "RUS",
+    "ccn3": "643",
     "name": "Rússia",
     "capital": "Moscou",
     "capitalLat": 55.7541,
@@ -2292,6 +2440,7 @@
   {
     "cca2": "RW",
     "cca3": "RWA",
+    "ccn3": "646",
     "name": "Ruanda",
     "capital": "Kigali",
     "capitalLat": -1.9516,
@@ -2305,6 +2454,7 @@
   {
     "cca2": "SA",
     "cca3": "SAU",
+    "ccn3": "682",
     "name": "Arábia Saudita",
     "capital": "Riade",
     "capitalLat": 24.6428,
@@ -2318,6 +2468,7 @@
   {
     "cca2": "SD",
     "cca3": "SDN",
+    "ccn3": "729",
     "name": "Sudão",
     "capital": "Cartum",
     "capitalLat": 15.59,
@@ -2339,6 +2490,7 @@
   {
     "cca2": "SN",
     "cca3": "SEN",
+    "ccn3": "686",
     "name": "Senegal",
     "capital": "Dacar",
     "capitalLat": 14.7178,
@@ -2358,6 +2510,7 @@
   {
     "cca2": "SG",
     "cca3": "SGP",
+    "ccn3": "702",
     "name": "Singapura",
     "capital": "Singapura",
     "capitalLat": 1.295,
@@ -2376,6 +2529,7 @@
   {
     "cca2": "SB",
     "cca3": "SLB",
+    "ccn3": "090",
     "name": "Ilhas Salomão",
     "capital": "Honiara",
     "capitalLat": -9.438,
@@ -2389,6 +2543,7 @@
   {
     "cca2": "SL",
     "cca3": "SLE",
+    "ccn3": "694",
     "name": "Serra Leoa",
     "capital": "Freetown",
     "capitalLat": 8.472,
@@ -2402,6 +2557,7 @@
   {
     "cca2": "SV",
     "cca3": "SLV",
+    "ccn3": "222",
     "name": "El Salvador",
     "capital": "San Salvador",
     "capitalLat": 13.7119,
@@ -2420,6 +2576,7 @@
   {
     "cca2": "SM",
     "cca3": "SMR",
+    "ccn3": "674",
     "name": "San Marino",
     "capital": "San Marino",
     "capitalLat": 43.9361,
@@ -2433,6 +2590,7 @@
   {
     "cca2": "SO",
     "cca3": "SOM",
+    "ccn3": "706",
     "name": "Somália",
     "capital": "Mogadíscio",
     "capitalLat": 2.0686,
@@ -2446,6 +2604,7 @@
   {
     "cca2": "RS",
     "cca3": "SRB",
+    "ccn3": "688",
     "name": "Sérvia",
     "capital": "Belgrado",
     "capitalLat": 44.8206,
@@ -2465,6 +2624,7 @@
   {
     "cca2": "SS",
     "cca3": "SSD",
+    "ccn3": "728",
     "name": "Sudão do Sul",
     "capital": "Juba",
     "capitalLat": 4.8517,
@@ -2482,6 +2642,7 @@
   {
     "cca2": "ST",
     "cca3": "STP",
+    "ccn3": "678",
     "name": "São Tomé e Príncipe",
     "capital": "São Tomé",
     "capitalLat": 0.3334,
@@ -2495,6 +2656,7 @@
   {
     "cca2": "SR",
     "cca3": "SUR",
+    "ccn3": "740",
     "name": "Suriname",
     "capital": "Paramaribo",
     "capitalLat": 5.835,
@@ -2508,6 +2670,7 @@
   {
     "cca2": "SK",
     "cca3": "SVK",
+    "ccn3": "703",
     "name": "Eslováquia",
     "capital": "Bratislava",
     "capitalLat": 48.15,
@@ -2530,6 +2693,7 @@
   {
     "cca2": "SI",
     "cca3": "SVN",
+    "ccn3": "705",
     "name": "Eslovênia",
     "capital": "Liubliana",
     "capitalLat": 46.0553,
@@ -2552,6 +2716,7 @@
   {
     "cca2": "SE",
     "cca3": "SWE",
+    "ccn3": "752",
     "name": "Suécia",
     "capital": "Estocolmo",
     "capitalLat": 59.3527,
@@ -2571,6 +2736,7 @@
   {
     "cca2": "SZ",
     "cca3": "SWZ",
+    "ccn3": "748",
     "name": "Essuatíni",
     "capital": "Mbabane",
     "capitalLat": -26.3167,
@@ -2584,6 +2750,7 @@
   {
     "cca2": "SC",
     "cca3": "SYC",
+    "ccn3": "690",
     "name": "Seicheles",
     "capital": "Victoria",
     "capitalLat": -4.6166,
@@ -2597,6 +2764,7 @@
   {
     "cca2": "SY",
     "cca3": "SYR",
+    "ccn3": "760",
     "name": "Síria",
     "capital": "Damasco",
     "capitalLat": 33.502,
@@ -2615,6 +2783,7 @@
   {
     "cca2": "TD",
     "cca3": "TCD",
+    "ccn3": "148",
     "name": "Chade",
     "capital": "N'Djamena",
     "capitalLat": 12.115,
@@ -2633,6 +2802,7 @@
   {
     "cca2": "TG",
     "cca3": "TGO",
+    "ccn3": "768",
     "name": "Togo",
     "capital": "Lomé",
     "capitalLat": 6.1339,
@@ -2646,6 +2816,7 @@
   {
     "cca2": "TH",
     "cca3": "THA",
+    "ccn3": "764",
     "name": "Tailândia",
     "capital": "Bangcoc",
     "capitalLat": 13.7519,
@@ -2662,6 +2833,7 @@
   {
     "cca2": "TJ",
     "cca3": "TJK",
+    "ccn3": "762",
     "name": "Tajiquistão",
     "capital": "Duchambe",
     "capitalLat": 38.56,
@@ -2675,6 +2847,7 @@
   {
     "cca2": "TM",
     "cca3": "TKM",
+    "ccn3": "795",
     "name": "Turcomenistão",
     "capital": "Asgabate",
     "capitalLat": 37.95,
@@ -2688,6 +2861,7 @@
   {
     "cca2": "TL",
     "cca3": "TLS",
+    "ccn3": "626",
     "name": "Timor-Leste",
     "capital": "Díli",
     "capitalLat": -8.5594,
@@ -2701,6 +2875,7 @@
   {
     "cca2": "TO",
     "cca3": "TON",
+    "ccn3": "776",
     "name": "Tonga",
     "capital": "Nuku'alofa",
     "capitalLat": -21.1385,
@@ -2714,6 +2889,7 @@
   {
     "cca2": "TT",
     "cca3": "TTO",
+    "ccn3": "780",
     "name": "Trinidad e Tobago",
     "capital": "Porto Espanha",
     "capitalLat": 10.652,
@@ -2727,6 +2903,7 @@
   {
     "cca2": "TN",
     "cca3": "TUN",
+    "ccn3": "788",
     "name": "Tunísia",
     "capital": "Túnis",
     "capitalLat": 36.8028,
@@ -2745,6 +2922,7 @@
   {
     "cca2": "TR",
     "cca3": "TUR",
+    "ccn3": "792",
     "name": "Turquia",
     "capital": "Ancara",
     "capitalLat": 39.9292,
@@ -2763,6 +2941,7 @@
   {
     "cca2": "TV",
     "cca3": "TUV",
+    "ccn3": "798",
     "name": "Tuvalu",
     "capital": "Funafuti",
     "capitalLat": -8.5167,
@@ -2781,6 +2960,7 @@
   {
     "cca2": "TZ",
     "cca3": "TZA",
+    "ccn3": "834",
     "name": "Tanzânia",
     "capital": "Dodoma",
     "capitalLat": -6.163,
@@ -2794,6 +2974,7 @@
   {
     "cca2": "UG",
     "cca3": "UGA",
+    "ccn3": "800",
     "name": "Uganda",
     "capital": "Kampala",
     "capitalLat": 0.3186,
@@ -2807,6 +2988,7 @@
   {
     "cca2": "UA",
     "cca3": "UKR",
+    "ccn3": "804",
     "name": "Ucrânia",
     "capital": "Kiev",
     "capitalLat": 50.4353,
@@ -2820,6 +3002,7 @@
   {
     "cca2": "UY",
     "cca3": "URY",
+    "ccn3": "858",
     "name": "Uruguai",
     "capital": "Montevidéu",
     "capitalLat": -34.8561,
@@ -2836,6 +3019,7 @@
   {
     "cca2": "US",
     "cca3": "USA",
+    "ccn3": "840",
     "name": "Estados Unidos",
     "capital": "Washington, D.C.",
     "capitalLat": 38.9015,
@@ -2849,6 +3033,7 @@
   {
     "cca2": "UZ",
     "cca3": "UZB",
+    "ccn3": "860",
     "name": "Uzbequistão",
     "capital": "Tashkent",
     "capitalLat": 41.3136,
@@ -2862,6 +3047,7 @@
   {
     "cca2": "VA",
     "cca3": "VAT",
+    "ccn3": "336",
     "name": "Vaticano",
     "capital": "Cidade do Vaticano",
     "capitalLat": 41.9033,
@@ -2875,6 +3061,7 @@
   {
     "cca2": "VC",
     "cca3": "VCT",
+    "ccn3": "670",
     "name": "São Vicente e Granadinas",
     "capital": "Kingstown",
     "capitalLat": 13.1483,
@@ -2888,6 +3075,7 @@
   {
     "cca2": "VE",
     "cca3": "VEN",
+    "ccn3": "862",
     "name": "Venezuela",
     "capital": "Caracas",
     "capitalLat": 10.5029,
@@ -2905,6 +3093,7 @@
   {
     "cca2": "VN",
     "cca3": "VNM",
+    "ccn3": "704",
     "name": "Vietnã",
     "capital": "Hanói",
     "capitalLat": 21.0353,
@@ -2922,6 +3111,7 @@
   {
     "cca2": "VU",
     "cca3": "VUT",
+    "ccn3": "548",
     "name": "Vanuatu",
     "capital": "Port Vila",
     "capitalLat": -17.7334,
@@ -2935,6 +3125,7 @@
   {
     "cca2": "WS",
     "cca3": "WSM",
+    "ccn3": "882",
     "name": "Samoa",
     "capital": "Apia",
     "capitalLat": -13.8415,
@@ -2948,6 +3139,7 @@
   {
     "cca2": "YE",
     "cca3": "YEM",
+    "ccn3": "887",
     "name": "Iêmen",
     "capital": "Sanaa",
     "capitalLat": 15.3567,
@@ -2966,6 +3158,7 @@
   {
     "cca2": "ZA",
     "cca3": "ZAF",
+    "ccn3": "710",
     "name": "África do Sul",
     "capital": "Pretória",
     "capitalLat": -25.705,
@@ -2983,6 +3176,7 @@
   {
     "cca2": "ZM",
     "cca3": "ZMB",
+    "ccn3": "894",
     "name": "Zâmbia",
     "capital": "Lusaka",
     "capitalLat": -15.4147,
@@ -2996,6 +3190,7 @@
   {
     "cca2": "ZW",
     "cca3": "ZWE",
+    "ccn3": "716",
     "name": "Zimbábue",
     "capital": "Harare",
     "capitalLat": -17.8158,

@@ -1,0 +1,242 @@
+:root {
+  --bg: #0b1020;
+  --bg-soft: #131b31;
+  --surface: #1a2440;
+  --surface-2: #223052;
+  --text: #f1f5fb;
+  --muted: #9aa8c4;
+  --accent: #f4b942;
+  --correct: #2fbf71;
+  --wrong: #ef4444;
+  --radius: 14px;
+  --gutter: 16px;
+  --maxw: 560px;
+}
+
+* { box-sizing: border-box; }
+
+html, body, #root { height: 100%; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-size: 16px;
+  line-height: 1.45;
+  overscroll-behavior: none;
+  -webkit-text-size-adjust: 100%;
+}
+
+.screen {
+  min-height: 100%;
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: max(var(--gutter), env(safe-area-inset-top)) var(--gutter)
+           max(var(--gutter), env(safe-area-inset-bottom));
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.screen--home { justify-content: center; text-align: center; }
+/* na rodada do mapa vale usar mais largura em telas grandes */
+@media (min-width: 720px) {
+  .screen--map { max-width: 760px; }
+  .map { max-height: 62vh; }
+}
+.screen--map { gap: 10px; }
+
+/* ── cabeçalho ─────────────────────────────────────────────────────────── */
+.bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+.bar__round { flex: 1; }
+.bar__score strong { color: var(--accent); font-size: 1.15rem; }
+.bar__mute {
+  background: none;
+  border: 0;
+  font-size: 1.15rem;
+  cursor: pointer;
+  padding: 4px;
+  line-height: 1;
+}
+
+.pips { display: flex; gap: 4px; list-style: none; margin: 0; padding: 0; }
+.pips__dot { flex: 1; height: 4px; border-radius: 2px; background: var(--surface); }
+.pips__dot--miss { background: var(--wrong); }
+.pips__dot--ok { background: var(--accent); }
+.pips__dot--great { background: var(--correct); }
+
+/* ── textos ────────────────────────────────────────────────────────────── */
+.logo {
+  font-size: clamp(2.6rem, 14vw, 3.6rem);
+  margin: 0;
+  letter-spacing: -0.03em;
+  background: linear-gradient(120deg, var(--accent), #6ee7b7);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.tagline { color: var(--muted); margin: 0 0 8px; }
+.question { font-size: 1.15rem; margin: 4px 0; text-align: center; font-weight: 600; }
+.question--map { margin: 0; }
+.question__country { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
+.muted { color: var(--muted); font-size: 0.9rem; margin: 0; }
+.fineprint { color: var(--muted); font-size: 0.78rem; margin-top: 4px; }
+
+/* ── bandeiras ─────────────────────────────────────────────────────────── */
+.flag {
+  width: 100%;
+  max-width: 320px;
+  height: auto;
+  aspect-ratio: 4 / 3;
+  object-fit: contain;
+  margin: 0 auto;
+  display: block;
+  border-radius: 8px;
+  background: var(--surface);
+  box-shadow: 0 6px 22px rgb(0 0 0 / 0.35);
+}
+.flag--inline { width: 28px; height: 21px; margin: 0; box-shadow: none; border-radius: 3px; }
+.flag--card { max-width: 200px; }
+.flag--tiny { width: 26px; height: 20px; margin: 0; box-shadow: none; border-radius: 3px; }
+
+/* ── alternativas ──────────────────────────────────────────────────────── */
+.options { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.option {
+  width: 100%;
+  min-height: 52px;
+  padding: 12px 16px;
+  border: 1px solid var(--surface-2);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.12s, transform 0.08s;
+}
+.option:hover:not(:disabled) { background: var(--surface-2); }
+.option:active:not(:disabled) { transform: scale(0.985); }
+.option--correct { background: var(--correct); border-color: var(--correct); color: #04210f; }
+.option--wrong { background: var(--wrong); border-color: var(--wrong); color: #2b0606; }
+.option:disabled { cursor: default; }
+
+/* ── botões ────────────────────────────────────────────────────────────── */
+.btn {
+  min-height: 50px;
+  padding: 12px 22px;
+  border-radius: var(--radius);
+  border: 1px solid transparent;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+.btn--primary { background: var(--accent); color: #241a02; }
+.btn--primary:disabled { opacity: 0.45; cursor: default; }
+.btn--ghost { background: transparent; color: var(--muted); border-color: var(--surface-2); }
+.actions { display: grid; gap: 10px; }
+
+/* ── formulário ────────────────────────────────────────────────────────── */
+.home__form { display: grid; gap: 8px; text-align: left; }
+.home__form label { font-size: 0.85rem; color: var(--muted); }
+.home__form input {
+  min-height: 50px;
+  padding: 12px 14px;
+  border-radius: var(--radius);
+  border: 1px solid var(--surface-2);
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+}
+.home__error { color: var(--wrong); font-size: 0.85rem; margin: 0; }
+.howto { text-align: left; color: var(--muted); font-size: 0.88rem; }
+.howto summary { cursor: pointer; }
+.howto ul { padding-left: 20px; }
+
+/* ── cartões ───────────────────────────────────────────────────────────── */
+.card {
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 20px;
+  display: grid;
+  gap: 10px;
+  justify-items: center;
+  text-align: center;
+}
+/* fica colado no rodapé para não empurrar o mapa para fora da tela */
+.card--reveal { position: sticky; bottom: 0; }
+.card__label { color: var(--muted); margin: 0; font-size: 0.9rem; }
+.card__answer { font-size: 1.5rem; font-weight: 700; margin: 0; }
+.card__sub { color: var(--muted); margin: 0; }
+.card__distance { margin: 0; }
+.card__points { margin: 0; color: var(--accent); font-weight: 700; }
+
+/* ── mapa ──────────────────────────────────────────────────────────────── */
+/* A caixa é alta de propósito: dá área de toque para posicionar o pino.
+   O mundo projetado é ~2:1, então no zoom mínimo sobram faixas — o canvas
+   as pinta de oceano escuro, e elas somem assim que a pessoa aproxima. */
+.map {
+  position: relative;
+  width: 100%;
+  flex: 1 1 auto;
+  min-height: 260px;
+  max-height: 56vh;
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.map__canvas { display: block; touch-action: none; cursor: crosshair; outline-offset: -2px; }
+.map__status {
+  position: absolute; inset: 0; display: grid; place-content: center;
+  margin: 0; color: var(--muted); background: var(--bg-soft);
+}
+.map__status--error { color: var(--wrong); }
+/* cabeçalho fica no topo; o bloco do mapa é centralizado no que sobra */
+.screen--map .question--map { margin-top: auto; }
+.screen--map .map__footer,
+.screen--map .card--reveal { margin-bottom: auto; }
+.map__controls { position: absolute; right: 8px; bottom: 8px; display: grid; gap: 6px; }
+.map__controls button {
+  width: 38px; height: 38px; border-radius: 10px;
+  border: 1px solid var(--surface-2); background: rgb(11 16 32 / 0.82);
+  color: var(--text); font-size: 1.1rem; cursor: pointer;
+}
+.map__footer { display: grid; gap: 8px; }
+
+/* ── fim de jogo ───────────────────────────────────────────────────────── */
+.final-score { text-align: center; margin: 0; }
+.final-score strong { font-size: 3rem; color: var(--accent); }
+.final-score span { color: var(--muted); }
+.stats { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px 14px; justify-content: center; color: var(--muted); font-size: 0.9rem; }
+.rank-note { text-align: center; margin: 0; }
+.breakdown { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+.breakdown__row {
+  display: grid; grid-template-columns: 26px 1fr auto 44px;
+  gap: 8px; align-items: center; padding: 6px 8px;
+  background: var(--surface); border-radius: 8px; font-size: 0.88rem;
+}
+.breakdown__capital { color: var(--muted); }
+.breakdown__points { text-align: right; font-weight: 700; color: var(--accent); }
+
+/* ── ranking ───────────────────────────────────────────────────────────── */
+.ranking { list-style: none; margin: 0; padding: 0; display: grid; gap: 3px; }
+.ranking__row {
+  display: grid; grid-template-columns: 36px 1fr auto;
+  gap: 10px; padding: 10px 12px;
+  background: var(--surface); border-radius: 10px;
+}
+.ranking__row--me { outline: 2px solid var(--accent); }
+.ranking__pos { color: var(--muted); }
+.ranking__score { font-weight: 700; color: var(--accent); }
+
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}

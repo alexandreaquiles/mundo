@@ -4,6 +4,8 @@ export type Region = 'Africa' | 'Americas' | 'Asia' | 'Europe' | 'Oceania';
 export interface Country {
   cca2: string;
   cca3: string;
+  /** Código numérico ISO 3166-1; é o `id` das features do TopoJSON. */
+  ccn3: string;
   /** Nome em pt-BR, ex. "Brasil" */
   name: string;
   /** Capital em pt-BR, ex. "Brasília" */

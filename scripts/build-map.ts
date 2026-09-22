@@ -27,8 +27,10 @@ interface Job {
  */
 function dequantize(topo: any): any {
   if (!topo.transform) return topo;
-  const toPoint = transform(topo.transform);
-  const arcs = topo.arcs.map((arc: number[][]) => arc.map((p, i) => toPoint(p.slice() as [number, number], i)));
+  // o tipo publicado do topojson-client não expõe o índice do ponto,
+  // que é justamente o que reinicia o acumulador delta a cada arco
+  const toPoint = transform(topo.transform) as unknown as (p: number[], i: number) => number[];
+  const arcs = topo.arcs.map((arc: number[][]) => arc.map((p, i) => toPoint(p.slice(), i)));
   const out = { ...topo, arcs };
   delete out.transform;
   out.bbox = bbox(out);

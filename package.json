@@ -12,7 +12,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "typecheck": "tsc -b --noEmit false --emitDeclarationOnly false",
-    "deploy": "npm run build && wrangler deploy"
+    "deploy": "npm run build && wrangler deploy",
+    "build:icons": "tsx scripts/build-icons.ts"
   },
   "dependencies": {
     "d3-geo": "^3.1.1",
@@ -24,12 +25,15 @@
     "@cloudflare/vite-plugin": "^1.57.1",
     "@cloudflare/workers-types": "^5.20260922.1",
     "@types/d3-geo": "^3.1.1",
+    "@types/geojson": "^7946.0.16",
     "@types/node": "^26.6.2",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "@types/topojson-client": "^3.1.5",
     "@vitejs/plugin-react": "^6.1.1",
     "flag-icons": "^7.5.0",
+    "playwright": "^1.63.0",
+    "sharp": "^0.35.4",
     "topojson-simplify": "^3.0.3",
     "tsx": "^4.23.15",
     "typescript": "~5.9",

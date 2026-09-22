@@ -59,6 +59,8 @@ const countries = roster.map((c) => {
   return {
     cca2: c.cca2,
     cca3: c.cca3,
+    // id numérico usado pelo TopoJSON do Natural Earth
+    ccn3: c.ccn3,
     name: nameOverrides[c.cca3] ?? c.translations.por.common,
     capital: cap.pt,
     capitalLat: cap.lat,

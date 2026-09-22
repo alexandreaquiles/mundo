@@ -11,7 +11,8 @@ const readJson = <T>(p: string): T => JSON.parse(readFileSync(resolve(root, p), 
 
 const REGIONS: Region[] = ['Africa', 'Americas', 'Asia', 'Europe', 'Oceania'];
 const ptPtBlocklist = new Set(readJson<string[]>('data/pt-pt-blocklist.json'));
-const capitals = readJson<Record<string, { pt: string; reviewed: boolean }>>('data/capitals.pt-BR.json');
+const capitals = readJson<Record<string, { en: string; pt: string; reviewed: boolean }>>('data/capitals.pt-BR.json');
+const capitalBlocklist = new Set(readJson<string[]>('data/capitals-blocklist.json'));
 
 /**
  * Países cuja capital fica longe do centroide por motivo legítimo:
@@ -38,6 +39,7 @@ describe.each(COUNTRIES)('$cca3 ($name)', (c) => {
   it('tem códigos, nome e capital preenchidos', () => {
     expect(c.cca2).toMatch(/^[A-Z]{2}$/);
     expect(c.cca3).toMatch(/^[A-Z]{3}$/);
+    expect(c.ccn3).toMatch(/^[0-9]{3}$/);
     expect(c.name.trim()).not.toBe('');
     expect(c.capital.trim()).not.toBe('');
     expect(REGIONS).toContain(c.region);
@@ -76,6 +78,12 @@ describe('português do Brasil', () => {
     }
   });
 
+  it('não deixou nenhuma capital com a grafia em inglês', () => {
+    for (const c of COUNTRIES) {
+      expect(capitalBlocklist.has(c.capital), `${c.cca3}: "${c.capital}" está em inglês`).toBe(false);
+    }
+  });
+
   it('tem todas as 195 capitais revisadas à mão', () => {
     expect(Object.keys(capitals)).toHaveLength(195);
     for (const [code, row] of Object.entries(capitals)) {
@@ -87,15 +95,13 @@ describe('português do Brasil', () => {
 
 describe('mapa', () => {
   const topo = readJson<any>('public/data/world-50m.json');
-  const rawWorld = readJson<any[]>('node_modules/world-countries/countries.json');
-  const ccn3 = new Map(rawWorld.map((c) => [c.cca3, c.ccn3]));
   const ids = new Set(topo.objects.countries.geometries.map((g: any) => String(g.id)));
 
   /** Tuvalu é pequeno demais para o Natural Earth 50m; entra como marcador. */
   const KNOWN_WITHOUT_POLYGON = new Set(['TUV']);
 
   it('tem polígono para todo país, tirando as exceções conhecidas', () => {
-    const missing = COUNTRIES.filter((c) => !ids.has(String(ccn3.get(c.cca3))));
+    const missing = COUNTRIES.filter((c) => !ids.has(c.ccn3));
     expect(missing.map((c) => c.cca3).sort()).toEqual([...KNOWN_WITHOUT_POLYGON].sort());
   });
 

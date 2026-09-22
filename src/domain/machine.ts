@@ -4,6 +4,9 @@ import { buildCapitalOptions, buildFlagOptions, pickCountries } from './sampling
 import { haversineKm } from './geo';
 import { CAPITAL_POINTS, FLAG_POINTS, ROUNDS_PER_GAME, pinPoints } from './scoring';
 
+/** O pino não pode ser "errado": ele sempre vale de 0 a 100. */
+export type FailableStage = Exclude<RoundStage, 'pin'>;
+
 export type Screen = 'home' | 'playing' | 'gameover' | 'leaderboard';
 export type Phase = RoundStage | 'reveal' | 'failed';
 export type SubmitState = 'idle' | 'pending' | 'ok' | 'error' | 'offline';
@@ -21,7 +24,7 @@ export interface PlayingState {
   /** Escolha da pessoa, para destacar o botão errado na tela. */
   chosen: string | null;
   /** Em que etapa a rodada foi perdida; `null` enquanto ela segue viva. */
-  failedAt: RoundStage | null;
+  failedAt: FailableStage | null;
   pin: LngLat | null;
   distanceKm: number | null;
   roundPoints: number;
