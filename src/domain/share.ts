@@ -30,11 +30,16 @@ export interface ShareInput {
   url: string;
 }
 
-/** Quantas rodadas cabem numa linha da grade. */
-const POR_LINHA = 5;
+/**
+ * Quantas rodadas cabem numa linha da grade.
+ *
+ * Três, não cinco: cinco estouram a largura da bolha do WhatsApp, que então
+ * quebra a linha onde quiser e desmancha a grade (4+1, 1, 3+1...).
+ */
+const POR_LINHA = 3;
 
 /**
- * O texto que a pessoa cola no WhatsApp: as 15 rodadas numa grade de 3 por 5,
+ * O texto que a pessoa cola no WhatsApp: as 15 rodadas numa grade de 5 por 3,
  * cada uma com a bandeira do país e a cor do desfecho.
  *
  * A distância de cada pino não cabe aqui — cinco "🇸🇦🟢 8 km" numa linha

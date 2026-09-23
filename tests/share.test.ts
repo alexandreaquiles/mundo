@@ -76,13 +76,22 @@ describe('buildShareText', () => {
     expect(texto).not.toContain('melhor pino');
   });
 
-  it('agrupa as 15 rodadas em 3 linhas de 5', () => {
+  it('agrupa as 15 rodadas em 5 linhas de 3', () => {
     const results = Array.from({ length: 15 }, () => round({ points: 60 }));
     const grade = buildShareText({ score: 0, results, countryOf, url })
       .split('\n')
       .filter((l) => l.includes('🟡'));
-    expect(grade).toHaveLength(3);
-    for (const linha of grade) expect(linha.split(' ')).toHaveLength(5);
+    expect(grade).toHaveLength(5);
+    for (const linha of grade) expect(linha.split(' ')).toHaveLength(3);
+  });
+
+  it('mantém a linha estreita o bastante para a bolha do WhatsApp', () => {
+    const results = Array.from({ length: 15 }, () => round({ points: 60 }));
+    const grade = buildShareText({ score: 0, results, countryOf, url })
+      .split('\n')
+      .filter((l) => l.includes('🟡'));
+    // 3 células de 2 emojis + 2 espaços; foi a largura de 5 que o WhatsApp quebrou
+    for (const linha of grade) expect([...linha].length).toBeLessThanOrEqual(12);
   });
 
   it('põe pontuação no topo e link no fim', () => {
@@ -94,8 +103,8 @@ describe('buildShareText', () => {
   it('cabe em poucas linhas mesmo com as 15 rodadas', () => {
     const results = Array.from({ length: 15 }, () => round({ flagCorrect: false, points: 0 }));
     const linhas = buildShareText({ score: 0, results, countryOf, url }).split('\n');
-    // título + vazia + 3 da grade + vazia + link
-    expect(linhas).toHaveLength(7);
+    // título + vazia + 5 da grade + vazia + link
+    expect(linhas).toHaveLength(9);
   });
 
   it('fecha a última linha mesmo com rodadas de menos', () => {
@@ -103,8 +112,8 @@ describe('buildShareText', () => {
     const grade = buildShareText({ score: 0, results, countryOf, url })
       .split('\n')
       .filter((l) => l.includes('🟡'));
-    expect(grade).toHaveLength(2);
-    expect(grade[1]!.split(' ')).toHaveLength(2);
+    expect(grade).toHaveLength(3);
+    expect(grade[2]!.split(' ')).toHaveLength(1);
   });
 
   it('não quebra se o país não for encontrado', () => {
