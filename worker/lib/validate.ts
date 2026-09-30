@@ -1,4 +1,5 @@
-import { MAX_GAME_SCORE, ROUNDS_PER_GAME } from '../../src/domain/scoring';
+import { GAME_TIME_MS, MAX_GAME_SCORE, ROUNDS_PER_GAME } from '../../src/domain/scoring';
+import { RULESET } from '../../src/domain/ruleset';
 import { NAME_MAX } from '../../src/domain/limits';
 import type { ScoreSubmission } from '../types';
 
@@ -10,7 +11,16 @@ export { NAME_MAX };
  * é quem faz o trabalho de verdade.
  */
 const MIN_DURATION_MS = 5_000;
-const MAX_DURATION_MS = 3_600_000;
+/**
+ * O teto agora é o orçamento do relógio, não uma hora arbitrária: com 20 s por
+ * rodada, nenhuma partida honesta soma mais que 5 minutos.
+ *
+ * Isso também é o que barra uma aba antiga no cache do service worker, que
+ * jogaria sem relógio e mandaria o tempo de parede — quase sempre acima de
+ * 5 min. O `ruleset` abaixo é quem recusa esse caso de propósito; este limite
+ * é a rede embaixo dele.
+ */
+const MAX_DURATION_MS = GAME_TIME_MS;
 
 /**
  * Remove controles e invisíveis, colapsa espaços e corta no limite.
@@ -68,6 +78,10 @@ export function validateSubmission(body: unknown): Validation {
 
   if (!isPlayerId(b.playerId)) fields.push('playerId');
 
+  // Só a regra vigente entra. Um cliente velho não sabe do cronômetro, e deixá-lo
+  // enviar colocaria no ranking novo uma partida jogada sem relógio.
+  if (b.ruleset !== RULESET) fields.push('ruleset');
+
   if (fields.length > 0) return { ok: false, fields };
   return {
     ok: true,
@@ -78,6 +92,7 @@ export function validateSubmission(body: unknown): Validation {
       rounds: ROUNDS_PER_GAME,
       durationMs: durationMs as number,
       seed: b.seed as string,
+      ruleset: RULESET,
     },
   };
 }

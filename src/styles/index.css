@@ -66,6 +66,33 @@ body {
   line-height: 1;
 }
 
+/* ── relógio da rodada ─────────────────────────────────────────────────── */
+/* Fica acima do cabeçalho, dentro da `.screen`: assim herda o recorte da tela
+   e o `safe-area-inset`, em vez de eu ter de reimplementá-los num elemento
+   fixo — que no modo standalone do iOS acabaria embaixo da barra de status. */
+.timer {
+  height: 3px;
+  border-radius: 2px;
+  background: var(--surface);
+  overflow: hidden;
+}
+.timer__fill {
+  height: 100%;
+  transform-origin: left center;
+  /* a largura é escrita quadro a quadro em JS; só a cor faz transição */
+  transition: background-color 300ms linear;
+  background: var(--correct);
+}
+.timer[data-level='atencao'] .timer__fill { background: var(--accent); }
+.timer[data-level='aperto'] .timer__fill { background: var(--wrong); }
+/* nos últimos 25% a barra pulsa — urgência que não depende de ouvir o som */
+@media (prefers-reduced-motion: no-preference) {
+  .timer[data-level='aperto'] .timer__fill { animation: timer-pulse 700ms ease-in-out infinite; }
+}
+@keyframes timer-pulse {
+  50% { opacity: 0.45; }
+}
+
 .pips { display: flex; gap: 4px; list-style: none; margin: 0; padding: 0; }
 .pips__dot { flex: 1; height: 4px; border-radius: 2px; background: var(--surface); }
 .pips__dot--miss { background: var(--wrong); }

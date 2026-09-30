@@ -14,6 +14,8 @@ const round = (over: Partial<RoundResult>): RoundResult => ({
   guess: [0, 0],
   distanceKm: 500,
   points: 60,
+  ms: 4_000,
+  timedOut: false,
   ...over,
 });
 
@@ -56,6 +58,7 @@ describe('buildShareText', () => {
   it('resume a melhor cravada, e só entre as rodadas perfeitas', () => {
     const texto = buildShareText({
       score: 240,
+      durationMs: 222_000,
       results: [
         round({ cca3: 'BRA', points: MAX_ROUND_SCORE, distanceKm: 12 }),
         round({ cca3: 'ITA', points: MAX_ROUND_SCORE, distanceKm: 4 }),
@@ -71,14 +74,14 @@ describe('buildShareText', () => {
     expect(texto).not.toContain('12 km');
   });
 
-  it('não põe linha de resumo quando não houve rodada perfeita', () => {
-    const texto = buildShareText({ score: 10, results: [round({ points: 60 })], countryOf, url });
+  it('não põe a linha do pino quando não houve rodada perfeita', () => {
+    const texto = buildShareText({ score: 10, durationMs: 222_000, results: [round({ points: 60 })], countryOf, url });
     expect(texto).not.toContain('melhor pino');
   });
 
   it('agrupa as 15 rodadas em 5 linhas de 3', () => {
     const results = Array.from({ length: 15 }, () => round({ points: 60 }));
-    const grade = buildShareText({ score: 0, results, countryOf, url })
+    const grade = buildShareText({ score: 0, durationMs: 222_000, results, countryOf, url })
       .split('\n')
       .filter((l) => l.includes('🟡'));
     expect(grade).toHaveLength(5);
@@ -87,7 +90,7 @@ describe('buildShareText', () => {
 
   it('mantém a linha estreita o bastante para a bolha do WhatsApp', () => {
     const results = Array.from({ length: 15 }, () => round({ points: 60 }));
-    const grade = buildShareText({ score: 0, results, countryOf, url })
+    const grade = buildShareText({ score: 0, durationMs: 222_000, results, countryOf, url })
       .split('\n')
       .filter((l) => l.includes('🟡'));
     // 3 células de 2 emojis + 2 espaços; foi a largura de 5 que o WhatsApp quebrou
@@ -95,21 +98,21 @@ describe('buildShareText', () => {
   });
 
   it('põe pontuação no topo e link no fim', () => {
-    const linhas = buildShareText({ score: 430, results: [round({})], countryOf, url }).split('\n');
+    const linhas = buildShareText({ score: 430, durationMs: 222_000, results: [round({})], countryOf, url }).split('\n');
     expect(linhas[0]).toBe('Mundo — 430/1800');
     expect(linhas.at(-1)).toBe(url);
   });
 
   it('cabe em poucas linhas mesmo com as 15 rodadas', () => {
     const results = Array.from({ length: 15 }, () => round({ flagCorrect: false, points: 0 }));
-    const linhas = buildShareText({ score: 0, results, countryOf, url }).split('\n');
-    // título + vazia + 5 da grade + vazia + link
-    expect(linhas).toHaveLength(9);
+    const linhas = buildShareText({ score: 0, durationMs: 222_000, results, countryOf, url }).split('\n');
+    // título + vazia + 5 da grade + vazia + tempo + vazia + link
+    expect(linhas).toHaveLength(11);
   });
 
   it('fecha a última linha mesmo com rodadas de menos', () => {
     const results = Array.from({ length: 7 }, () => round({ points: 60 }));
-    const grade = buildShareText({ score: 0, results, countryOf, url })
+    const grade = buildShareText({ score: 0, durationMs: 222_000, results, countryOf, url })
       .split('\n')
       .filter((l) => l.includes('🟡'));
     expect(grade).toHaveLength(3);
@@ -117,7 +120,51 @@ describe('buildShareText', () => {
   });
 
   it('não quebra se o país não for encontrado', () => {
-    const texto = buildShareText({ score: 0, results: [round({ cca3: 'XXX' })], countryOf, url });
+    const texto = buildShareText({ score: 0, durationMs: 222_000, results: [round({ cca3: 'XXX' })], countryOf, url });
     expect(texto).toContain('🏳️');
+  });
+});
+
+describe('tempo no compartilhamento', () => {
+  const url = 'https://mundo.exemplo/';
+  const countryOf = (cca3: string) => BY_CCA3.get(cca3);
+
+  it('mostra o tempo da partida', () => {
+    const texto = buildShareText({
+      score: 430,
+      durationMs: 222_000,
+      results: [round({})],
+      countryOf,
+      url,
+    });
+    expect(texto).toContain('⏱ 3:42');
+  });
+
+  it('põe o tempo em linha própria, e não ao lado do placar', () => {
+    // é a linha mais larga que decide onde o WhatsApp quebra a bolha; juntar
+    // placar e tempo no título alargaria a mensagem inteira
+    const linhas = buildShareText({
+      score: 430,
+      durationMs: 222_000,
+      results: [round({})],
+      countryOf,
+      url,
+    }).split('\n');
+    expect(linhas[0]).toBe('Mundo — 430/1800');
+    expect(linhas.find((l) => l.includes('⏱'))).toBe('⏱ 3:42');
+  });
+
+  it('o tempo vem antes do melhor pino', () => {
+    const linhas = buildShareText({
+      score: 240,
+      durationMs: 60_000,
+      results: [round({ points: MAX_ROUND_SCORE, distanceKm: 8 })],
+      countryOf,
+      url,
+    }).split('\n');
+    const tempo = linhas.findIndex((l) => l.includes('⏱'));
+    const pino = linhas.findIndex((l) => l.includes('melhor pino'));
+    expect(tempo).toBeGreaterThan(-1);
+    expect(pino).toBe(tempo + 1);
   });
 });

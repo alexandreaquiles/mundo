@@ -2,10 +2,15 @@ import type { Country, LngLat, Option, RoundResult, RoundStage } from './types';
 import { rngFromSeed } from './rng';
 import { buildCapitalOptions, buildFlagOptions, pickCountries } from './sampling';
 import { haversineKm } from './geo';
-import { CAPITAL_POINTS, FLAG_POINTS, ROUNDS_PER_GAME, pinPoints } from './scoring';
+import { CAPITAL_POINTS, FLAG_POINTS, ROUND_TIME_MS, ROUNDS_PER_GAME, pinPoints } from './scoring';
 
-/** O pino não pode ser "errado": ele sempre vale de 0 a 100. */
-export type FailableStage = Exclude<RoundStage, 'pin'>;
+/**
+ * Em que etapa a rodada pode se perder.
+ *
+ * Inclui `pin` desde o cronômetro: um palpite no mapa não pode ser *errado*,
+ * porque vale de 0 a 100, mas pode nunca acontecer se o tempo acabar antes.
+ */
+export type FailableStage = RoundStage;
 
 export type Screen = 'home' | 'playing' | 'gameover';
 export type Phase = RoundStage | 'reveal' | 'failed';
@@ -26,10 +31,21 @@ export interface PlayingState {
   screen: 'playing';
   name: string;
   seed: string;
-  startedAt: number;
   countries: Country[];
   index: number;
   phase: Phase;
+  /**
+   * Quando o relógio desta rodada começou a correr. É a hora em que a bandeira
+   * apareceu, não a do início da partida: o orçamento de 20 s é por rodada.
+   */
+  roundStartedAt: number;
+  /**
+   * Quanto a rodada consumiu do relógio, preenchido no instante em que ela
+   * fecha. `null` enquanto ela segue viva.
+   */
+  roundMs: number | null;
+  /** A rodada em curso fechou por tempo esgotado. */
+  timedOut: boolean;
   flagOptions: Option[];
   capitalOptions: Option[];
   /** Escolha da pessoa, para destacar o botão errado na tela. */
@@ -69,10 +85,12 @@ export type GameState =
 export type Event =
   | { type: 'SET_NAME'; name: string }
   | { type: 'START'; seed: string; now: number; pool: readonly Country[] }
-  | { type: 'ANSWER_FLAG'; value: string }
-  | { type: 'ANSWER_CAPITAL'; value: string }
+  | { type: 'ANSWER_FLAG'; value: string; now: number }
+  | { type: 'ANSWER_CAPITAL'; value: string; now: number }
   | { type: 'DROP_PIN'; at: LngLat }
-  | { type: 'CONFIRM_PIN' }
+  | { type: 'CONFIRM_PIN'; now: number }
+  /** O relógio da rodada chegou a zero. */
+  | { type: 'TIMEOUT' }
   | { type: 'NEXT'; now: number }
   | { type: 'SUBMIT_START'; name: string }
   | { type: 'SUBMIT_STATE'; state: SubmitState }
@@ -112,7 +130,9 @@ function advance(s: PlayingState, result: RoundResult, now: number, pool: readon
       name: s.name,
       seed: s.seed,
       total,
-      durationMs: now - s.startedAt,
+      // a soma dos relógios, não o tempo de parede: ler a revelação com calma
+      // não pode custar posição no ranking
+      durationMs: results.reduce((acc, r) => acc + r.ms, 0),
       results,
       submit: 'idle',
       rank: null,
@@ -128,6 +148,10 @@ function advance(s: PlayingState, result: RoundResult, now: number, pool: readon
     ...s,
     index,
     phase: 'flag',
+    // o relógio da rodada nova começa agora, quando a bandeira aparece
+    roundStartedAt: now,
+    roundMs: null,
+    timedOut: false,
     ...optionsForRound(s.seed, index, country, pool),
     chosen: null,
     failedAt: null,
@@ -144,10 +168,35 @@ function closeRound(s: PlayingState): RoundResult {
     cca3: currentCountry(s).cca3,
     reached: s.failedAt ?? 'done',
     flagCorrect: s.failedAt !== 'flag',
-    capitalCorrect: s.failedAt === null,
+    // perder no pino por tempo não desfaz a capital que já tinha sido acertada
+    capitalCorrect: s.failedAt !== 'flag' && s.failedAt !== 'capital',
     guess: s.pin,
     distanceKm: s.distanceKm,
     points: s.roundPoints,
+    // `roundMs` é preenchido por quem fecha a rodada; o fallback é defensivo
+    ms: s.roundMs ?? ROUND_TIME_MS,
+    timedOut: s.timedOut,
+  };
+}
+
+/** Quanto do relógio a rodada gastou, sem passar do orçamento. */
+const spent = (s: PlayingState, now: number) =>
+  Math.min(Math.max(0, now - s.roundStartedAt), ROUND_TIME_MS);
+
+/**
+ * Pontua o pino e vai para a revelação. Serve aos dois caminhos que fecham a
+ * rodada com um palpite no mapa: confirmar e o tempo acabar com o pino posto.
+ */
+function scorePin(s: PlayingState, pin: LngLat, roundMs: number, timedOut: boolean): PlayingState {
+  const country = currentCountry(s);
+  const distanceKm = haversineKm(pin, [country.capitalLng, country.capitalLat]);
+  return {
+    ...s,
+    phase: 'reveal',
+    distanceKm,
+    roundPoints: s.roundPoints + pinPoints(distanceKm),
+    roundMs,
+    timedOut,
   };
 }
 
@@ -165,10 +214,12 @@ export function reducer(state: GameState, event: Event, pool: readonly Country[]
         screen: 'playing',
         name,
         seed: event.seed,
-        startedAt: event.now,
         countries,
         index: 0,
         phase: 'flag',
+        roundStartedAt: event.now,
+        roundMs: null,
+        timedOut: false,
         ...optionsForRound(event.seed, 0, first, pool),
         chosen: null,
         failedAt: null,
@@ -183,9 +234,16 @@ export function reducer(state: GameState, event: Event, pool: readonly Country[]
     case 'ANSWER_FLAG': {
       if (state.screen !== 'playing' || state.phase !== 'flag') return state;
       const correct = currentCountry(state).cca3 === event.value;
+      // acertar não fecha a rodada: o relógio segue correndo para a capital
       return correct
         ? { ...state, phase: 'capital', chosen: event.value, roundPoints: state.roundPoints + FLAG_POINTS }
-        : { ...state, phase: 'failed', failedAt: 'flag', chosen: event.value };
+        : {
+            ...state,
+            phase: 'failed',
+            failedAt: 'flag',
+            chosen: event.value,
+            roundMs: spent(state, event.now),
+          };
     }
 
     case 'ANSWER_CAPITAL': {
@@ -193,7 +251,13 @@ export function reducer(state: GameState, event: Event, pool: readonly Country[]
       const correct = currentCountry(state).capital === event.value;
       return correct
         ? { ...state, phase: 'pin', chosen: null, roundPoints: state.roundPoints + CAPITAL_POINTS }
-        : { ...state, phase: 'failed', failedAt: 'capital', chosen: event.value };
+        : {
+            ...state,
+            phase: 'failed',
+            failedAt: 'capital',
+            chosen: event.value,
+            roundMs: spent(state, event.now),
+          };
     }
 
     case 'DROP_PIN':
@@ -202,14 +266,30 @@ export function reducer(state: GameState, event: Event, pool: readonly Country[]
 
     case 'CONFIRM_PIN': {
       if (state.screen !== 'playing' || state.phase !== 'pin' || !state.pin) return state;
-      const country = currentCountry(state);
-      const truth: LngLat = [country.capitalLng, country.capitalLat];
-      const distanceKm = haversineKm(state.pin, truth);
+      return scorePin(state, state.pin, spent(state, event.now), false);
+    }
+
+    /**
+     * O tempo acabou. A rodada fecha onde estava, guardando o que já rendeu:
+     * nada se foi na bandeira, os 10 da bandeira se foi na capital.
+     *
+     * A exceção é o pino já posto no mapa: ele conta. Quem marcou o palpite
+     * fez a sua parte, e tirá-lo por causa do relógio puniria quem agiu.
+     */
+    case 'TIMEOUT': {
+      if (state.screen !== 'playing') return state;
+      if (state.phase !== 'flag' && state.phase !== 'capital' && state.phase !== 'pin') return state;
+
+      if (state.phase === 'pin' && state.pin) return scorePin(state, state.pin, ROUND_TIME_MS, true);
+
       return {
         ...state,
-        phase: 'reveal',
-        distanceKm,
-        roundPoints: state.roundPoints + pinPoints(distanceKm),
+        phase: 'failed',
+        failedAt: state.phase,
+        // ninguém escolheu nada: não há botão a destacar como erro da pessoa
+        chosen: null,
+        roundMs: ROUND_TIME_MS,
+        timedOut: true,
       };
     }
 

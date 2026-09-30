@@ -3,6 +3,7 @@ import { Screen } from '../components/Chrome';
 import { BY_CCA3, flagUrl } from '../data/countries';
 import { MAX_GAME_SCORE } from '../domain/scoring';
 import { formatKm } from '../domain/geo';
+import { formatDuration } from '../domain/time';
 import { NAME_MAX } from '../domain/limits';
 import type { GameOverState } from '../domain/machine';
 
@@ -36,6 +37,7 @@ export function GameOverScreen({
   onLeaderboard,
 }: GameOverScreenProps) {
   const perfectRounds = state.results.filter((r) => r.points === 120).length;
+  const timedOut = state.results.filter((r) => r.timedOut).length;
   const best = state.results
     .map((r) => r.distanceKm)
     .filter((d): d is number => d !== null)
@@ -52,10 +54,12 @@ export function GameOverScreen({
       </p>
 
       <ul className="stats">
+        <li>tempo: <strong>{formatDuration(state.durationMs)}</strong></li>
         <li><strong>{state.results.filter((r) => r.flagCorrect).length}</strong>/15 bandeiras</li>
         <li><strong>{state.results.filter((r) => r.capitalCorrect).length}</strong>/15 capitais</li>
         {best !== undefined && <li>melhor pino: <strong>{formatKm(best)}</strong></li>}
         {perfectRounds > 0 && <li><strong>{perfectRounds}</strong> rodada(s) perfeita(s)</li>}
+        {timedOut > 0 && <li><strong>{timedOut}</strong> por tempo esgotado</li>}
       </ul>
 
       <div className="actions">

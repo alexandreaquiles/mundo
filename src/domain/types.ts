@@ -45,4 +45,8 @@ export interface RoundResult {
   guess: LngLat | null;
   distanceKm: number | null;
   points: number;
+  /** Quanto do relógio de 20 s a rodada consumiu. */
+  ms: number;
+  /** A rodada fechou porque o tempo acabou, e não por escolha da pessoa. */
+  timedOut: boolean;
 }

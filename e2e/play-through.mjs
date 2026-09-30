@@ -55,9 +55,9 @@ async function currentCountry() {
 }
 
 await page.goto(BASE, { waitUntil: 'networkidle' });
-await page.fill('#player-name', 'Playwright');
 await page.screenshot({ path: `${OUT}/01-home.png` });
-await page.click('button:has-text("Jogar")');
+// "Jogar" na primeira vez, "Jogar de novo" para quem o aparelho já conhece
+await page.click('.btn--primary');
 
 for (let round = 1; round <= 15; round++) {
   await page.waitForSelector('.flag', { timeout: 10_000 });
@@ -104,6 +104,12 @@ for (let round = 1; round <= 15; round++) {
 
 await page.waitForSelector('.screen--over', { timeout: 10_000 });
 await page.waitForTimeout(1500);
+// o nome é pedido no fim da partida, não na home
+if (await page.locator('#player-name').count()) {
+  await page.fill('#player-name', 'Playwright');
+  await page.click('.screen--over button[type="submit"]');
+  await page.waitForTimeout(2000);
+}
 await page.screenshot({ path: `${OUT}/07-fim.png`, fullPage: true });
 console.log('placar final:', (await page.textContent('.final-score')).replace(/\s+/g, ' ').trim());
 

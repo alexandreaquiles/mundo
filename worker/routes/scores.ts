@@ -8,6 +8,7 @@ import type {
 import type { Env } from '../env';
 import { hashIp, isPlayerId, normaliseName, validateSubmission } from '../lib/validate';
 import { adoptLegacyRows, isAvailableFor, ownerOf } from '../lib/identity';
+import { RULESET } from '../../src/domain/ruleset';
 
 const MAX_BODY_BYTES = 4096;
 const MAX_LIMIT = 100;
@@ -41,12 +42,26 @@ const ORDER = 'score DESC, duration_ms ASC, created_at ASC';
  */
 const IDENTITY = `COALESCE(player_id, 'legado:' || name)`;
 
+/**
+ * O ranking mostra só as partidas da regra vigente.
+ *
+ * É isso que zera a tabela quando a regra muda, sem apagar linha nenhuma — e é
+ * o que mantém a ordem honesta: 1800 pontos sem cronômetro e 1800 pontos com
+ * 20 s por rodada não medem a mesma coisa.
+ *
+ * Vale para tudo que alimenta o ranking, e para nada além disso: a posse de um
+ * nome (`ownerOf`) e a contagem de abusos por IP atravessam as regras de
+ * propósito, porque quem é dono de "Alexandre Aquiles" continua sendo dono, e
+ * quem abusa não ganha cota nova por a regra ter virado.
+ */
+const VIGENTE = `hidden = 0 AND ruleset = ${RULESET}`;
+
 const BEST_PER_PLAYER = `
   WITH ranked AS (
     SELECT id, name, score, duration_ms, country, created_at, player_id,
            ROW_NUMBER() OVER (PARTITION BY ${IDENTITY} ORDER BY ${ORDER}) AS rn,
            COUNT(*)     OVER (PARTITION BY ${IDENTITY}) AS attempts
-      FROM scores WHERE hidden = 0
+      FROM scores WHERE ${VIGENTE}
   ),
   best AS (SELECT * FROM ranked WHERE rn = 1)`;
 
@@ -129,7 +144,7 @@ export async function postScore(request: Request, env: Env): Promise<Response> {
     return json({ error: 'Muitos envios nesta hora.' }, 429);
   }
 
-  const { name, score, rounds, durationMs, seed } = result.value;
+  const { name, score, rounds, durationMs, seed, ruleset } = result.value;
   const country = (request as Request & { cf?: { country?: string } }).cf?.country ?? null;
   const id = crypto.randomUUID();
 
@@ -137,10 +152,10 @@ export async function postScore(request: Request, env: Env): Promise<Response> {
   if (ownership.kind === 'herdado') await adoptLegacyRows(env, name, playerId);
 
   await env.DB.prepare(
-    `INSERT INTO scores (id, name, score, rounds, duration_ms, seed, country, ip_hash, hidden, created_at, player_id)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, 0, ?, ?)`,
+    `INSERT INTO scores (id, name, score, rounds, duration_ms, seed, country, ip_hash, hidden, created_at, player_id, ruleset)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, 0, ?, ?, ?)`,
   )
-    .bind(id, name, score, rounds, durationMs, seed, country, ipHash, now, playerId)
+    .bind(id, name, score, rounds, durationMs, seed, country, ipHash, now, playerId, ruleset)
     .run();
 
   // A posição é a da MELHOR partida deste jogador, que pode não ser a de agora.
@@ -205,7 +220,7 @@ export async function getPlayerAttempts(request: Request, env: Env): Promise<Res
   // jogador são as que compartilham a mesma identidade que ele.
   const { results } = await env.DB.prepare(
     `SELECT id, score, duration_ms, created_at
-       FROM scores WHERE hidden = 0
+       FROM scores WHERE ${VIGENTE}
         AND ${IDENTITY} = (SELECT ${IDENTITY} FROM scores WHERE name = ? LIMIT 1)
       ORDER BY ${ORDER} LIMIT ?`,
   )

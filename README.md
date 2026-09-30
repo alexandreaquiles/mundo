@@ -8,14 +8,39 @@ Quinze rodadas, os 195 países soberanos, ranking global.
 
 ## Como o jogo funciona
 
-Cada rodada tem três etapas encadeadas. Errar encerra a rodada ali — aparece
-a resposta certa por alguns segundos e a próxima bandeira entra.
+Cada rodada tem três etapas encadeadas e **20 segundos** para as três juntas.
+Errar encerra a rodada ali — aparece a resposta certa por alguns segundos e a
+próxima bandeira entra.
 
 | Etapa | Pontos |
 |---|---|
 | Acertar o país da bandeira | 10 |
 | Acertar a capital | 10 |
 | Marcar a capital no mapa | 0 a 100 |
+
+### O relógio
+
+Os 20 segundos são da rodada inteira, e não de cada etapa: bandeira, capital e
+pino dividem o mesmo orçamento. Quinze rodadas dão **5 minutos cravados**, que é
+o teto do tempo que vai ao ranking.
+
+Ele corre só enquanto há o que responder. As telas de revelação e de erro ficam
+de fora — ler a resposta com calma não pode custar tempo da rodada seguinte, nem
+posição no desempate.
+
+Estourar o tempo fecha a rodada onde ela está, guardando o que já rendeu: nada
+se foi na bandeira, os 10 da bandeira se foi na capital. A exceção é o pino já
+posto no mapa, que **conta**: quem marcou o palpite fez a sua parte, e tirá-lo
+por causa do relógio puniria quem agiu. Por isso `pin` entrou em `FailableStage`
+— um palpite no mapa não pode ser *errado*, mas pode nunca acontecer.
+
+A barra fininha no topo mostra o que resta, e o tique-taque acelera junto. O som
+não é enfeite: é ele que carrega essa informação para quem não está olhando a
+tela, e por isso a barra em si não é anunciada por leitor de tela.
+
+Esconder a aba não pausa nada. A barra é desenhada por `requestAnimationFrame`,
+que para em segundo plano, mas quem mede o tempo é o reducer a partir de
+`roundStartedAt` — ao voltar, a barra já está no fim e a rodada estoura na hora.
 
 O pino vale 100 pontos se cair a menos de 25 km da capital, e vai caindo
 exponencialmente até zerar aos 5.000 km. A distância é de grande círculo
@@ -30,7 +55,7 @@ Precisa de Node 22.
 ```bash
 npm install
 npm run build:data                       # gera os dados, o mapa e as bandeiras
-npx wrangler d1 execute mundo-scores --local --file=migrations/0001_create_scores.sql
+npx wrangler d1 migrations apply mundo-scores --local
 npm run dev                              # SPA e /api juntos, em http://localhost:5173
 ```
 
@@ -38,7 +63,7 @@ O `@cloudflare/vite-plugin` roda o Worker dentro do servidor do Vite, com um D1
 local de verdade em `.wrangler/state`. Não é preciso subir dois processos.
 
 ```bash
-npm test          # 877 testes: dados, pontuação, sorteio, projeção, máquina de estados, API
+npm test          # 903 testes: relógio, dados, pontuação, sorteio, projeção, máquina de estados, API
 npm run build     # build de produção
 npm run preview   # serve o build, com service worker ativo
 ```
@@ -191,10 +216,27 @@ Partidas anteriores a essa mudança ficaram com `player_id` nulo e continuam
 agrupadas por nome. Quem reivindicar aquele nome herda essas partidas — é o que
 a migration `0002` prepara.
 
+**Uma regra por tabela.** A coluna `ruleset` diz em que conjunto de regras a
+partida foi jogada, e o ranking mostra só a vigente. É assim que o cronômetro
+zerou a tabela sem apagar linha nenhuma: as partidas sem tempo limite ficaram na
+regra 1, com placar e data intactos, e simplesmente saíram de vista.
+
+Não é só prudência. 1800 pontos sem relógio e 1800 pontos com 20 s por rodada
+não medem a mesma coisa, e ordená-los na mesma tabela seria mentir sobre quem
+jogou melhor. O `duration_ms` mudou de sentido junto: era o tempo de parede da
+partida, agora é a soma dos relógios das 15 rodadas.
+
+O filtro vale para tudo que alimenta o ranking e para nada além disso. A posse
+de um nome atravessa as regras de propósito — quem é dono de um nome continua
+sendo —, e a contagem de abusos por IP também, porque ninguém ganha cota nova
+por a regra ter virado.
+
 A ordem total (`score DESC, duration_ms ASC, created_at ASC`) vive numa constante
 única no Worker porque a listagem e o cálculo de posição **precisam** concordar:
 se divergirem, o "você está em 12º" aponta para a linha errada e a janela de
-vizinhos desloca junto.
+vizinhos desloca junto. Pelo mesmo motivo o tempo que aparece no resumo da
+partida e no compartilhamento é esse `duration_ms`, e não outro número: mostrar
+um e ordenar por outro já deu problema neste projeto uma vez.
 
 Quem não aparece na página carregada vê a própria vizinhança num bloco à parte,
 em vez de não se achar no ranking.

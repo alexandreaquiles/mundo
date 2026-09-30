@@ -3,6 +3,7 @@ import { COUNTRIES } from './data/countries';
 import { type Event, type GameState, initialState, reducer } from './domain/machine';
 import { randomSeed } from './domain/rng';
 import { ROUNDS_PER_GAME } from './domain/scoring';
+import { RULESET } from './domain/ruleset';
 import { useSettings } from './hooks/useSettings';
 import { haptics, sfx, unlockAudio } from './audio/sfx';
 import {
@@ -15,6 +16,7 @@ import {
   type PlayerSummary,
 } from './api/client';
 import { Pips, Screen, ScoreBar } from './components/Chrome';
+import { TimerBar } from './components/TimerBar';
 import { HomeScreen } from './screens/HomeScreen';
 import { CapitalQuestion, FlagQuestion } from './screens/QuestionScreen';
 import { FailedCard, RevealCard } from './screens/RoundResultScreen';
@@ -75,6 +77,7 @@ export default function App() {
         rounds: ROUNDS_PER_GAME,
         durationMs: partida.durationMs,
         seed: partida.seed,
+        ruleset: RULESET,
       };
       dispatch({ type: 'SUBMIT_START', name });
       settings.rememberName(name);
@@ -134,8 +137,10 @@ export default function App() {
   }, [state, dispatch, enviar, settings.rememberedName]);
 
   // Som do resultado do pino, com a frequência subindo junto com os pontos.
+  // Quando foi o relógio que fechou a rodada, o zumbido do `timeout` já tocou
+  // e este fica de fora: os dois juntos viram barulho.
   useEffect(() => {
-    if (state.screen === 'playing' && state.phase === 'reveal' && state.distanceKm !== null) {
+    if (state.screen === 'playing' && state.phase === 'reveal' && state.distanceKm !== null && !state.timedOut) {
       sfx.reveal(state.roundPoints - 20);
       state.roundPoints > 20 ? haptics.correct() : haptics.wrong();
     }
@@ -155,12 +160,26 @@ export default function App() {
     dispatch({ type: 'START', seed: randomSeed(), now: Date.now(), pool: COUNTRIES });
   };
 
+  /**
+   * O relógio da rodada chegou a zero.
+   *
+   * Estável de propósito: a `TimerBar` tem isto nas dependências do efeito que
+   * roda o `requestAnimationFrame`, e um callback novo a cada render reiniciaria
+   * o laço — junto com o andamento do tique-taque.
+   */
+  const estourarTempo = useCallback(() => {
+    sfx.timeout();
+    haptics.timeout();
+    dispatch({ type: 'TIMEOUT' });
+  }, [dispatch]);
+
   /** Web Share no celular, área de transferência no desktop. */
   const compartilhar = useCallback(async () => {
     if (state.screen !== 'gameover') return;
     const text = buildShareText({
       score: state.total,
       results: state.results,
+      durationMs: state.durationMs,
       countryOf: (cca3) => BY_CCA3.get(cca3),
       url: location.origin,
     });
@@ -216,29 +235,32 @@ export default function App() {
   const country = state.countries[state.index]!;
   const truth: LngLat = [country.capitalLng, country.capitalLat];
   const onMap = state.phase === 'pin' || state.phase === 'reveal';
+  /** O relógio corre só onde há o que responder. */
+  const noRelogio = state.phase === 'flag' || state.phase === 'capital' || state.phase === 'pin';
 
   const answerFlag = (value: string) => {
     unlockAudio();
     const right = value === country.cca3;
     right ? sfx.correct() : sfx.wrong();
     right ? haptics.correct() : haptics.wrong();
-    dispatch({ type: 'ANSWER_FLAG', value });
+    dispatch({ type: 'ANSWER_FLAG', value, now: Date.now() });
   };
 
   const answerCapital = (value: string) => {
     const right = value === country.capital;
     right ? sfx.correct() : sfx.wrong();
     right ? haptics.correct() : haptics.wrong();
-    dispatch({ type: 'ANSWER_CAPITAL', value });
+    dispatch({ type: 'ANSWER_CAPITAL', value, now: Date.now() });
   };
 
   const confirmPin = () => {
     if (!state.pin) return;
-    dispatch({ type: 'CONFIRM_PIN' });
+    dispatch({ type: 'CONFIRM_PIN', now: Date.now() });
   };
 
   return (
     <Screen className={onMap ? 'screen--map' : 'screen--question'}>
+      <TimerBar startedAt={state.roundStartedAt} running={noRelogio} onExpire={estourarTempo} />
       <ScoreBar
         round={state.index}
         // soma a rodada em curso: os 10 da bandeira têm de aparecer na hora
@@ -258,6 +280,7 @@ export default function App() {
         <FailedCard
           country={country}
           failedAt={state.failedAt}
+          timedOut={state.timedOut}
           onNext={() => dispatch({ type: 'NEXT', now: Date.now() })}
         />
       )}

@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { NAME_MAX, isPlayerId, normaliseName, validateSubmission } from '../../worker/lib/validate';
-import { MAX_GAME_SCORE } from '../../src/domain/scoring';
+import { GAME_TIME_MS, MAX_GAME_SCORE } from '../../src/domain/scoring';
+import { RULESET } from '../../src/domain/ruleset';
 
 const PLAYER = 'a'.repeat(32);
 const valid = {
@@ -8,8 +9,9 @@ const valid = {
   name: 'Ana',
   score: 1240,
   rounds: 15,
-  durationMs: 300_000,
+  durationMs: 222_000,
   seed: 'a1b2c3d4',
+  ruleset: RULESET,
 };
 
 describe('normaliseName', () => {
@@ -80,5 +82,42 @@ describe('validateSubmission', () => {
     for (const body of [null, undefined, 'texto', 42, []]) {
       expect(validateSubmission(body).ok).toBe(false);
     }
+  });
+});
+
+describe('cronômetro e regra vigente', () => {
+  it('recusa quem não declara a regra', () => {
+    const { ruleset, ...semRegra } = valid;
+    void ruleset;
+    const r = validateSubmission(semRegra);
+    expect(r.ok).toBe(false);
+    if (!r.ok) expect(r.fields).toContain('ruleset');
+  });
+
+  it('recusa uma regra que não é a vigente', () => {
+    // é este caso que barra uma aba antiga no cache do service worker, que
+    // jogaria sem relógio e entraria no ranking novo
+    for (const ruleset of [RULESET - 1, RULESET + 1, '2', null]) {
+      const r = validateSubmission({ ...valid, ruleset });
+      expect(r.ok).toBe(false);
+      if (!r.ok) expect(r.fields).toContain('ruleset');
+    }
+  });
+
+  it('aceita exatamente o orçamento do relógio', () => {
+    expect(validateSubmission({ ...valid, durationMs: GAME_TIME_MS }).ok).toBe(true);
+  });
+
+  it('recusa tempo acima do orçamento', () => {
+    // nenhuma partida honesta soma mais que os 15 relógios de 20 s
+    const r = validateSubmission({ ...valid, durationMs: GAME_TIME_MS + 1 });
+    expect(r.ok).toBe(false);
+    if (!r.ok) expect(r.fields).toContain('durationMs');
+  });
+
+  it('devolve a regra vigente em vez de confiar no que veio', () => {
+    const r = validateSubmission(valid);
+    expect(r.ok).toBe(true);
+    if (r.ok) expect(r.value.ruleset).toBe(RULESET);
   });
 });

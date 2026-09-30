@@ -56,6 +56,30 @@ export const sfx = {
   finish() {
     [523.25, 659.25, 783.99, 1046.5].forEach((f, i) => blip(f, i * 0.11, 0.26));
   },
+  /**
+   * Meio tique-taque do relógio da rodada. `high` alterna o "tic" e o "tac";
+   * `urgency` vai de 0 a 1 conforme o tempo se esgota, subindo o tom e o
+   * volume — quem acelera o andamento é quem chama.
+   *
+   * Muito curto e seco de propósito: vai tocar centenas de vezes por partida,
+   * e uma nota com cauda viraria tortura.
+   */
+  tick(high: boolean, urgency = 0) {
+    const base = high ? 1180 : 860;
+    blip(base * (1 + 0.18 * urgency), 0, 0.028, 'square', 0.035 + 0.05 * urgency);
+  },
+  /**
+   * O tempo acabou. Duas serras desafinadas de propósito — 233 contra 220 Hz
+   * batem a 13 Hz e dão o zumbido de campainha — e depois a queda.
+   *
+   * Tem de ser distinto do `wrong()`: errar a resposta e perder no relógio são
+   * coisas diferentes, e a pessoa está olhando o mapa, não a barra.
+   */
+  timeout() {
+    blip(233.08, 0, 0.3, 'sawtooth', 0.14);
+    blip(220, 0, 0.3, 'sawtooth', 0.12);
+    blip(155.56, 0.26, 0.34, 'sawtooth', 0.13);
+  },
 };
 
 const canVibrate = typeof navigator !== 'undefined' && 'vibrate' in navigator;
@@ -65,4 +89,6 @@ export const haptics = {
   correct: () => enabled && canVibrate && navigator.vibrate(25),
   wrong: () => enabled && canVibrate && navigator.vibrate([35, 55, 35]),
   drop: () => enabled && canVibrate && navigator.vibrate(12),
+  /** Mais longo que o de errar: o relógio estourando merece um susto próprio. */
+  timeout: () => enabled && canVibrate && navigator.vibrate([90, 70, 90, 70, 160]),
 };

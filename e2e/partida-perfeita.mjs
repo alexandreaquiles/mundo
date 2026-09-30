@@ -34,11 +34,14 @@ const countries = JSON.parse(
 );
 
 /**
- * O Worker recusa partida com menos de 5 s (`MIN_DURATION_MS`), que é o
- * anti-abuso mais básico do ranking. Um robô fecha as 15 rodadas bem abaixo
- * disso, então o piso vira parte do roteiro em vez de virar um 400.
+ * O Worker recusa partida com menos de 5 s somados (`MIN_DURATION_MS`).
+ *
+ * Desde o cronômetro esse tempo é a soma dos relógios das 15 rodadas, e não o
+ * tempo de parede: esperar no fim da partida não conta mais nada. Quem tem de
+ * gastar o tempo é cada rodada, daí a pausa antes de responder.
  */
 const PISO_MS = 5_000;
+const PAUSA_POR_RODADA_MS = Math.ceil(PISO_MS / 15) + 50;
 
 try {
   await fetch(BASE, { signal: AbortSignal.timeout(8000) });
@@ -77,6 +80,8 @@ for (let round = 1; round <= 15; round++) {
   await page.waitForSelector('.flag', { timeout: 10_000 });
   const country = await currentCountry();
 
+  // gasta um naco do relógio desta rodada, para a soma passar do piso
+  await page.waitForTimeout(PAUSA_POR_RODADA_MS);
   await page.click(`.option:text-is("${country.name}")`);
   await page.waitForSelector(`.option:text-is("${country.capital}")`, { timeout: 5_000 });
   await page.click(`.option:text-is("${country.capital}")`);
@@ -116,12 +121,8 @@ await page.waitForSelector('.screen--over', { timeout: 10_000 });
 const jogo = Date.now() - t0;
 console.log(`15 rodadas em ${(jogo / 1000).toFixed(1)} s — pinos: ${distancias.join(', ')} km`);
 
-// respeita o piso do Worker antes de enviar
-const falta = PISO_MS - (Date.now() - t0);
-if (falta > 0) {
-  console.log(`esperando ${(falta / 1000).toFixed(1)} s para passar do piso de 5 s do Worker`);
-  await page.waitForTimeout(falta + 250);
-}
+const relogio = (await page.textContent('.stats')).match(/tempo:\s*(\d+:\d\d)/);
+console.log('relógio somado:', relogio ? relogio[1] : '?');
 
 await page.fill('#player-name', NOME);
 await page.click('.screen--over button[type="submit"]');

@@ -17,6 +17,19 @@ export const ROUNDS_PER_GAME = 15;
 export const MAX_ROUND_SCORE = FLAG_POINTS + CAPITAL_POINTS + PIN_MAX_POINTS;
 export const MAX_GAME_SCORE = ROUNDS_PER_GAME * MAX_ROUND_SCORE;
 
+/**
+ * O relógio de cada rodada. São 20 s para a rodada *inteira* — bandeira,
+ * capital e pino dividem o mesmo orçamento, e é isso que faz a partida caber
+ * em 5 minutos cravados.
+ *
+ * O relógio corre só enquanto há o que responder: as telas de revelação e de
+ * erro ficam de fora, senão ler a resposta custaria tempo da rodada seguinte.
+ */
+export const ROUND_TIME_MS = 20_000;
+
+/** O orçamento da partida toda, que é o teto do tempo que vai ao ranking. */
+export const GAME_TIME_MS = ROUNDS_PER_GAME * ROUND_TIME_MS;
+
 const E_END = Math.exp(-1 / LAMBDA);
 
 /**

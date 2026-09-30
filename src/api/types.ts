@@ -6,8 +6,11 @@ export interface ScoreSubmission {
   name: string;
   score: number;
   rounds: number;
+  /** A soma dos relógios das rodadas. */
   durationMs: number;
   seed: string;
+  /** Em que conjunto de regras a partida foi jogada; ver `domain/ruleset.ts`. */
+  ruleset: number;
 }
 
 export interface SubmitResponse {

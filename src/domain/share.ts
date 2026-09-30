@@ -1,6 +1,7 @@
 import type { Country, RoundResult } from './types';
 import { MAX_GAME_SCORE, MAX_ROUND_SCORE } from './scoring';
 import { formatKm } from './geo';
+import { formatDuration } from './time';
 
 /**
  * Converte um código ISO de duas letras no emoji da bandeira, somando o
@@ -26,6 +27,8 @@ export function roundEmoji(result: RoundResult): string {
 export interface ShareInput {
   score: number;
   results: RoundResult[];
+  /** A soma dos relógios das rodadas — o mesmo número que o ranking desempata. */
+  durationMs: number;
   countryOf: (cca3: string) => Country | undefined;
   url: string;
 }
@@ -46,7 +49,7 @@ const POR_LINHA = 3;
  * quebram em qualquer tela de celular. Ela vira uma linha de resumo com a
  * melhor cravada, que é a parte de que se tem orgulho.
  */
-export function buildShareText({ score, results, countryOf, url }: ShareInput): string {
+export function buildShareText({ score, results, durationMs, countryOf, url }: ShareInput): string {
   const celulas = results.map((r) => {
     const country = countryOf(r.cca3);
     return `${country ? flagEmoji(country.cca2) : '🏳️'}${roundEmoji(r)}`;
@@ -59,11 +62,17 @@ export function buildShareText({ score, results, countryOf, url }: ShareInput): 
 
   const linhas = [`Mundo — ${score}/${MAX_GAME_SCORE}`, '', ...grade];
 
+  // O tempo fica numa linha curta própria, e não ao lado do placar: é a largura
+  // da linha mais larga que decide onde o WhatsApp quebra a bolha.
+  const resumo = [`⏱ ${formatDuration(durationMs)}`];
+
   const melhorPino = results
     .filter((r) => r.points === MAX_ROUND_SCORE && r.distanceKm !== null)
     .map((r) => r.distanceKm!)
     .sort((a, b) => a - b)[0];
-  if (melhorPino !== undefined) linhas.push('', `🟢 melhor pino: ${formatKm(melhorPino)}`);
+  if (melhorPino !== undefined) resumo.push(`🟢 melhor pino: ${formatKm(melhorPino)}`);
+
+  linhas.push('', ...resumo);
 
   return [...linhas, '', url].join('\n');
 }
