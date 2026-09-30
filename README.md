@@ -151,6 +151,30 @@ partida inteira sem montar um componente.
 Projeção **Equal Earth**, que preserva áreas — importante porque o jogo pontua
 por distância real, e num Mercator a pessoa aprenderia a geografia errada.
 
+**O meridiano central é 30°L, não Greenwich.** Com centro em 0° a emenda do
+mapa cai em 180°, no meio da Polinésia: Nova Zelândia e Fiji eram fatiadas ao
+meio na borda, e Samoa e Kiribati apareciam do lado oposto da tela em relação
+aos vizinhos — Fiji em 0,98 da largura e Samoa em 0,03. Quem procurasse Samoa
+perto de Fiji não achava.
+
+Vale registrar o que *não* era o problema, porque a intuição erra aqui: não é a
+família da projeção. Natural Earth e equirretangular deixam Samoa e Kiribati
+exatamente na mesma borda errada, porque o defeito é onde o mapa se emenda, não
+como ele achata. Trocar Equal Earth por outra coisa custaria a área preservada
+sem consertar nada.
+
+Em 30° a emenda vai para 150°O, Pacífico aberto. Os países do jogo cortados
+caem de 5 para 3, e os que sobram são territórios ultramarinos que já são ilhas
+soltas em vez de massas contínuas partidas. A capital mais espremida sai de
+0,5% da largura até a borda para 6,6%. Dois centros melhores pelo número puro
+(46°L dá 10,8% de folga) foram descartados porque achatavam as Américas ou
+mandavam o Brasil para a borda — o ótimo aritmético tratava Kiribati e
+Washington como igualmente importantes, e o sorteio do jogo não trata.
+
+Três testes seguram isso: a Oceania inteira tem de caber numa faixa estreita da
+tela, nenhuma capital pode ficar a menos de 4% da borda, e o Brasil não pode ir
+parar lá em troca.
+
 O zoom não é uma transformação aplicada no canvas: ele é absorvido pela própria
 projeção, reescrevendo escala e translação. Como `tela = raw·(s·k) + (t·k + d)`
 é igual a `k·tela₀ + d`, `projection.invert` continua exato e o pino não precisa

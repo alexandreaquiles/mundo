@@ -20,6 +20,20 @@ const BASE = process.argv[2] ?? 'http://localhost:5173/';
 const OUT = resolve(import.meta.dirname, 'screenshots');
 mkdirSync(OUT, { recursive: true });
 
+/**
+ * Lê o meridiano central de `src/map/projection.ts`.
+ *
+ * Duplicar o número aqui seria uma bomba-relógio: o pino é cravado a partir de
+ * uma projeção reconstruída fora do app, e se os dois valores divergissem o
+ * palpite cairia longe sem ninguém entender por quê.
+ */
+function meridianoCentral() {
+  const fonte = readFileSync(resolve(import.meta.dirname, '../src/map/projection.ts'), 'utf8');
+  const m = /export const CENTRAL_MERIDIAN = (-?[\d.]+)/.exec(fonte);
+  if (!m) throw new Error('não achei CENTRAL_MERIDIAN em src/map/projection.ts');
+  return Number(m[1]);
+}
+
 const countries = JSON.parse(
   readFileSync(resolve(import.meta.dirname, '../src/data/countries.json'), 'utf8'),
 );
@@ -83,7 +97,9 @@ for (let round = 1; round <= 15; round++) {
       const c = document.querySelector('.map__canvas');
       return { w: c.clientWidth, h: c.clientHeight };
     });
-    const projection = geoEqualEarth().fitExtent([[0, 0], [size.w, size.h]], { type: 'Sphere' });
+    const projection = geoEqualEarth()
+      .rotate([-meridianoCentral(), 0])
+      .fitExtent([[0, 0], [size.w, size.h]], { type: 'Sphere' });
     const [x, y] = projection([country.capitalLng, country.capitalLat]);
     target = { x: box.x + x, y: box.y + y };
   }
@@ -106,7 +122,10 @@ await page.waitForSelector('.screen--over', { timeout: 10_000 });
 await page.waitForTimeout(1500);
 // o nome é pedido no fim da partida, não na home
 if (await page.locator('#player-name').count()) {
-  await page.fill('#player-name', 'Playwright');
+  // Nome único por execução: o ranking amarra um nome ao `player_id` do
+  // aparelho, e cada Chromium do Playwright abre com perfil novo — repetir o
+  // nome faria a segunda rodagem levar 409 e o script falhar sozinho.
+  await page.fill('#player-name', `Playwright ${Date.now().toString(36)}`);
   await page.click('.screen--over button[type="submit"]');
   await page.waitForTimeout(2000);
 }

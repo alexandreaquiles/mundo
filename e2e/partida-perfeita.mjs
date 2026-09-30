@@ -29,6 +29,20 @@ const NOME = process.argv[3] ?? 'Playwright';
 const OUT = resolve(import.meta.dirname, 'screenshots');
 mkdirSync(OUT, { recursive: true });
 
+/**
+ * Lê o meridiano central de `src/map/projection.ts`.
+ *
+ * Duplicar o número aqui seria uma bomba-relógio: o pino é cravado a partir de
+ * uma projeção reconstruída fora do app, e se os dois valores divergissem o
+ * palpite cairia longe sem ninguém entender por quê.
+ */
+function meridianoCentral() {
+  const fonte = readFileSync(resolve(import.meta.dirname, '../src/map/projection.ts'), 'utf8');
+  const m = /export const CENTRAL_MERIDIAN = (-?[\d.]+)/.exec(fonte);
+  if (!m) throw new Error('não achei CENTRAL_MERIDIAN em src/map/projection.ts');
+  return Number(m[1]);
+}
+
 const countries = JSON.parse(
   readFileSync(resolve(import.meta.dirname, '../src/data/countries.json'), 'utf8'),
 );
@@ -100,7 +114,9 @@ for (let round = 1; round <= 15; round++) {
   });
 
   // a mesma projeção do app: Equal Earth ajustada à esfera na caixa do canvas
-  const projection = geoEqualEarth().fitExtent([[0, 0], [size.w, size.h]], { type: 'Sphere' });
+  const projection = geoEqualEarth()
+    .rotate([-meridianoCentral(), 0])
+    .fitExtent([[0, 0], [size.w, size.h]], { type: 'Sphere' });
   const [x, y] = projection([country.capitalLng, country.capitalLat]);
   await page.mouse.click(box.x + x, box.y + y);
 

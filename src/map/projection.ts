@@ -24,6 +24,25 @@ export interface MapProjection {
 }
 
 /**
+ * O meridiano central do mapa, em graus leste.
+ *
+ * Não é Greenwich, e isso é de propósito. Com centro em 0° a emenda do mapa
+ * cai em 180°, bem no meio da Polinésia: Nova Zelândia e Fiji eram fatiadas ao
+ * meio na borda, e Samoa e Kiribati apareciam do lado oposto do mapa em
+ * relação aos vizinhos — quem procurasse Samoa perto de Fiji não achava.
+ *
+ * Em 30° a emenda vai para 150°O, Pacífico aberto. Os cortes caem de 5 países
+ * do jogo para 3, e os que sobram são territórios ultramarinos que já são
+ * ilhas soltas, não massas contínuas partidas. A capital mais espremida sai de
+ * 0,5% da largura até a borda para 6% — e as Américas mantêm a forma, que é o
+ * que 46° ou 150° teriam custado.
+ *
+ * Quem reproduzir esta projeção fora daqui tem de usar o mesmo valor: os
+ * scripts em `e2e/` leem esta constante deste arquivo justamente por isso.
+ */
+export const CENTRAL_MERIDIAN = 30;
+
+/**
  * Equal Earth: preserva áreas, então a intuição de distância que a pessoa
  * ganha no mapa é a mesma que o jogo usa para pontuar. E tem `invert`.
  *
@@ -31,9 +50,12 @@ export interface MapProjection {
  * absorvido pela própria projeção (escala e translação). Isso importa porque
  * `projection.invert` continua exato, sem precisar desfazer nada à mão —
  * com `s' = s·k` e `t' = t·k + d`, temos `raw·s·k + t·k + d = k·tela₀ + d`.
+ *
+ * A rotação entra antes de tudo isso e não atrapalha: ela é parte da projeção,
+ * então `invert` continua desfazendo o caminho inteiro.
  */
 export function createProjection(width: number, height: number): MapProjection {
-  const projection = geoEqualEarth().fitExtent(
+  const projection = geoEqualEarth().rotate([-CENTRAL_MERIDIAN, 0]).fitExtent(
     [
       [0, 0],
       [width, height],

@@ -128,3 +128,47 @@ describe('viewFitting', () => {
     }
   });
 });
+
+describe('meridiano central', () => {
+  /** Onde a capital cai na largura da tela, de 0 (esquerda) a 1 (direita). */
+  const xDe = (nome: string, largura = 358, altura = 473) => {
+    const mp = createProjection(largura, altura);
+    const p = mp.apply(IDENTITY_VIEW);
+    const c = COUNTRIES.find((q) => q.name === nome)!;
+    return p([c.capitalLng, c.capitalLat])![0] / largura;
+  };
+
+  it('mantém a Oceania junta, sem ninguém dar a volta pelo outro lado', () => {
+    // Com o mapa emendado em 180° isto falhava do jeito mais feio possível:
+    // Fiji ficava em 0,98 e Samoa em 0,03 — vizinhas de verdade, em pontas
+    // opostas da tela. Quem procurasse Samoa perto de Fiji não achava.
+    const xs = ['Austrália', 'Nova Zelândia', 'Fiji', 'Samoa', 'Kiribati', 'Tuvalu', 'Tonga'].map(
+      (n) => xDe(n),
+    );
+    expect(Math.max(...xs) - Math.min(...xs)).toBeLessThan(0.25);
+  });
+
+  it('nenhuma capital fica espremida na borda', () => {
+    // A borda de uma pseudocilíndrica é onde os meridianos mais se fecham:
+    // é lá que a forma do país se deforma e o alvo fica difícil de acertar.
+    let pior = 1;
+    let quem = '';
+    for (const c of COUNTRIES) {
+      const x = xDe(c.name);
+      const folga = Math.min(x, 1 - x);
+      if (folga < pior) {
+        pior = folga;
+        quem = c.name;
+      }
+    }
+    // em 0° a pior era 0,005 (Tuvalu); em 30° é 0,066 (Samoa)
+    expect(pior, `a capital mais espremida é a de ${quem}`).toBeGreaterThan(0.04);
+  });
+
+  it('não empurra o Brasil para a borda em troca', () => {
+    // o remédio para a Oceania não pode criar o mesmo problema deste lado
+    const x = xDe('Brasil');
+    expect(x).toBeGreaterThan(0.15);
+    expect(x).toBeLessThan(0.5);
+  });
+});
