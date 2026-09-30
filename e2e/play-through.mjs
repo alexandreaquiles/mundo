@@ -30,13 +30,9 @@ function projecaoDoApp(largura, altura) {
   const frame = JSON.parse(
     readFileSync(resolve(import.meta.dirname, '../src/map/view-frame.json'), 'utf8'),
   );
-  const p = geoEqualEarth()
+  return geoEqualEarth()
     .rotate([-frame.centralMeridian, 0])
     .fitExtent([[0, 0], [largura, altura]], { type: 'Sphere' });
-  // o app centraliza a faixa habitada, não a esfera
-  const meio = (p([0, frame.north])[1] + p([0, frame.south])[1]) / 2;
-  const t = p.translate();
-  return p.translate([t[0], t[1] + (altura / 2 - meio)]);
 }
 
 const countries = JSON.parse(

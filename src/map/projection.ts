@@ -39,32 +39,11 @@ export interface MapProjection {
  * que 46° ou 150° teriam custado.
  *
  * O valor mora em `view-frame.json` porque os scripts em `e2e/` reconstroem
- * esta projeção por fora, em JavaScript puro, para cravar o pino. Repetir o
- * número lá seria uma bomba-relógio: divergir faria o palpite cair longe sem
- * ninguém entender por quê.
+ * esta projeção por fora, em JavaScript puro, para cravar o pino na capital
+ * exata. Repetir o número lá seria uma bomba-relógio: divergir faria o palpite
+ * cair longe sem ninguém entender por quê.
  */
 export const CENTRAL_MERIDIAN = frame.centralMeridian;
-
-/**
- * A faixa de latitudes que o mapa mostra. Fora dela não se desenha nem se
- * aceita palpite.
- *
- * A Antártida não tem capital, não tem país do jogo e nunca é resposta — e com
- * a terra clara ela virou a maior mancha da tela puxando o olho para o único
- * lugar que não interessa. O limite sul de -58° a tira inteira (a ponta da
- * península fica em -63°) e ainda deixa o Cabo Horn, em -56°, dentro.
- *
- * Ao norte, 84° guarda tudo: a capital mais setentrional é Reiquiavique, a
- * 64,2°, e a terra mais ao norte, na Groenlândia, chega a 83,6°.
- *
- * Isto **não aumenta o mapa** — a largura da tela é que limita, e recortar
- * latitude só tira altura. Quem aumenta é a tela cheia, sem margens.
- */
-export const VIEW_BAND = { south: frame.south, north: frame.north };
-
-/** O palpite tem de cair na faixa desenhada; fora dela não há mapa. */
-export const insideBand = ([, lat]: LngLat): boolean =>
-  lat >= VIEW_BAND.south && lat <= VIEW_BAND.north;
 
 /**
  * Equal Earth: preserva áreas, então a intuição de distância que a pessoa
@@ -87,13 +66,7 @@ export function createProjection(width: number, height: number): MapProjection {
     { type: 'Sphere' },
   );
   const baseScale = projection.scale();
-  const fitted = projection.translate() as [number, number];
-
-  // Centraliza a FAIXA, não a esfera. A esfera centralizada empurra o mundo
-  // habitado para cima, porque a Antártida ocupa boa parte da metade de baixo
-  // e ela some do desenho.
-  const meioDaFaixa = (projection([0, VIEW_BAND.north])![1] + projection([0, VIEW_BAND.south])![1]) / 2;
-  const baseTranslate: [number, number] = [fitted[0], fitted[1] + (height / 2 - meioDaFaixa)];
+  const baseTranslate = projection.translate() as [number, number];
 
   return {
     width,

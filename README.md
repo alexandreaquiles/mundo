@@ -181,51 +181,18 @@ JavaScript puro, para cravar o pino na capital exata. Repetir os números lá
 seria uma bomba-relógio: divergir faria o palpite cair longe sem ninguém
 entender por quê.
 
-### O recorte de latitude
+O mapa mostra o globo inteiro, polos incluídos, e a esfera não tem contorno: o
+oceano apenas desvanece no fundo da página. Houve uma versão com a Antártida
+recortada e um contorno claro em volta do mundo, e as duas coisas foram
+desfeitas por ficarem piores na tela de verdade — o recorte comia um pedaço da
+Groenlândia junto, e o contorno chamava atenção para a moldura em vez do mapa.
 
-O mapa mostra de −58° a 84°, e não o globo inteiro. A Antártida não tem
-capital, não tem país do jogo e nunca é resposta — e depois que a terra ficou
-clara ela virou a maior mancha da tela, puxando o olho para o único lugar que
-não interessa. O limite sul a tira inteira (a península chega a −63°) e ainda
-deixa o Cabo Horn, em −56°, dentro; ao norte, 84° guarda até a ponta da
-Groenlândia, em 83,6°.
-
-**Recortar latitude não aumenta o mapa**, e é bom ser explícito porque a
-intuição diz o contrário. O que limita o tamanho é a largura da tela: são 360°
-de longitude em 358 px, e a altura sai daí pela proporção ~2:1. Cortar em cima
-e embaixo só tira altura — o mundo inteiro dava 358×174, a faixa dá 358×157.
-
-Quem aumenta é a tela cheia: na rodada do mapa a `.map` recupera as margens da
-`.screen` e vai de 358 para 390 px, o que deixa **9% maior tudo o que dá para
-clicar**. Acima de 592 px de janela já sobra espaço e a margem volta.
-
-Como numa pseudocilíndrica todo paralelo vira uma reta horizontal, a faixa é um
-retângulo: o `clip` do canvas intersecta esse retângulo com a esfera e as
-laterais curvas saem de graça.
-
-Fora da faixa o toque é recusado. A inversão da projeção continua devolvendo
-coordenada boa acima e abaixo dela, mas ali não há mapa na tela — aceitar seria
-pontuar um toque no vazio.
-
-O zoom não é uma transformação aplicada no canvas: ele é absorvido pela própria
-projeção, reescrevendo escala e translação. Como `tela = raw·(s·k) + (t·k + d)`
-é igual a `k·tela₀ + d`, `projection.invert` continua exato e o pino não precisa
-desfazer transformação nenhuma à mão. Um teste confere ida e volta nas 195
-capitais, em quatro níveis de zoom e dois tamanhos de tela.
-
-O mapa vem em duas resoluções: a de 110m é desenhada durante o gesto e a de 50m
-no repouso, o que mantém a pinça fluida em celular.
-
-**A terra é clara e o oceano é escuro.** Antes eram dois azuis quase iguais, com
-1,52 de contraste entre eles — menos da metade dos 3,0 que um elemento gráfico
-precisa; os continentes mal se separavam da água. Agora são 5,73, e as
-fronteiras saíram de 1,64 para os mesmos 5,73.
-
-Clarear a terra, porém, quebra todo marcador escolhido contra fundo escuro: o
-pino do palpite caía de 6,97 para 1,28 em cima de um continente. Por isso cada
-marcador — pino, arco e ponto de microestado — ganhou uma casca escura e passou
-a carregar o próprio contraste. É nela que ele encosta, não na terra. Mexer nas
-cores do mapa sem mexer nas cascas faz os marcadores sumirem.
+Fica o registro para não se tentar de novo pelo motivo errado: **recortar
+latitude não aumenta o mapa**. O que limita é a largura da tela — 360° de
+longitude em 358 px — e a altura sai daí pela proporção ~2:1; cortar em cima e
+embaixo só tira altura. Quem aumenta é a tela cheia: na rodada do mapa a `.map`
+recupera as margens da `.screen` e vai de 358 para 390 px, o que deixa 9% maior
+tudo o que dá para clicar. Acima de 592 px de janela a margem volta.
 
 ### Os dados
 

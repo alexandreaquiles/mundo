@@ -1,6 +1,6 @@
 import { geoInterpolate, geoPath } from 'd3-geo';
 import type { LngLat } from '../domain/types';
-import { VIEW_BAND, type MapProjection, type View } from './projection';
+import type { MapProjection, View } from './projection';
 import type { WorldGeometry } from './geodata';
 
 export interface MicroMarker {
@@ -38,8 +38,6 @@ const COLORS = {
   backdrop: '#0b1020',
   ocean: '#0e2439',
   land: '#78a0c4',
-  /** Contorno da esfera: é ele que marca a borda do mundo contra o fundo. */
-  landEdge: '#3f6f99',
   /** Cor de água sobre a terra clara: separa país de país sem sujar. */
   border: '#0e2439',
   /** A casca escura que faz todo marcador ler sobre qualquer fundo. */
@@ -145,22 +143,10 @@ export function draw(ctx: CanvasRenderingContext2D, mp: MapProjection, scene: Sc
   const projection = mp.apply(view);
   const path = geoPath(projection, ctx);
 
-  // Recorte na faixa habitada. Numa pseudocilíndrica todo paralelo vira uma
-  // reta horizontal, então a faixa é um retângulo — e o `clip` do canvas
-  // intersecta com a esfera, dando as laterais curvas de graça.
-  const yNorte = projection([0, VIEW_BAND.north])![1];
-  const ySul = projection([0, VIEW_BAND.south])![1];
-
-  ctx.save();
   ctx.beginPath();
   path({ type: 'Sphere' });
-  ctx.clip();
-  ctx.beginPath();
-  ctx.rect(0, yNorte, mp.width, ySul - yNorte);
-  ctx.clip();
-
   ctx.fillStyle = COLORS.ocean;
-  ctx.fillRect(0, 0, mp.width, mp.height);
+  ctx.fill();
 
   // toda a terra num único caminho: um fill só para 241 países
   ctx.beginPath();
@@ -173,20 +159,6 @@ export function draw(ctx: CanvasRenderingContext2D, mp: MapProjection, scene: Sc
   ctx.lineWidth = Math.max(0.3, 0.7 / Math.sqrt(view.k));
   ctx.strokeStyle = COLORS.border;
   ctx.stroke();
-  ctx.restore();
-
-  // o contorno por último, por fora do recorte, para a borda não sair pela
-  // metade da espessura
-  ctx.save();
-  ctx.beginPath();
-  ctx.rect(0, yNorte, mp.width, ySul - yNorte);
-  ctx.clip();
-  ctx.beginPath();
-  path({ type: 'Sphere' });
-  ctx.lineWidth = 1;
-  ctx.strokeStyle = COLORS.landEdge;
-  ctx.stroke();
-  ctx.restore();
 
   // Microestados são sub-pixel numa vista do mundo inteiro — alguns nem têm
   // polígono nesta resolução. Um ponto garante que todo país seja marcável.

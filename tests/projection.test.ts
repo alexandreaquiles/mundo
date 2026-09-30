@@ -4,9 +4,7 @@ import {
   IDENTITY_VIEW,
   K_MAX,
   K_MAX_REVEAL,
-  VIEW_BAND,
   createProjection,
-  insideBand,
   viewFitting,
   zoomAbout,
   type View,
@@ -172,39 +170,5 @@ describe('meridiano central', () => {
     const x = xDe('Brasil');
     expect(x).toBeGreaterThan(0.15);
     expect(x).toBeLessThan(0.5);
-  });
-});
-
-describe('faixa desenhada', () => {
-  it('cabem todas as 195 capitais, com folga', () => {
-    // o recorte existe para tirar a Antártida, não para tirar alvo do jogo
-    for (const c of COUNTRIES) {
-      expect(insideBand([c.capitalLng, c.capitalLat]), `${c.capital} (${c.name})`).toBe(true);
-    }
-    const lats = COUNTRIES.map((c) => c.capitalLat);
-    expect(Math.min(...lats) - VIEW_BAND.south).toBeGreaterThan(10);
-    expect(VIEW_BAND.north - Math.max(...lats)).toBeGreaterThan(10);
-  });
-
-  it('recusa palpite na Antártida e no topo do Ártico', () => {
-    // a inversão devolve coordenada boa acima e abaixo da faixa, mas ali não
-    // há mapa desenhado na tela — aceitar seria pontuar um toque no vazio
-    expect(insideBand([0, -75])).toBe(false);
-    expect(insideBand([140, -90])).toBe(false);
-    expect(insideBand([0, 88])).toBe(false);
-  });
-
-  it('deixa passar o extremo sul habitado', () => {
-    expect(insideBand([-67.3, -55.9])).toBe(true); // Cabo Horn
-    expect(insideBand([-45.4, 83.6])).toBe(true); // ponta norte da Groenlândia
-  });
-
-  it('centraliza a faixa na tela, e não a esfera', () => {
-    // centralizar a esfera empurraria o mundo habitado para cima, porque a
-    // metade de baixo seria ocupada por uma Antártida que nem é desenhada
-    const [w, h] = [390, 473];
-    const p = createProjection(w, h).apply(IDENTITY_VIEW);
-    const meio = (p([0, VIEW_BAND.north])![1] + p([0, VIEW_BAND.south])![1]) / 2;
-    expect(meio).toBeCloseTo(h / 2, 6);
   });
 });
