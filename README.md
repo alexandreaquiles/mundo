@@ -175,6 +175,38 @@ Três testes seguram isso: a Oceania inteira tem de caber numa faixa estreita da
 tela, nenhuma capital pode ficar a menos de 4% da borda, e o Brasil não pode ir
 parar lá em troca.
 
+O meridiano e os limites da faixa moram em `src/map/view-frame.json`, e não no
+código, porque os scripts em `e2e/` reconstroem esta projeção por fora, em
+JavaScript puro, para cravar o pino na capital exata. Repetir os números lá
+seria uma bomba-relógio: divergir faria o palpite cair longe sem ninguém
+entender por quê.
+
+### O recorte de latitude
+
+O mapa mostra de −58° a 84°, e não o globo inteiro. A Antártida não tem
+capital, não tem país do jogo e nunca é resposta — e depois que a terra ficou
+clara ela virou a maior mancha da tela, puxando o olho para o único lugar que
+não interessa. O limite sul a tira inteira (a península chega a −63°) e ainda
+deixa o Cabo Horn, em −56°, dentro; ao norte, 84° guarda até a ponta da
+Groenlândia, em 83,6°.
+
+**Recortar latitude não aumenta o mapa**, e é bom ser explícito porque a
+intuição diz o contrário. O que limita o tamanho é a largura da tela: são 360°
+de longitude em 358 px, e a altura sai daí pela proporção ~2:1. Cortar em cima
+e embaixo só tira altura — o mundo inteiro dava 358×174, a faixa dá 358×157.
+
+Quem aumenta é a tela cheia: na rodada do mapa a `.map` recupera as margens da
+`.screen` e vai de 358 para 390 px, o que deixa **9% maior tudo o que dá para
+clicar**. Acima de 592 px de janela já sobra espaço e a margem volta.
+
+Como numa pseudocilíndrica todo paralelo vira uma reta horizontal, a faixa é um
+retângulo: o `clip` do canvas intersecta esse retângulo com a esfera e as
+laterais curvas saem de graça.
+
+Fora da faixa o toque é recusado. A inversão da projeção continua devolvendo
+coordenada boa acima e abaixo dela, mas ali não há mapa na tela — aceitar seria
+pontuar um toque no vazio.
+
 O zoom não é uma transformação aplicada no canvas: ele é absorvido pela própria
 projeção, reescrevendo escala e translação. Como `tela = raw·(s·k) + (t·k + d)`
 é igual a `k·tela₀ + d`, `projection.invert` continua exato e o pino não precisa

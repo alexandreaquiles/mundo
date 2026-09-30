@@ -6,6 +6,7 @@ import {
   clampView,
   createProjection,
   easeCubicInOut,
+  insideBand,
   lerpView,
   viewFitting,
   zoomAbout,
@@ -259,7 +260,13 @@ export function WorldMap({ guess, truth, truthLabel, onPick, revealing, reducedM
       // que sem sentido. A ida e volta separa o toque válido do toque no vazio.
       if (at && Number.isFinite(at[0]) && Number.isFinite(at[1])) {
         const back = projection([at[0], at[1]]);
-        if (back && Math.hypot(back[0] - point[0], back[1] - point[1]) < 1) {
+        // e tem de cair na faixa desenhada: acima e abaixo dela a inversão
+        // ainda devolve coordenada boa, mas ali não há mapa nenhum na tela
+        if (
+          back &&
+          Math.hypot(back[0] - point[0], back[1] - point[1]) < 1 &&
+          insideBand([at[0], at[1]])
+        ) {
           onPick([at[0], at[1]]);
         }
       }

@@ -46,6 +46,18 @@ body {
   .map { max-height: 62vh; }
 }
 .screen--map { gap: 10px; }
+/* Na rodada do mapa a tela vale mais que a margem: cada pixel de largura é
+   9% de mapa a mais, e a largura é o que limita o tamanho do mundo desenhado.
+   O `calc` devolve a margem que a `.screen` tirou. */
+.screen--map .map {
+  width: calc(100% + 2 * var(--gutter));
+  margin-left: calc(-1 * var(--gutter));
+  margin-right: calc(-1 * var(--gutter));
+}
+@media (min-width: 592px) {
+  /* acima da largura máxima da tela já sobra espaço: a margem volta */
+  .screen--map .map { width: 100%; margin-left: 0; margin-right: 0; }
+}
 
 /* ── cabeçalho ─────────────────────────────────────────────────────────── */
 .bar {

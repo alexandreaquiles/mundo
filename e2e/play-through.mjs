@@ -8,6 +8,7 @@
  *       node e2e/play-through.mjs [url]
  */
 import { chromium } from 'playwright';
+import { geoEqualEarth } from 'd3-geo';
 import { mkdirSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
@@ -21,17 +22,21 @@ const OUT = resolve(import.meta.dirname, 'screenshots');
 mkdirSync(OUT, { recursive: true });
 
 /**
- * Lê o meridiano central de `src/map/projection.ts`.
- *
- * Duplicar o número aqui seria uma bomba-relógio: o pino é cravado a partir de
- * uma projeção reconstruída fora do app, e se os dois valores divergissem o
- * palpite cairia longe sem ninguém entender por quê.
+ * Reconstrói, fora do app, a mesma projeção que ele usa — é assim que o pino é
+ * cravado na capital exata. Os números vêm de `src/map/view-frame.json`, o
+ * mesmo arquivo que o app lê, para os dois não poderem divergir.
  */
-function meridianoCentral() {
-  const fonte = readFileSync(resolve(import.meta.dirname, '../src/map/projection.ts'), 'utf8');
-  const m = /export const CENTRAL_MERIDIAN = (-?[\d.]+)/.exec(fonte);
-  if (!m) throw new Error('não achei CENTRAL_MERIDIAN em src/map/projection.ts');
-  return Number(m[1]);
+function projecaoDoApp(largura, altura) {
+  const frame = JSON.parse(
+    readFileSync(resolve(import.meta.dirname, '../src/map/view-frame.json'), 'utf8'),
+  );
+  const p = geoEqualEarth()
+    .rotate([-frame.centralMeridian, 0])
+    .fitExtent([[0, 0], [largura, altura]], { type: 'Sphere' });
+  // o app centraliza a faixa habitada, não a esfera
+  const meio = (p([0, frame.north])[1] + p([0, frame.south])[1]) / 2;
+  const t = p.translate();
+  return p.translate([t[0], t[1] + (altura / 2 - meio)]);
 }
 
 const countries = JSON.parse(
@@ -92,14 +97,11 @@ for (let round = 1; round <= 15; round++) {
   // inversão da projeção no app real dá exatamente 0 km
   let target = { x: box.x + box.width / 2, y: box.y + box.height / 2 };
   if (round === 1) {
-    const { geoEqualEarth } = await import('d3-geo');
     const size = await page.evaluate(() => {
       const c = document.querySelector('.map__canvas');
       return { w: c.clientWidth, h: c.clientHeight };
     });
-    const projection = geoEqualEarth()
-      .rotate([-meridianoCentral(), 0])
-      .fitExtent([[0, 0], [size.w, size.h]], { type: 'Sphere' });
+    const projection = projecaoDoApp(size.w, size.h);
     const [x, y] = projection([country.capitalLng, country.capitalLat]);
     target = { x: box.x + x, y: box.y + y };
   }
