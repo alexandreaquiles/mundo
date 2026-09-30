@@ -180,31 +180,31 @@ Os detalhes e a procedência estão em [`data/README.md`](data/README.md).
 
 ## Atualização do app
 
-A versão nova entra **sozinha, sem avisar** — mas nunca no meio de uma partida.
+A versão nova entra **sozinha, sem avisar**, com `registerType: 'autoUpdate'`:
+o service worker novo assume assim que chega e a página recarrega.
 
-O service worker continua em modo `prompt`: o novo instala, entra em `waiting` e
-espera alguém mandar ativar. Quem manda é `src/pwa/useAutoUpdate.ts`, e só
-quando a pessoa está na home. Não é `registerType: 'autoUpdate'` justamente por
-isso — aquele recarrega assim que a versão nova chega, e no meio de uma rodada
-isso joga fora a partida.
+Inclusive no meio de uma partida, que então se perde. É a troca escolhida de
+olhos abertos. O modo `prompt`, que espera um momento seguro, depende de alguém
+mandar ativar — e na prática muita gente ficava parada na versão antiga, que
+desde o cronômetro o Worker nem aceita mais no ranking. Uma partida perdida de
+vez em quando custa menos que um aparelho preso.
 
-A home é a única tela sem nada a perder: no jogo perderia o progresso, e no fim
-de partida perderia o resumo e a mensagem de compartilhamento antes de a pessoa
-usá-los. Se a versão nova chegar durante o jogo, ela espera o fim.
+O `sw.js` é buscado pelo navegador sozinho só de vez em quando, e de vez em
+quando é tarde demais: `src/pwa/useAutoUpdate.ts` procura também ao voltar para
+a aba e de hora em hora.
 
-A recarga acontece de preferência com a aba escondida, quando é invisível. Se a
-pessoa ficar parada na home, acontece assim mesmo depois de 3 segundos — senão
-quem só abre, joga e fecha nunca atualizaria. Esses 3 segundos também são a
-janela para tocar em "Jogar": se tocar, a troca espera a partida acabar.
+A home mostra o carimbo do build em "Como funciona a pontuação", que é o jeito
+rápido de saber em que versão um aparelho está.
 
-Alguém tem de mandar ativar. Sem esse hook — que foi o caso por alguns deploys —
-o app fica preso na versão antiga para sempre: o service worker novo instala,
-entra em `waiting` e ninguém nunca o ativa. Recarregar não resolve, porque o
-próprio `index.html` vem do cache do service worker.
+Duas coisas que valem saber antes de mexer aqui, porque as duas já mordem:
 
-O app procura versão nova ao voltar para a aba e de hora em hora. A home mostra
-o carimbo do build em "Como funciona a pontuação", que é o jeito rápido de saber
-se um aparelho pegou a atualização.
+- O service worker **não controla a primeira visita** em modo `prompt`, só a
+  partir da segunda. Testar a troca numa aba não controlada testa um caminho
+  que nenhum usuário percorre.
+- `autoUpdate` liga `skipWaiting` e `clientsClaim`, e essa combinação com o
+  `controllerchange` é a causa clássica de laço de recarga infinita. Ele não
+  acontece aqui — conferido contando navegações numa primeira visita — mas é a
+  primeira coisa a checar se alguém trocar essa configuração.
 
 O teto dessa mecânica: ela só vale para quem já está numa versão que a tem. Um
 aparelho parado numa versão anterior roda o código antigo, com o aviso de

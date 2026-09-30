@@ -12,12 +12,11 @@ export default defineConfig({
     react(),
     cloudflare(),
     VitePWA({
-      // Nunca trocar a versão no meio de uma partida: o service worker novo
-      // espera, e quem manda ativar é o `useAutoUpdate`, na home. Não é
-      // 'autoUpdate' justamente por isso — aquele recarrega assim que a versão
-      // nova chega, no meio da rodada inclusive. E sem alguém mandando ativar,
-      // o app fica preso na versão antiga para sempre: já aconteceu aqui.
-      registerType: 'prompt',
+      // A versão nova assume assim que chega e a página recarrega sozinha,
+      // mesmo no meio de uma partida — que então se perde. É a troca escolhida:
+      // o modo 'prompt', que espera um momento seguro, depende de alguém mandar
+      // ativar, e na prática muita gente ficava parada na versão antiga.
+      registerType: 'autoUpdate',
       // o registro vem de `virtual:pwa-register/react`; 'auto' registraria de novo
       injectRegister: null,
       includeAssets: ['favicon.svg', 'icons/apple-touch-icon.png'],
