@@ -180,18 +180,36 @@ Os detalhes e a procedência estão em [`data/README.md`](data/README.md).
 
 ## Atualização do app
 
-O service worker roda em modo `prompt`: a versão nova **espera** e só assume
-quando `src/pwa/ReloadPrompt.tsx` manda, para a troca não acontecer no meio de
-uma partida.
+A versão nova entra **sozinha, sem avisar** — mas nunca no meio de uma partida.
 
-Isso torna esse componente obrigatório. Sem ele — que foi o caso por alguns
-deploys — o app fica preso na versão antiga para sempre: o service worker novo
-instala, entra em `waiting` e ninguém nunca o ativa. Recarregar não resolve,
-porque o próprio `index.html` vem do cache do service worker.
+O service worker continua em modo `prompt`: o novo instala, entra em `waiting` e
+espera alguém mandar ativar. Quem manda é `src/pwa/useAutoUpdate.ts`, e só
+quando a pessoa está na home. Não é `registerType: 'autoUpdate'` justamente por
+isso — aquele recarrega assim que a versão nova chega, e no meio de uma rodada
+isso joga fora a partida.
+
+A home é a única tela sem nada a perder: no jogo perderia o progresso, e no fim
+de partida perderia o resumo e a mensagem de compartilhamento antes de a pessoa
+usá-los. Se a versão nova chegar durante o jogo, ela espera o fim.
+
+A recarga acontece de preferência com a aba escondida, quando é invisível. Se a
+pessoa ficar parada na home, acontece assim mesmo depois de 3 segundos — senão
+quem só abre, joga e fecha nunca atualizaria. Esses 3 segundos também são a
+janela para tocar em "Jogar": se tocar, a troca espera a partida acabar.
+
+Alguém tem de mandar ativar. Sem esse hook — que foi o caso por alguns deploys —
+o app fica preso na versão antiga para sempre: o service worker novo instala,
+entra em `waiting` e ninguém nunca o ativa. Recarregar não resolve, porque o
+próprio `index.html` vem do cache do service worker.
 
 O app procura versão nova ao voltar para a aba e de hora em hora. A home mostra
 o carimbo do build em "Como funciona a pontuação", que é o jeito rápido de saber
 se um aparelho pegou a atualização.
+
+O teto dessa mecânica: ela só vale para quem já está numa versão que a tem. Um
+aparelho parado numa versão anterior roda o código antigo, com o aviso de
+clicar — a atualização automática chega nele junto com a primeira troca, não
+antes dela.
 
 Se algum aparelho ficar preso mesmo assim, feche **todas** as abas ou janelas do
 site (no celular, encerre o app na lista de recentes) e abra de novo: sem nenhum

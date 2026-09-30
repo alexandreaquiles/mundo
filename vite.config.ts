@@ -13,8 +13,10 @@ export default defineConfig({
     cloudflare(),
     VitePWA({
       // Nunca trocar a versão no meio de uma partida: o service worker novo
-      // espera, e quem manda ativar é o <ReloadPrompt />. Sem esse componente
-      // o app fica preso na versão antiga para sempre — foi o que aconteceu.
+      // espera, e quem manda ativar é o `useAutoUpdate`, na home. Não é
+      // 'autoUpdate' justamente por isso — aquele recarrega assim que a versão
+      // nova chega, no meio da rodada inclusive. E sem alguém mandando ativar,
+      // o app fica preso na versão antiga para sempre: já aconteceu aqui.
       registerType: 'prompt',
       // o registro vem de `virtual:pwa-register/react`; 'auto' registraria de novo
       injectRegister: null,

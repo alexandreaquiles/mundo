@@ -24,6 +24,7 @@ import { GameOverScreen } from './screens/GameOverScreen';
 import { LeaderboardScreen } from './screens/LeaderboardScreen';
 import { WorldMap } from './map/WorldMap';
 import { useRoute } from './hooks/useRoute';
+import { useAutoUpdate } from './pwa/useAutoUpdate';
 import { getPlayerId } from './hooks/usePlayerId';
 import { suggestName } from './domain/suggest-name';
 import { buildShareText } from './domain/share';
@@ -49,6 +50,9 @@ export default function App() {
     () => initialState(settings.rememberedName),
   );
   const dispatch = useCallback((e: Event) => rawDispatch(e), []);
+  // A versão nova entra sozinha, e só na home: no jogo perderia a partida, e
+  // no fim perderia o resumo antes de a pessoa compartilhar.
+  useAutoUpdate(state.screen === 'home');
   const [pendingFlush, setPendingFlush] = useState(0);
 
   // Reenvia uma pontuação que ficou na fila offline.
