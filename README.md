@@ -160,6 +160,17 @@ capitais, em quatro níveis de zoom e dois tamanhos de tela.
 O mapa vem em duas resoluções: a de 110m é desenhada durante o gesto e a de 50m
 no repouso, o que mantém a pinça fluida em celular.
 
+**A terra é clara e o oceano é escuro.** Antes eram dois azuis quase iguais, com
+1,52 de contraste entre eles — menos da metade dos 3,0 que um elemento gráfico
+precisa; os continentes mal se separavam da água. Agora são 5,73, e as
+fronteiras saíram de 1,64 para os mesmos 5,73.
+
+Clarear a terra, porém, quebra todo marcador escolhido contra fundo escuro: o
+pino do palpite caía de 6,97 para 1,28 em cima de um continente. Por isso cada
+marcador — pino, arco e ponto de microestado — ganhou uma casca escura e passou
+a carregar o próprio contraste. É nela que ele encosta, não na terra. Mexer nas
+cores do mapa sem mexer nas cascas faz os marcadores sumirem.
+
 ### Os dados
 
 195 países: 193 membros da ONU mais Vaticano e Palestina. Tudo o que o jogo usa

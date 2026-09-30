@@ -20,18 +20,34 @@ export interface Scene {
   arcProgress: number;
 }
 
+/**
+ * A terra é clara e o oceano é escuro, e não os dois quase iguais.
+ *
+ * O que estava aqui antes dava 1,52 de contraste entre terra e oceano, contra
+ * os 3,0 que um elemento gráfico precisa — os continentes mal se separavam da
+ * água. Agora são 5,73, e as fronteiras saíram de 1,64 para os mesmos 5,73.
+ *
+ * Clarear a terra, porém, quebra todo marcador escolhido contra fundo escuro:
+ * o pino do palpite caía de 6,97 para 1,28 em cima de um continente. Por isso
+ * cada marcador ganhou uma casca escura própria (`casing`) e passou a carregar
+ * o próprio contraste — é nela que ele encosta, não na terra. No oceano a
+ * casca some, e quem separa é o marcador claro.
+ */
 const COLORS = {
   /** Fora da "lente" do Equal Earth — evita faixas mortas na tela do celular. */
-  backdrop: '#0d1c2c',
-  ocean: '#14283d',
-  land: '#2b4560',
-  landEdge: '#16293d',
-  border: '#12222f',
-  graticule: 'rgba(255,255,255,0.05)',
-  arc: '#f4b942',
-  guess: '#9fb3c8',
-  truth: '#ef4444',
-  micro: '#4d7ea8',
+  backdrop: '#0b1020',
+  ocean: '#0e2439',
+  land: '#78a0c4',
+  /** Contorno da esfera: é ele que marca a borda do mundo contra o fundo. */
+  landEdge: '#3f6f99',
+  /** Cor de água sobre a terra clara: separa país de país sem sujar. */
+  border: '#0e2439',
+  /** A casca escura que faz todo marcador ler sobre qualquer fundo. */
+  casing: '#06101d',
+  arc: '#ffc94d',
+  guess: '#ffffff',
+  truth: '#ff4d4d',
+  micro: '#8fd0ff',
   label: '#f8fafc',
   labelShadow: 'rgba(3,10,18,0.9)',
 };
@@ -59,23 +75,50 @@ function drawPin(
   ctx.closePath();
   ctx.fillStyle = color;
   ctx.fill();
-  ctx.lineWidth = 1.5;
-  ctx.strokeStyle = 'rgba(3,10,18,0.55)';
+  ctx.lineWidth = 2 * scale;
+  ctx.strokeStyle = COLORS.casing;
   ctx.stroke();
   ctx.beginPath();
   ctx.arc(x, y - h + r, r * 0.4, 0, Math.PI * 2);
-  ctx.fillStyle = 'rgba(3,10,18,0.55)';
+  ctx.fillStyle = COLORS.casing;
   ctx.fill();
   ctx.restore();
 }
 
-function drawLabel(ctx: CanvasRenderingContext2D, text: string, at: [number, number], dy: number) {
+/**
+ * Onde centrar a etiqueta para ela não sair pela borda da tela.
+ *
+ * Centralizar no pino corta nomes longos perto da borda — "Bandar Seri
+ * Begawan" saía pela direita. O pino já marca o ponto exato, então a etiqueta
+ * pode escorregar para dentro sem enganar ninguém.
+ *
+ * Se a etiqueta for mais larga que a tela inteira não há posição boa; aí ela
+ * fica centralizada e transborda dos dois lados por igual, que é menos ruim do
+ * que transbordar só de um.
+ */
+export function clampLabelX(x: number, largura: number, limite: number): number {
+  const margem = 4;
+  const min = largura / 2 + margem;
+  const max = limite - largura / 2 - margem;
+  return max < min ? limite / 2 : Math.min(Math.max(x, min), max);
+}
+
+/**
+ * @param limite largura da tela, para o rótulo não sair pela borda
+ */
+function drawLabel(
+  ctx: CanvasRenderingContext2D,
+  text: string,
+  at: [number, number],
+  dy: number,
+  limite: number,
+) {
   ctx.save();
   ctx.font = '600 13px system-ui, -apple-system, Segoe UI, Roboto, sans-serif';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
   const w = ctx.measureText(text).width + 14;
-  const x = at[0];
+  const x = clampLabelX(at[0], w, limite);
   const y = at[1] + dy;
   ctx.fillStyle = COLORS.labelShadow;
   ctx.beginPath();
@@ -130,12 +173,15 @@ export function draw(ctx: CanvasRenderingContext2D, mp: MapProjection, scene: Sc
     ctx.save();
     ctx.globalAlpha = fade;
     ctx.fillStyle = COLORS.micro;
+    ctx.strokeStyle = COLORS.casing;
+    ctx.lineWidth = 1.5;
     for (const m of micro) {
       const p = projection(m.at);
       if (!p) continue;
       ctx.beginPath();
-      ctx.arc(p[0], p[1], 3, 0, Math.PI * 2);
+      ctx.arc(p[0], p[1], 3.5, 0, Math.PI * 2);
       ctx.fill();
+      ctx.stroke();
     }
     ctx.restore();
   }
@@ -150,6 +196,11 @@ export function draw(ctx: CanvasRenderingContext2D, mp: MapProjection, scene: Sc
     // LineString em espaço esférico: o d3 reamostra ao longo do grande círculo
     path({ type: 'LineString', coordinates });
     ctx.setLineDash([7, 6]);
+    // casca primeiro, âmbar por cima: o tracejado atravessa continentes claros
+    // e sem ela desapareceria em cima deles
+    ctx.lineWidth = 5;
+    ctx.strokeStyle = COLORS.casing;
+    ctx.stroke();
     ctx.lineWidth = 2.5;
     ctx.strokeStyle = COLORS.arc;
     ctx.stroke();
@@ -164,7 +215,7 @@ export function draw(ctx: CanvasRenderingContext2D, mp: MapProjection, scene: Sc
     const p = projection(truth);
     if (p) {
       drawPin(ctx, p as [number, number], COLORS.truth, 1.1);
-      drawLabel(ctx, scene.truthLabel, p as [number, number], 18);
+      drawLabel(ctx, scene.truthLabel, p as [number, number], 18, mp.width);
     }
   }
 }
