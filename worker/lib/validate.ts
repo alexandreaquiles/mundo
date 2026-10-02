@@ -97,9 +97,21 @@ export function validateSubmission(body: unknown): Validation {
   };
 }
 
-/** Identificador estável por dia, para limitar abuso sem guardar o IP. */
-export async function hashIp(ip: string, day: string): Promise<string> {
-  const data = new TextEncoder().encode(`${ip}|${day}`);
+/**
+ * Identificador estável por dia, para limitar abuso sem guardar o IP.
+ *
+ * O sal secreto não é enfeite. Sem ele o hash é `sha256(ip|data)`, e a data
+ * qualquer um sabe: IPv4 tem 2³² endereços, então quem puser as mãos na tabela
+ * `scores` enumera o espaço inteiro em segundos e recupera o IP de todos. Com
+ * um sal que só o Worker conhece, a tabela sozinha não diz nada.
+ *
+ * Quando o sal falta o hash continua funcionando — o limite por IP não pode
+ * parar de pé por causa de configuração ausente —, mas aí ele é reversível, e
+ * `IP_SALT_AUSENTE` deixa isso visível em vez de silencioso.
+ */
+export async function hashIp(ip: string, day: string, salt: string | undefined): Promise<string> {
+  if (!salt) console.warn('IP_SALT_AUSENTE: o hash de IP está reversível; veja o README');
+  const data = new TextEncoder().encode(`${ip}|${day}|${salt ?? ''}`);
   const digest = await crypto.subtle.digest('SHA-256', data);
   return [...new Uint8Array(digest)].map((b) => b.toString(16).padStart(2, '0')).join('');
 }

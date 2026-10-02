@@ -299,6 +299,19 @@ O que existe é proporcional ao problema: validação de faixa e formato, recusa
 de requisições de outra origem, limite de envios por IP (guardado como hash
 diário, nunca o IP em si) e uma coluna `hidden` para esconder abuso na mão.
 
+O hash de IP precisa de um **sal secreto**, e o Worker avisa no log
+(`IP_SALT_AUSENTE`) quando não o tem. Sem sal ele é `sha256(ip|data)`, e a data
+qualquer um sabe: IPv4 tem 2³² endereços, então quem puser as mãos na tabela
+enumera o espaço inteiro em segundos e recupera o IP de todo mundo — a promessa
+de "nunca o IP em si" só se sustenta com o sal. Defina uma vez:
+
+```bash
+openssl rand -hex 32 | npx wrangler secret put IP_SALT
+```
+
+Ele é opcional de propósito: faltando, o limite por IP continua de pé em vez de
+o envio de pontuação cair por configuração ausente.
+
 Tornar isso à prova de trapaça exigiria o servidor sortear e guardar cada
 rodada, o que transformaria um jogo que funciona offline num jogo que só
 funciona online. Não valeu a troca.
@@ -306,6 +319,6 @@ funciona online. Não valeu a troca.
 ## Créditos dos dados
 
 - [Natural Earth](https://www.naturalearthdata.com/) — geometria dos países e coordenadas das capitais (domínio público)
-- [world-countries](https://github.com/mledoze/countries) — nomes, capitais, regiões (MIT)
+- [world-countries](https://github.com/mledoze/countries) — nomes, capitais, regiões (**ODbL 1.0**, não MIT — veja [`THIRD-PARTY.md`](THIRD-PARTY.md))
 - [world-atlas](https://github.com/topojson/world-atlas) — TopoJSON pronto (ISC)
 - [flag-icons](https://github.com/lipis/flag-icons) — as bandeiras (MIT)

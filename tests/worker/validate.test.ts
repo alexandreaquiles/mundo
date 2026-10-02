@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { NAME_MAX, isPlayerId, normaliseName, validateSubmission } from '../../worker/lib/validate';
+import { NAME_MAX, hashIp, isPlayerId, normaliseName, validateSubmission } from '../../worker/lib/validate';
 import { GAME_TIME_MS, MAX_GAME_SCORE } from '../../src/domain/scoring';
 import { RULESET } from '../../src/domain/ruleset';
 
@@ -119,5 +119,34 @@ describe('cronômetro e regra vigente', () => {
     const r = validateSubmission(valid);
     expect(r.ok).toBe(true);
     if (r.ok) expect(r.value.ruleset).toBe(RULESET);
+  });
+});
+
+describe('hashIp', () => {
+  it('o sal muda o hash', async () => {
+    // é isto que impede recuperar o IP a partir da tabela: sem o sal, quem a
+    // tivesse enumeraria os 2³² endereços de IPv4 em segundos
+    const a = await hashIp('203.0.113.7', '2026-10-02', 'sal-um');
+    const b = await hashIp('203.0.113.7', '2026-10-02', 'sal-dois');
+    expect(a).not.toBe(b);
+  });
+
+  it('o mesmo IP no mesmo dia dá o mesmo hash', async () => {
+    // o limite por IP depende disso
+    const a = await hashIp('203.0.113.7', '2026-10-02', 'sal');
+    const b = await hashIp('203.0.113.7', '2026-10-02', 'sal');
+    expect(a).toBe(b);
+  });
+
+  it('o mesmo IP em dias diferentes dá hashes diferentes', async () => {
+    const a = await hashIp('203.0.113.7', '2026-10-02', 'sal');
+    const b = await hashIp('203.0.113.7', '2026-10-03', 'sal');
+    expect(a).not.toBe(b);
+  });
+
+  it('sem sal ainda funciona, para o limite não cair com config ausente', async () => {
+    const a = await hashIp('203.0.113.7', '2026-10-02', undefined);
+    expect(a).toMatch(/^[0-9a-f]{64}$/);
+    expect(await hashIp('203.0.113.8', '2026-10-02', undefined)).not.toBe(a);
   });
 });

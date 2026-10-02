@@ -14,7 +14,9 @@ o build (`npm run build:data`) apenas os combina e valida — não busca nada na
 
 ## Procedência
 
-- **Nomes de país, capitais em inglês, região, sub-região, área** — [`world-countries`](https://www.npmjs.com/package/world-countries) v5.1.0 (MIT).
+- **Nomes de país, capitais em inglês, região, sub-região, área** — [`world-countries`](https://www.npmjs.com/package/world-countries) v5.1.0 (**ODbL 1.0**).
+  A licença está no campo `licenses` legado do `package.json`, que as ferramentas modernas ignoram;
+  por isso este arquivo dizia "MIT" por um tempo. A ODbL é *share-alike*: veja [`../THIRD-PARTY.md`](../THIRD-PARTY.md).
   Atenção: `translations.por` é **português europeu**; por isso o `countries.pt-BR.json`.
   O pacote **não** tem `capitalInfo.latlng` — esse campo só existe na API REST Countries.
 - **Coordenadas das capitais** — [Natural Earth](https://www.naturalearthdata.com/) `ne_10m_populated_places_simple`

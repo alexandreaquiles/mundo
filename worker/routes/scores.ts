@@ -128,7 +128,7 @@ export async function postScore(request: Request, env: Env): Promise<Response> {
   const ip = request.headers.get('CF-Connecting-IP') ?? '0.0.0.0';
   const now = Date.now();
   const day = new Date(now).toISOString().slice(0, 10);
-  const ipHash = await hashIp(ip, day);
+  const ipHash = await hashIp(ip, day, env.IP_SALT);
 
   if (env.SUBMIT_LIMITER) {
     const { success } = await env.SUBMIT_LIMITER.limit({ key: ipHash });
